@@ -1,5 +1,3 @@
-import React from 'react';
-
 function CatalogSort() {
   return (
     <div className="catalog-sort">
