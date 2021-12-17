@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { allGuitarsSelector } from '../../store/guitar/guitar.selector';
 import useTypedSelector from '../../hooks/use-typed-selector';
 import useTypedDispatch from '../../hooks/use-typed-dispatch';
+// import { allGuitarsSelector } from '../../store/guitar/guitar.selector';
 import { selectGuitar } from '../../store/searched-guitar/searched-guitar.slice';
 
 function SearchField() {
@@ -11,21 +11,21 @@ function SearchField() {
   const [searchValue, setSearchValue] = React.useState<string>('');
 
   // TODO: Добавить прелоадер пока данные не загрузились
-  const guitars = useTypedSelector(allGuitarsSelector);
+  // const guitars = useTypedSelector(allGuitarsSelector);
 
-  const searchingGuitars = guitars?.data?.filter((guitar) =>
-    guitar.name.toLowerCase().includes(searchValue.toLowerCase()),
-  );
+  // const searchingGuitars = guitars?.data?.filter((guitar) =>
+  //   guitar.name.toLowerCase().includes(searchValue.toLowerCase()),
+  // );
 
   const handleChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(e.target.value);
   };
 
   const handleSelectGuitar = (name: string): void => {
-    // push
+    // push to route
   };
 
-  const handleSearchGuitar = (e: React.SyntheticEvent): void => {
+  const handleSearchGuitar = (e: React.FormEvent<HTMLButtonElement>): void => {
     e.preventDefault();
 
     const guitarName = searchValue.trim();
@@ -35,8 +35,8 @@ function SearchField() {
     }
   };
 
-  const isGuitarsFound = searchingGuitars && searchingGuitars.length > 0;
-  const isGuitarsNotFound = searchingGuitars?.length === 0;
+  // const isGuitarsFound = searchingGuitars && searchingGuitars.length > 0;
+  // const isGuitarsNotFound = searchingGuitars?.length === 0;
 
   return (
     <div className="form-search">
@@ -61,7 +61,7 @@ function SearchField() {
         </label>
       </form>
       <ul className="form-search__select-list" hidden={!searchValue} style={{ zIndex: 2 }}>
-        {isGuitarsFound &&
+        {/* {isGuitarsFound &&
           searchingGuitars.map((guitar) => (
             <li
               className="form-search__select-item"
@@ -76,7 +76,7 @@ function SearchField() {
           <li className="form-search__select-item" tabIndex={0}>
             Ничего не найдено
           </li>
-        )}
+        )} */}
       </ul>
     </div>
   );

@@ -5,25 +5,51 @@ import CatalogFilter from '../../catalog-filter/catalog-filter';
 import CatalogSort from '../../catalog-sort/catalog-sort';
 import Pagination from '../../pagination/pagination';
 import MainLayout from '../../main-layout/main-layout';
-import { useGetAllGuitarsQuery, useGetGuitarByNameQuery } from '../../../store/guitar/guitar.api';
-import useTypedSelector from '../../../hooks/use-typed-selector';
-import { getSearchedGuitar } from '../../../store/searched-guitar/searched-guitar.selector';
 import GuitarList from '../../guitar-list/guitar-list';
+import { useGetAllGuitarsQuery } from '../../../store/guitar/guitar.api';
 
 import type { Guitar } from '../../../types/guitar';
+import { getOrderType, getSortingType } from '../../../store/catalog/catalog.selector';
+import useTypedSelector from '../../../hooks/use-typed-selector';
+import useTypedDispatch from '../../../hooks/use-typed-dispatch';
+import { setMaxGuitarPrice, setMinGuitarPrice } from '../../../store/catalog/catalog.slice';
 
 function Main() {
+  const dispatch = useTypedDispatch();
+
   const [guitarCards, setGuitarCards] = React.useState<Guitar[] | undefined>([]);
 
-  useGetAllGuitarsQuery();
+  const selectedSortType = useTypedSelector(getSortingType);
+  const selectedOrderType = useTypedSelector(getOrderType);
 
-  const searchedGuitar = useTypedSelector(getSearchedGuitar);
+  const { data: guitarData } = useGetAllGuitarsQuery({
+    sortType: selectedSortType,
+    order: selectedOrderType,
+  });
 
-  const { data } = useGetGuitarByNameQuery(searchedGuitar);
+  const { minPrice, maxPrice } = useGetAllGuitarsQuery(
+    {
+      sortType: selectedSortType,
+      order: selectedOrderType,
+    },
+    {
+      selectFromResult: ({ data }) => ({
+        minPrice: data && Math.min(...data.map((guitar) => guitar.price)),
+        maxPrice: data && Math.max(...data.map((guitar) => guitar.price)),
+      }),
+    },
+  );
 
   React.useEffect(() => {
-    setGuitarCards(data);
-  }, [data]);
+    setGuitarCards(guitarData);
+  }, [guitarData]);
+
+  React.useEffect(() => {
+    if (minPrice && maxPrice) {
+      dispatch(setMinGuitarPrice(minPrice));
+      dispatch(setMaxGuitarPrice(maxPrice));
+    }
+  }, [minPrice, maxPrice]);
 
   return (
     <MainLayout>
@@ -31,7 +57,6 @@ function Main() {
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <Breadcrumbs />
-          {searchedGuitar && guitarCards?.length === 0 && <h1>Товары не найдены</h1>}
           <div className="catalog">
             <CatalogFilter />
             <CatalogSort />

@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
-import { nanoid } from '@reduxjs/toolkit';
 import SearchField from '../search-field/search-field';
 
 const navigationItems = [
-  { id: nanoid(), name: 'Каталог', route: '/' },
-  { id: nanoid(), name: 'Где купить?', route: '/' },
-  { id: nanoid(), name: 'О компании', route: '/' },
+  { id: 1, name: 'Каталог', route: '/' },
+  { id: 2, name: 'Где купить?', route: '/' },
+  { id: 3, name: 'О компании', route: '/' },
 ];
 
 function AppHeader() {

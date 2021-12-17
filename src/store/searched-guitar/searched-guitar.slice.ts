@@ -4,7 +4,7 @@ const searchedGuitarSlice = createSlice({
   name: 'searchedGuitar',
   initialState: '',
   reducers: {
-    selectGuitar(state, action: PayloadAction<string>) {
+    selectGuitar(_state, action: PayloadAction<string>) {
       return action.payload;
     },
   },
