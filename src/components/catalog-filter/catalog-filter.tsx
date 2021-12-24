@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import PriceFilter from '../price-filter/price-filter';
+import CatalogPriceFilter from '../catalog-price-filter/catalog-price-filter';
 
 enum FilterGuitarTypes {
   Acoustic = 'acoustic',
@@ -120,7 +120,7 @@ function CatalogFilter() {
   return (
     <form className="catalog-filter">
       <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
-      <PriceFilter />
+      <CatalogPriceFilter />
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
         {guitarTypesItems.items.map(({ id, label, value, matchingStrings }) => (

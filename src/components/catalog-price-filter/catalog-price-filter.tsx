@@ -9,7 +9,7 @@ enum APIPriceKey {
   MaxPrice = 'price_lte',
 }
 
-function PriceFilter() {
+function CatalogPriceFilter() {
   const { search } = useLocation();
 
   const { searchParams, updateSearchParams, deleteSearchParam } = useUpdateSearchParams();
@@ -112,4 +112,4 @@ function PriceFilter() {
   );
 }
 
-export default PriceFilter;
+export default CatalogPriceFilter;
