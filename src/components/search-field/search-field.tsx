@@ -1,47 +1,30 @@
 import React from 'react';
 
-import useTypedSelector from '../../hooks/use-typed-selector';
-import useTypedDispatch from '../../hooks/use-typed-dispatch';
-// import { allGuitarsSelector } from '../../store/guitar/guitar.selector';
-import { selectGuitar } from '../../store/searched-guitar/searched-guitar.slice';
+import { useGetMatchedGuitarBySearchQuery } from '../../store/guitar/guitar.api';
 
 function SearchField() {
-  const dispatch = useTypedDispatch();
-
+  const [isSkipRequest, setSkipRequest] = React.useState<boolean>(true);
   const [searchValue, setSearchValue] = React.useState<string>('');
 
   // TODO: Добавить прелоадер пока данные не загрузились
-  // const guitars = useTypedSelector(allGuitarsSelector);
+  const guitars = useGetMatchedGuitarBySearchQuery(searchValue, { skip: isSkipRequest });
 
-  // const searchingGuitars = guitars?.data?.filter((guitar) =>
-  //   guitar.name.toLowerCase().includes(searchValue.toLowerCase()),
-  // );
+  const searchingGuitars = guitars?.data?.filter((guitar) =>
+    guitar.name.toLowerCase().includes(searchValue.toLowerCase()),
+  );
 
   const handleChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setSkipRequest(false);
     setSearchValue(e.target.value);
   };
 
-  const handleSelectGuitar = (name: string): void => {
-    // push to route
-  };
-
-  const handleSearchGuitar = (e: React.FormEvent<HTMLButtonElement>): void => {
-    e.preventDefault();
-
-    const guitarName = searchValue.trim();
-
-    if (guitarName.length) {
-      dispatch(selectGuitar(searchValue));
-    }
-  };
-
-  // const isGuitarsFound = searchingGuitars && searchingGuitars.length > 0;
-  // const isGuitarsNotFound = searchingGuitars?.length === 0;
+  const isGuitarsFound = searchingGuitars && searchingGuitars.length > 0;
+  const isGuitarsNotFound = searchingGuitars?.length === 0;
 
   return (
     <div className="form-search">
       <form className="form-search__form">
-        <button className="form-search__submit" type="submit" onClick={handleSearchGuitar}>
+        <button className="form-search__submit" type="submit">
           <svg aria-hidden="true" className="form-search__icon" height="15" width="14">
             <use xlinkHref="#icon-search" />
           </svg>
@@ -61,14 +44,9 @@ function SearchField() {
         </label>
       </form>
       <ul className="form-search__select-list" hidden={!searchValue} style={{ zIndex: 2 }}>
-        {/* {isGuitarsFound &&
+        {isGuitarsFound &&
           searchingGuitars.map((guitar) => (
-            <li
-              className="form-search__select-item"
-              tabIndex={0}
-              key={guitar.id}
-              onClick={() => handleSelectGuitar(guitar.name)}
-            >
+            <li className="form-search__select-item" tabIndex={0} key={guitar.id}>
               {guitar.name}
             </li>
           ))}
@@ -76,7 +54,7 @@ function SearchField() {
           <li className="form-search__select-item" tabIndex={0}>
             Ничего не найдено
           </li>
-        )} */}
+        )}
       </ul>
     </div>
   );

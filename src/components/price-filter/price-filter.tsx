@@ -1,44 +1,81 @@
 import React from 'react';
-import useTypedDispatch from '../../hooks/use-typed-dispatch';
+import { useLocation } from 'react-router-dom';
 
-import useTypedSelector from '../../hooks/use-typed-selector';
-import {
-  getMaxGuitarPrice,
-  getMinGuitarPrice,
-  getSelectedPriceMaxFilter,
-  getSelectedPriceMinFilter,
-} from '../../store/catalog/catalog.selector';
-import { setPriceMaxFilter, setPriceMinFilter } from '../../store/catalog/catalog.slice';
+import { useGetAllGuitarsQuery } from '../../store/guitar/guitar.api';
+import useUpdateSearchParams from '../../hooks/use-update-search-params';
+
+enum APIPriceKey {
+  MinPrice = 'price_gte',
+  MaxPrice = 'price_lte',
+}
 
 function PriceFilter() {
-  const dispatch = useTypedDispatch();
+  const { search } = useLocation();
 
-  const maxPriceRange = useTypedSelector(getMaxGuitarPrice);
-  const minPriceRange = useTypedSelector(getMinGuitarPrice);
-  const selectedPriceMin = useTypedSelector(getSelectedPriceMinFilter);
-  const selectedPriceMax = useTypedSelector(getSelectedPriceMaxFilter);
+  const { searchParams, updateSearchParams, deleteSearchParam } = useUpdateSearchParams();
+
+  const prevSelectedMinPrice = searchParams.get(APIPriceKey.MinPrice);
+  const prevSelectedMaxPrice = searchParams.get(APIPriceKey.MaxPrice);
+
+  const [minPriceValue, setMinPriceValue] = React.useState<number | ''>(Number(prevSelectedMinPrice) || '');
+  const [maxPriceValue, setMaxPriceValue] = React.useState<number | ''>(Number(prevSelectedMaxPrice) || '');
+
+  const { calculatedMinGuitarPrice, calculatedMaxGuitarPrice } = useGetAllGuitarsQuery(search, {
+    selectFromResult: ({ data: guitarsData }) => {
+      // Получает минимальную и максимальную цену гитар на основе выбранных фильтров
+      const guitars = guitarsData?.guitars;
+
+      return {
+        calculatedMinGuitarPrice: guitars?.length ? Math.min(...guitars.map((guitar) => guitar.price)) : 0,
+        calculatedMaxGuitarPrice: guitars?.length ? Math.max(...guitars.map((guitar) => guitar.price)) : 0,
+      };
+    },
+  });
 
   const handleChangeMinPrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    dispatch(setPriceMinFilter(e.target.value));
+    const value = +e.target.value;
+
+    if (!value) {
+      setMinPriceValue('');
+      deleteSearchParam(APIPriceKey.MinPrice);
+      return;
+    }
+
+    setMinPriceValue(value);
+    updateSearchParams(APIPriceKey.MinPrice, value.toString());
   };
 
   const handleChangeMaxPrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    dispatch(setPriceMaxFilter(e.target.value));
+    const value = +e.target.value;
+
+    if (!value) {
+      setMaxPriceValue('');
+      deleteSearchParam(APIPriceKey.MaxPrice);
+      return;
+    }
+
+    setMaxPriceValue(value);
+    updateSearchParams(APIPriceKey.MaxPrice, value.toString());
   };
 
   const handleBlurMinPrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = +e.target.value;
+    const value = +e?.target?.value;
 
-    if (minPriceRange && value && value < minPriceRange) {
-      dispatch(setPriceMinFilter(minPriceRange.toString()));
+    if (value && value < calculatedMinGuitarPrice) {
+      setMinPriceValue(calculatedMinGuitarPrice);
     }
   };
 
   const handleBlurMaxPrice = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = +e.target.value;
+    const value = +e?.target?.value;
 
-    if (maxPriceRange && value && value > maxPriceRange) {
-      dispatch(setPriceMaxFilter(maxPriceRange.toString()));
+    if (value && value > calculatedMaxGuitarPrice) {
+      setMaxPriceValue(calculatedMaxGuitarPrice);
+      return;
+    }
+
+    if (value && value < calculatedMinGuitarPrice) {
+      setMaxPriceValue(calculatedMinGuitarPrice);
     }
   };
 
@@ -51,12 +88,11 @@ function PriceFilter() {
           <input
             id="priceMin"
             name="от"
-            placeholder={minPriceRange?.toString()}
+            placeholder={calculatedMinGuitarPrice.toString()}
             type="number"
-            value={selectedPriceMin}
+            value={minPriceValue}
             onChange={handleChangeMinPrice}
             onBlur={handleBlurMinPrice}
-            disabled={!minPriceRange}
           />
         </div>
         <div className="form-input">
@@ -64,12 +100,11 @@ function PriceFilter() {
           <input
             id="priceMax"
             name="до"
-            placeholder={maxPriceRange?.toString()}
+            placeholder={calculatedMaxGuitarPrice.toString()}
             type="number"
-            value={selectedPriceMax}
+            value={maxPriceValue}
             onChange={handleChangeMaxPrice}
             onBlur={handleBlurMaxPrice}
-            disabled={!maxPriceRange}
           />
         </div>
       </div>

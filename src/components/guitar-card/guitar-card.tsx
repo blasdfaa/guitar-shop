@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 
 import type { Guitar } from '../../types/guitar';
 
+const starsItems = [
+  { id: 1, value: 1 },
+  { id: 2, value: 2 },
+  { id: 3, value: 3 },
+  { id: 4, value: 4 },
+  { id: 5, value: 5 },
+];
+
 function GuitarCard({ name, previewImg, rating, price }: Guitar) {
   return (
     <div className="product-card">
@@ -10,21 +18,11 @@ function GuitarCard({ name, previewImg, rating, price }: Guitar) {
       <div className="product-card__info">
         <div aria-hidden="true" className="rate product-card__rate">
           <span className="visually-hidden">Рейтинг:</span>
-          <svg aria-hidden="true" height="11" width="12">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg aria-hidden="true" height="11" width="12">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg aria-hidden="true" height="11" width="12">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg aria-hidden="true" height="11" width="12">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg aria-hidden="true" height="11" width="12">
-            <use xlinkHref="#icon-star" />
-          </svg>
+          {starsItems.map(({ id, value }) => (
+            <svg aria-hidden="true" height="11" width="12" key={id}>
+              <use xlinkHref={`${rating >= value ? '#icon-full-star' : '#icon-star'}`} />
+            </svg>
+          ))}
           <span className="rate__count">{rating}</span>
           <span className="rate__message" />
         </div>
@@ -38,9 +36,9 @@ function GuitarCard({ name, previewImg, rating, price }: Guitar) {
         <Link className="button button--mini" to="/">
           Подробнее
         </Link>
-        <a className="button button--red button--mini button--add-to-cart" href="#">
+        <Link className="button button--red button--mini button--add-to-cart" to="/">
           Купить
-        </a>
+        </Link>
       </div>
     </div>
   );
