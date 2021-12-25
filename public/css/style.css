@@ -3203,6 +3203,24 @@ button,
   padding-top: 8px;
 }
 
+.error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.error-page .page-content__title {
+  font-size: 60px;
+  line-height: 80px;
+  margin-bottom: 5px;
+}
+
+.error-page__message {
+  margin: 0 0 15px;
+  max-width: 460px;
+  text-align: center;
+}
+
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
   .modal--success .modal__content {
     background-image: url('../img/sprite/bg_modal@2x.png');
