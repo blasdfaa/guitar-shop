@@ -11,7 +11,6 @@ describe('Component: GuitarCard', () => {
     renderWithContext(<GuitarCard {...expectedGuitar} />);
 
     expect(screen.getByAltText(expectedGuitar.name)).toBeInTheDocument();
-    expect(screen.getByTestId('card-rating').textContent).toEqual(String(expectedGuitar.rating));
     expect(screen.getByTestId('card-price').textContent).toEqual(`Цена:${expectedGuitar.price} ₽`);
     expect(screen.getAllByRole('link').length).toEqual(2);
   });
