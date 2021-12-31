@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import MainLayout from '../../main-layout/main-layout';
 
-function ErrorPage() {
+function NotFoundScreen() {
   return (
     <MainLayout>
       <main className="page-content">
@@ -24,4 +24,4 @@ function ErrorPage() {
   );
 }
 
-export default ErrorPage;
+export default NotFoundScreen;

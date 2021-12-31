@@ -1,20 +1,24 @@
 import React from 'react';
 
-import { useGetMatchedGuitarBySearchQuery } from '../../store/guitar/guitar.api';
+import useTypedDispatch from '../../hooks/use-typed-dispatch';
+import { fetchGuitarsByName } from '../../store/search/search.async';
+import useTypedSelector from '../../hooks/use-typed-selector';
+import { searchedGuitarsByNameSelector } from '../../store/search/search.selector';
 
 function SearchField() {
-  const [isSkipRequest, setSkipRequest] = React.useState<boolean>(true);
   const [searchValue, setSearchValue] = React.useState<string>('');
 
-  // TODO: Добавить прелоадер пока данные не загрузились
-  const guitars = useGetMatchedGuitarBySearchQuery(searchValue, { skip: isSkipRequest });
+  const dispatch = useTypedDispatch();
+  // TODO: Добавить прелоадер для состояния загрузки айтемов
+  const searchingGuitars = useTypedSelector((state) => searchedGuitarsByNameSelector(state, searchValue));
 
-  const searchingGuitars = guitars?.data?.filter((guitar) =>
-    guitar.name.toLowerCase().includes(searchValue.toLowerCase()),
-  );
+  React.useEffect(() => {
+    if (searchValue) {
+      dispatch(fetchGuitarsByName(searchValue));
+    }
+  }, [searchValue, dispatch]);
 
   const handleChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSkipRequest(false);
     setSearchValue(e.target.value);
   };
 
@@ -38,23 +42,25 @@ function SearchField() {
           type="text"
           value={searchValue}
           onChange={handleChangeSearchValue}
+          data-testid="search-input"
         />
         <label className="visually-hidden" htmlFor="search">
           Поиск
         </label>
       </form>
-      <ul className="form-search__select-list" hidden={!searchValue} style={{ zIndex: 2 }}>
+      <ul
+        className="form-search__select-list"
+        hidden={!searchValue}
+        style={{ zIndex: 2 }}
+        data-testid="search-dropdown"
+      >
         {isGuitarsFound &&
           searchingGuitars.map((guitar) => (
             <li className="form-search__select-item" tabIndex={0} key={guitar.id}>
               {guitar.name}
             </li>
           ))}
-        {isGuitarsNotFound && (
-          <li className="form-search__select-item" tabIndex={0}>
-            Ничего не найдено
-          </li>
-        )}
+        {isGuitarsNotFound && <li className="form-search__select-item">Ничего не найдено</li>}
       </ul>
     </div>
   );

@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+
 import SearchField from '../search-field/search-field';
+import { AppRoute } from '../../constants';
 
 const navigationItems = [
   { id: 1, name: 'Каталог', route: '/' },
@@ -11,11 +13,11 @@ function AppHeader() {
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
-        <a className="header__logo logo">
+        <Link className="header__logo logo" to={AppRoute.Home} data-testid="header-logo">
           <img alt="Логотип" className="logo__img" height="70" src="./img/svg/logo.svg" width="70" />
-        </a>
+        </Link>
         <nav className="main-nav">
-          <ul className="main-nav__list">
+          <ul className="main-nav__list" data-testid="navigation-list">
             {navigationItems.map((item) => (
               <li key={item.id}>
                 <Link className="link main-nav__link link--current" to={item.route}>
@@ -26,13 +28,18 @@ function AppHeader() {
           </ul>
         </nav>
         <SearchField />
-        <a aria-label="Корзина" className="header__cart-link" href="#">
-          <svg aria-hidden="true" className="header__cart-icon" height="14" width="14">
+        <Link aria-label="Корзина" className="header__cart-link" to="/">
+          <svg
+            aria-hidden="true"
+            className="header__cart-icon"
+            height="14"
+            width="14"
+            data-testid="cart-icon"
+          >
             <use xlinkHref="#icon-basket" />
           </svg>
           <span className="visually-hidden">Перейти в корзину</span>
-          <span className="header__cart-count">2</span>
-        </a>
+        </Link>
       </div>
     </header>
   );

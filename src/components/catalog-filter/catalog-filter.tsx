@@ -2,16 +2,12 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import CatalogPriceFilter from '../catalog-price-filter/catalog-price-filter';
+import { ApiSearchParamKey } from '../../constants';
 
-enum FilterGuitarTypes {
+export enum FilterGuitarTypes {
   Acoustic = 'acoustic',
   Electric = 'electric',
   Ukulele = 'ukulele',
-}
-
-enum APIFilterKey {
-  Type = 'type',
-  StringsCount = 'stringCount',
 }
 
 const stringsCountItems = [
@@ -49,8 +45,8 @@ const guitarTypesItems = {
 function CatalogFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const prevSelectedTypes = searchParams.getAll(APIFilterKey.Type);
-  const prevSelectedStringsCount = searchParams.getAll(APIFilterKey.StringsCount);
+  const prevSelectedTypes = searchParams.getAll(ApiSearchParamKey.Type);
+  const prevSelectedStringsCount = searchParams.getAll(ApiSearchParamKey.StringsCount);
 
   const [typeValues, setTypeValues] = React.useState(guitarTypesItems);
   const [stringsCount, setStringsCount] = React.useState<number[]>([]);
@@ -71,7 +67,7 @@ function CatalogFilter() {
     }));
   }, []);
 
-  const updateFiltersSearchParams = (paramKey: APIFilterKey, newValue: string): void => {
+  const updateFiltersSearchParams = (paramKey: ApiSearchParamKey, newValue: string): void => {
     const isParamExist = searchParams.getAll(paramKey).includes(newValue);
 
     if (!isParamExist) {
@@ -102,7 +98,7 @@ function CatalogFilter() {
       };
     });
 
-    updateFiltersSearchParams(APIFilterKey.Type, selectedType);
+    updateFiltersSearchParams(ApiSearchParamKey.Type, selectedType);
   };
 
   const handleChangeStringCount = (selectedString: number): void => {
@@ -114,7 +110,7 @@ function CatalogFilter() {
       return [...strings, selectedString];
     });
 
-    updateFiltersSearchParams(APIFilterKey.StringsCount, selectedString.toString());
+    updateFiltersSearchParams(ApiSearchParamKey.StringsCount, selectedString.toString());
   };
 
   return (

@@ -23,11 +23,13 @@ function GuitarCard({ name, previewImg, rating, price }: Guitar) {
               <use xlinkHref={`${rating >= value ? '#icon-full-star' : '#icon-star'}`} />
             </svg>
           ))}
-          <span className="rate__count">{rating}</span>
+          <span className="rate__count" data-testid="card-rating">
+            {rating}
+          </span>
           <span className="rate__message" />
         </div>
         <p className="product-card__title">{name}</p>
-        <p className="product-card__price">
+        <p className="product-card__price" data-testid="card-price">
           <span className="visually-hidden">Цена:</span>
           {price} ₽
         </p>

@@ -1,16 +1,11 @@
 import React from 'react';
 
 import useUpdateSearchParams from '../../hooks/use-update-search-params';
+import { ApiSearchParamKey } from '../../constants';
 
 type PaginationProps = {
-  totalGuitars: number | undefined;
+  totalGuitars?: number;
 };
-
-enum APIGuitarsRangeKey {
-  Start = '_start',
-  End = '_end',
-  Page = 'page',
-}
 
 const DEFAULT_SELECTED_PAGE = 1;
 const DEFAULT_SELECTED_PAGE_GROUP = 1;
@@ -18,12 +13,10 @@ const GUITARS_LIMIT = 9;
 const PAGES_LIMIT = 3;
 const PAGES_GROUP_STEP = 3;
 
-function Pagination({ totalGuitars }: PaginationProps) {
+function Pagination({ totalGuitars = 0 }: PaginationProps) {
   const { searchParams, updateSearchParams, deleteSearchParam } = useUpdateSearchParams();
 
-  const prevSelectedStartRange = searchParams.get(APIGuitarsRangeKey.Start);
-  const prevSelectedEndRange = searchParams.get(APIGuitarsRangeKey.End);
-  const prevSelectedPage = searchParams.get(APIGuitarsRangeKey.Page);
+  const prevSelectedPage = searchParams.get(ApiSearchParamKey.Page);
 
   const [pages, setPages] = React.useState<number>(DEFAULT_SELECTED_PAGE);
   const [currentPage, setCurrentPage] = React.useState<number>(
@@ -38,20 +31,11 @@ function Pagination({ totalGuitars }: PaginationProps) {
   }, [totalGuitars]);
 
   React.useEffect(() => {
-    if (pages < currentPage) {
+    if (totalGuitars && pages < currentPage) {
       setCurrentPage(pages);
-      deleteSearchParam(APIGuitarsRangeKey.Page);
-      deleteSearchParam(APIGuitarsRangeKey.Start);
-      deleteSearchParam(APIGuitarsRangeKey.End);
+      deleteSearchParam(ApiSearchParamKey.Page);
     }
   }, [pages, searchParams]);
-
-  React.useEffect(() => {
-    if (prevSelectedStartRange && prevSelectedEndRange) {
-      updateSearchParams(APIGuitarsRangeKey.Start, prevSelectedStartRange);
-      updateSearchParams(APIGuitarsRangeKey.End, prevSelectedEndRange);
-    }
-  }, []);
 
   const handleClickPage = (event: React.MouseEvent<HTMLAnchorElement>): void => {
     event.preventDefault();
@@ -61,45 +45,49 @@ function Pagination({ totalGuitars }: PaginationProps) {
     if (textContent) {
       const selectedPage = +textContent;
 
-      const startIndex = selectedPage * GUITARS_LIMIT - GUITARS_LIMIT;
-      const endIndex = startIndex + GUITARS_LIMIT;
-
       setCurrentPage(selectedPage);
-
-      updateSearchParams(APIGuitarsRangeKey.Page, selectedPage);
-      updateSearchParams(APIGuitarsRangeKey.Start, startIndex);
-      updateSearchParams(APIGuitarsRangeKey.End, endIndex);
+      updateSearchParams(ApiSearchParamKey.Page, selectedPage);
     }
   };
 
   const handleClickNextBtn = (event: React.MouseEvent<HTMLAnchorElement>): void => {
     event.preventDefault();
 
-    setPageGroup((page) => page + 3);
+    setPageGroup((group) => group + 1);
   };
 
   const handleClickPrevBtn = (event: React.MouseEvent<HTMLAnchorElement>): void => {
     event.preventDefault();
 
-    if (currentPage > PAGES_GROUP_STEP) {
-      setPageGroup((page) => page - 3);
-    }
+    setPageGroup((group) => group - 1);
   };
 
   const getPaginationGroup = React.useMemo(() => {
     const start = Math.floor((pageGroup - 1) / PAGES_LIMIT) * PAGES_LIMIT;
 
-    return new Array(pages).fill(0).map((_, index) => start + index + 1);
+    const startIndex = pageGroup * PAGES_LIMIT - PAGES_LIMIT;
+    const endIndex = startIndex + PAGES_LIMIT;
+
+    return new Array(pages)
+      .fill(0)
+      .map((_, index) => start + index + 1)
+      .slice(startIndex, endIndex);
   }, [pageGroup, pages]);
 
-  const canShowPrevAndNextBtn = currentPage > PAGES_GROUP_STEP;
+  const isShowPrevPageBtn = pageGroup > DEFAULT_SELECTED_PAGE_GROUP;
+  const isShowNextPageBtn = pageGroup + PAGES_GROUP_STEP - 1 < pages;
 
   return (
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
-        {canShowPrevAndNextBtn && (
+        {isShowPrevPageBtn && (
           <li className="pagination__page pagination__page--prev" id="next">
-            <a className="link pagination__page-link" href="2" onClick={handleClickPrevBtn}>
+            <a
+              className="link pagination__page-link"
+              href="2"
+              onClick={handleClickPrevBtn}
+              data-testid="prev-pagination-btn"
+            >
               Назад
             </a>
           </li>
@@ -109,14 +97,24 @@ function Pagination({ totalGuitars }: PaginationProps) {
             className={`pagination__page ${currentPage === value ? 'pagination__page--active' : ''}`}
             key={value}
           >
-            <a className="link pagination__page-link" href="1" onClick={handleClickPage}>
+            <a
+              className="link pagination__page-link"
+              href="1"
+              onClick={handleClickPage}
+              data-testid="pagination-btn"
+            >
               {value}
             </a>
           </li>
         ))}
-        {canShowPrevAndNextBtn && (
+        {isShowNextPageBtn && (
           <li className="pagination__page pagination__page--next" id="next">
-            <a className="link pagination__page-link" href="2" onClick={handleClickNextBtn}>
+            <a
+              className="link pagination__page-link"
+              href="2"
+              onClick={handleClickNextBtn}
+              data-testid="next-pagination-btn"
+            >
               Далее
             </a>
           </li>

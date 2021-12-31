@@ -39,6 +39,15 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx,js,jsx}",
+      "!src/constans.ts",
+      "!src/utils/mocks.ts",
+      "!src/utils/test-utils.tsx",
+      "!src/**/*.d.ts"
+    ]
+  },
   "devDependencies": {
     "@jedmao/redux-mock-store": "3.0.5",
     "@testing-library/jest-dom": "5.11.0",

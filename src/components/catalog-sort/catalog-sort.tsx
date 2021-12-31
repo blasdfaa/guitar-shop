@@ -1,20 +1,16 @@
 import React from 'react';
 
 import useUpdateSearchParams from '../../hooks/use-update-search-params';
+import { ApiSearchParamKey } from '../../constants';
 
-enum SortOption {
+export enum SortOption {
   ByPrice = 'price',
   ByRating = 'rating',
 }
 
-enum OrderOption {
+export enum OrderOption {
   Up = 'asc',
   Down = 'desc',
-}
-
-enum APISortKey {
-  Sorting = '_sort',
-  Order = '_order',
 }
 
 const sortingButtons = [
@@ -35,12 +31,12 @@ function CatalogSort() {
 
   const updateSortParam = (value: SortOption): void => {
     setSortType(value);
-    updateSearchParams(APISortKey.Sorting, value);
+    updateSearchParams(ApiSearchParamKey.Sorting, value);
   };
 
   const updateOrderParam = (value: OrderOption): void => {
     setOrderType(value);
-    updateSearchParams(APISortKey.Order, value);
+    updateSearchParams(ApiSearchParamKey.Order, value);
   };
 
   const handleChangeSortType = (sort: SortOption): void => {

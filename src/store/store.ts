@@ -1,17 +1,20 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
-import guitarApi from './guitar/guitar.api';
+import guitarReducer from './guitar/guitar.slice';
+import searchReducer from './search/search.slice';
 
-const rootReducer = combineReducers({
-  [guitarApi.reducerPath]: guitarApi.reducer,
-});
+const reducer = {
+  GUITARS: guitarReducer,
+  SEARCH: searchReducer,
+};
 
 const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(guitarApi.middleware),
+  reducer,
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
+export const getStoreWithState = (preloadedState?: RootState) => configureStore({ reducer, preloadedState });
+
+export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;

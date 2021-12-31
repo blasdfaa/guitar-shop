@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
-import SvgSprite from '../svg-sprite/svg-sprite';
 import Main from '../pages/main/main';
-import ErrorPage from '../pages/error-page/error-page';
+import NotFoundScreen from '../pages/not-found-screen/not-found-screen';
+import SvgSprite from '../svg-sprite/svg-sprite';
 
 function App(): JSX.Element {
   return (
@@ -10,8 +10,8 @@ function App(): JSX.Element {
       <SvgSprite />
       <div className="wrapper">
         <Routes>
-          <Route path={'/'} element={<Main />} />
-          <Route path={'*'} element={<ErrorPage />} />
+          <Route path="/" element={<Main />} />
+          <Route path="*" element={<NotFoundScreen />} />
         </Routes>
       </div>
     </>
