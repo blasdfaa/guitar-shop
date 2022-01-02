@@ -2,9 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import api from '../api';
 import { ActionCreator, APIEndpoint } from '../../constants';
+import { setGuitarsCount } from './guitar.slice';
 
 import type { Guitar } from '../../types/guitar';
-import { setGuitarsCount } from './guitar.slice';
 
 const GUITAR_DATA_LIMIT = 9;
 const TOTAL_COUNT_HEADER = 'x-total-count';

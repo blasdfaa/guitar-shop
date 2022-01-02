@@ -7,17 +7,24 @@ import { fetchGuitarsWithParams } from '../../store/guitar/guitar.async';
 import useTypedDispatch from '../../hooks/use-typed-dispatch';
 import useTypedSelector from '../../hooks/use-typed-selector';
 import { selectGuitarsItems, selectGuitarsTotalCount } from '../../store/guitar/guitar.selector';
+import Alert from '../../alert/alert';
 
 function GuitarList() {
+  const [isModalOpen, setModalOpen] = React.useState(false);
+
   const { search } = useLocation();
 
   const dispatch = useTypedDispatch();
+
+  const handleShowModal = () => {
+    setModalOpen(true);
+  };
 
   const guitars = useTypedSelector(selectGuitarsItems);
   const totalGuitars = useTypedSelector(selectGuitarsTotalCount);
 
   React.useEffect(() => {
-    dispatch(fetchGuitarsWithParams(search));
+    dispatch(fetchGuitarsWithParams(search)).unwrap().catch(handleShowModal);
   }, [search, dispatch]);
 
   return (
@@ -34,6 +41,9 @@ function GuitarList() {
         )}
       </div>
       <Pagination totalGuitars={totalGuitars} />
+      <Alert isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        Ошибка! Нет доступа к серверу
+      </Alert>
     </>
   );
 }
