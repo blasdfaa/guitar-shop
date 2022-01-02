@@ -7,7 +7,7 @@ import { fetchGuitarsWithParams } from '../../store/guitar/guitar.async';
 import useTypedDispatch from '../../hooks/use-typed-dispatch';
 import useTypedSelector from '../../hooks/use-typed-selector';
 import { selectGuitarsItems, selectGuitarsTotalCount } from '../../store/guitar/guitar.selector';
-import Alert from '../../alert/alert';
+import Alert from '../alert/alert';
 
 function GuitarList() {
   const [isModalOpen, setModalOpen] = React.useState(false);
