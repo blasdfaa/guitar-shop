@@ -2,26 +2,27 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { renderWithContext } from '../../utils/test-utils';
-import CatalogFilter, { FilterGuitarTypes } from './catalog-filter';
+import CatalogFilter from './catalog-filter';
+import { FilterGuitarType } from '../../constants';
 
 describe('Component: CatalogFilter', () => {
   const mockCheckboxTypeItems = {
     items: [
       {
         id: 1,
-        value: FilterGuitarTypes.Acoustic,
+        value: FilterGuitarType.Acoustic,
         label: 'Акустические гитары',
         matchingStrings: [6, 7, 12],
       },
       {
         id: 2,
-        value: FilterGuitarTypes.Electric,
+        value: FilterGuitarType.Electric,
         label: 'Электрогитары',
         matchingStrings: [4, 6, 7],
       },
       {
         id: 3,
-        value: FilterGuitarTypes.Ukulele,
+        value: FilterGuitarType.Ukulele,
         label: 'Укулеле',
         matchingStrings: [4],
       },

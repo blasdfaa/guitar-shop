@@ -62,7 +62,7 @@ function Pagination({ totalGuitars = 0 }: PaginationProps) {
     setPageGroup((group) => group - 1);
   };
 
-  const getPaginationGroup = React.useMemo(() => {
+  const paginationGroup = React.useMemo(() => {
     const start = Math.floor((pageGroup - 1) / PAGES_LIMIT) * PAGES_LIMIT;
 
     const startIndex = pageGroup * PAGES_LIMIT - PAGES_LIMIT;
@@ -92,7 +92,7 @@ function Pagination({ totalGuitars = 0 }: PaginationProps) {
             </a>
           </li>
         )}
-        {getPaginationGroup.map((value) => (
+        {paginationGroup.map((value) => (
           <li
             className={`pagination__page ${currentPage === value ? 'pagination__page--active' : ''}`}
             key={value}

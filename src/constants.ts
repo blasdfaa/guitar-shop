@@ -26,3 +26,19 @@ export enum ApiSearchParamKey {
   Order = '_order',
   Page = 'page',
 }
+
+export enum FilterGuitarType {
+  Acoustic = 'acoustic',
+  Electric = 'electric',
+  Ukulele = 'ukulele',
+}
+
+export enum SortOption {
+  ByPrice = 'price',
+  ByRating = 'rating',
+}
+
+export enum OrderOption {
+  Up = 'asc',
+  Down = 'desc',
+}

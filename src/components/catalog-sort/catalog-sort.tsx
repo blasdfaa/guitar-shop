@@ -1,17 +1,7 @@
 import React from 'react';
 
 import useUpdateSearchParams from '../../hooks/use-update-search-params';
-import { ApiSearchParamKey } from '../../constants';
-
-export enum SortOption {
-  ByPrice = 'price',
-  ByRating = 'rating',
-}
-
-export enum OrderOption {
-  Up = 'asc',
-  Down = 'desc',
-}
+import { ApiSearchParamKey, OrderOption, SortOption } from '../../constants';
 
 const sortingButtons = [
   { id: 1, value: SortOption.ByPrice, label: 'по цене' },

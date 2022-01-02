@@ -5,6 +5,7 @@ import { renderWithContext } from '../../utils/test-utils';
 import GuitarList from './guitar-list';
 import { fetchGuitarsWithParams } from '../../store/guitar/guitar.async';
 import api from '../../store/api';
+import React from 'react';
 
 describe('Component: GuitarList', () => {
   const expectedGuitars = [generateGuitarItem(), generateGuitarItem(), generateGuitarItem()];
@@ -17,10 +18,9 @@ describe('Component: GuitarList', () => {
 
     await store.dispatch(fetchGuitarsWithParams());
     await waitFor(() => expect(api.get).toHaveBeenCalledTimes(1));
-
-    const guitarsItems = screen.getAllByAltText(/fake guitar/i);
-
-    expect(guitarsItems.length).toEqual(expectedGuitars.length);
+    await waitFor(() =>
+      expect(screen.getAllByAltText(/fake guitar/i).length).toEqual(expectedGuitars.length),
+    );
   });
   test('should be render text if return 0 items', async () => {
     const state = getStateWithItems();

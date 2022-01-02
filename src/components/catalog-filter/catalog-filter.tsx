@@ -2,13 +2,7 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import CatalogPriceFilter from '../catalog-price-filter/catalog-price-filter';
-import { ApiSearchParamKey } from '../../constants';
-
-export enum FilterGuitarTypes {
-  Acoustic = 'acoustic',
-  Electric = 'electric',
-  Ukulele = 'ukulele',
-}
+import { ApiSearchParamKey, FilterGuitarType } from '../../constants';
 
 const stringsCountItems = [
   { id: 1, value: 4 },
@@ -21,24 +15,24 @@ const guitarTypesItems = {
   items: [
     {
       id: 1,
-      value: FilterGuitarTypes.Acoustic,
+      value: FilterGuitarType.Acoustic,
       label: 'Акустические гитары',
       matchingStrings: [6, 7, 12],
     },
     {
       id: 2,
-      value: FilterGuitarTypes.Electric,
+      value: FilterGuitarType.Electric,
       label: 'Электрогитары',
       matchingStrings: [4, 6, 7],
     },
     {
       id: 3,
-      value: FilterGuitarTypes.Ukulele,
+      value: FilterGuitarType.Ukulele,
       label: 'Укулеле',
       matchingStrings: [4],
     },
   ],
-  selected: [] as FilterGuitarTypes[],
+  selected: [] as FilterGuitarType[],
   availableStrings: [] as number[],
 };
 
@@ -62,7 +56,7 @@ function CatalogFilter() {
 
     setTypeValues((prevState) => ({
       ...prevState,
-      selected: [...(prevSelectedTypes as FilterGuitarTypes[])],
+      selected: [...(prevSelectedTypes as FilterGuitarType[])],
       availableStrings: [...strings],
     }));
   }, []);
@@ -79,7 +73,7 @@ function CatalogFilter() {
     }
   };
 
-  const handleChangeGuitarType = (selectedType: FilterGuitarTypes, availableStrings: number[]) => {
+  const handleChangeGuitarType = (selectedType: FilterGuitarType, availableStrings: number[]) => {
     setTypeValues((prevTypes) => {
       if (prevTypes.selected.includes(selectedType)) {
         return {

@@ -9,7 +9,6 @@ function SearchField() {
   const [searchValue, setSearchValue] = React.useState<string>('');
 
   const dispatch = useTypedDispatch();
-  // TODO: Добавить прелоадер для состояния загрузки айтемов
   const searchingGuitars = useTypedSelector((state) => searchedGuitarsByNameSelector(state, searchValue));
 
   React.useEffect(() => {
