@@ -7,9 +7,11 @@ type AlertProps = {
   children: string;
 };
 
+const CLOSE_DELAY = 4000;
+
 function Alert({ isOpen, onClose, children }: AlertProps) {
   React.useEffect(() => {
-    const closeTimer = setTimeout(onClose, 4000);
+    const closeTimer = setTimeout(onClose, CLOSE_DELAY);
 
     return () => {
       clearTimeout(closeTimer);
