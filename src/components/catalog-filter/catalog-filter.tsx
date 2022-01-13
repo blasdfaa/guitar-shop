@@ -58,10 +58,10 @@ function CatalogFilter() {
         serializedAvailableStrings.length !== 0 && !serializedAvailableStrings.includes(+selectedString);
 
       if (isStringNotAvailable) {
-        toggleSearchParams(stringsCountParams.map((param) => [ApiSearchParamKey.StringsCount, param]));
+        toggleSearchParams([[ApiSearchParamKey.StringsCount, selectedString]]);
       }
     });
-  }, [availableStrings]);
+  }, [availableStrings, stringsCountParams]);
 
   const toggleSearchParams = (params: SearchParam) => {
     const newSearchParams = [...searchParams];
