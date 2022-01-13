@@ -24,7 +24,9 @@ function Pagination({ totalGuitars = 0 }: PaginationProps) {
   const [pageGroup, setPageGroup] = React.useState<number>(DEFAULT_SELECTED_PAGE_GROUP);
 
   React.useEffect(() => {
-    updateSearchParams(ApiSearchParamKey.Page, currentPage);
+    if (currentPage > DEFAULT_SELECTED_PAGE) {
+      updateSearchParams(ApiSearchParamKey.Page, currentPage);
+    }
   }, [currentPage]);
 
   React.useEffect(() => {

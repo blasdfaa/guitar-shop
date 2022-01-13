@@ -42,28 +42,29 @@ function CatalogFilter() {
 
   const [availableStrings, setAvailableStrings] = React.useState<number[][]>([]);
 
+  const serializedAvailableStrings = availableStrings.flat();
+  const notAvailableStrings = stringsCountParams.filter(
+    (selectedString) =>
+      serializedAvailableStrings.length !== 0 && !serializedAvailableStrings.includes(+selectedString),
+  );
+
   React.useEffect(() => {
     [...guitarTypeParams].forEach((type) => {
-      const strings = guitarTypesItems.find((item) => item.value === type)?.matchingStrings;
+      const stringsFromURL = guitarTypesItems.find((item) => item.value === type)?.matchingStrings;
 
-      if (strings) {
-        updateAvailableStringsCount(strings);
+      if (stringsFromURL) {
+        updateAvailableStringsCount(stringsFromURL);
       }
     });
   }, []);
 
   React.useEffect(() => {
-    [...stringsCountParams].forEach((selectedString) => {
-      const isStringNotAvailable =
-        serializedAvailableStrings.length !== 0 && !serializedAvailableStrings.includes(+selectedString);
+    if (notAvailableStrings.length !== 0) {
+      toggleSearchParams(notAvailableStrings.map((param) => [ApiSearchParamKey.StringsCount, param]));
+    }
+  }, [notAvailableStrings]);
 
-      if (isStringNotAvailable) {
-        toggleSearchParams([[ApiSearchParamKey.StringsCount, selectedString]]);
-      }
-    });
-  }, [availableStrings, stringsCountParams]);
-
-  const toggleSearchParams = (params: SearchParam) => {
+  const toggleSearchParams = (params: SearchParam): void => {
     const newSearchParams = [...searchParams];
 
     for (const prevParam of params) {
@@ -99,8 +100,6 @@ function CatalogFilter() {
   const handleChangeStringCount = (selectedString: number): void => {
     toggleSearchParams([[ApiSearchParamKey.StringsCount, selectedString.toString()]]);
   };
-
-  const serializedAvailableStrings = availableStrings.flat();
 
   return (
     <form className="catalog-filter">

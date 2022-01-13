@@ -9,6 +9,7 @@ export type GuitarSliceState = {
   items: Guitar[] | [];
   status: FetchDataStatus;
   guitarsTotalCount: number;
+  currentRequestId?: string;
 };
 
 const initialState: GuitarSliceState = {
@@ -27,15 +28,26 @@ const guitarSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchGuitarsWithParams.pending, (state) => {
+      .addCase(fetchGuitarsWithParams.pending, (state, action) => {
         state.status = FetchDataStatus.Idle;
+        state.currentRequestId = action.meta.requestId;
       })
       .addCase(fetchGuitarsWithParams.fulfilled, (state, action) => {
-        state.items = action.payload;
-        state.status = FetchDataStatus.Success;
+        const { requestId } = action.meta;
+
+        if (state.currentRequestId === requestId) {
+          state.items = action.payload;
+          state.status = FetchDataStatus.Success;
+          state.currentRequestId = undefined;
+        }
       })
-      .addCase(fetchGuitarsWithParams.rejected, (state) => {
-        state.status = FetchDataStatus.Failed;
+      .addCase(fetchGuitarsWithParams.rejected, (state, action) => {
+        const { requestId } = action.meta;
+
+        if (state.currentRequestId === requestId) {
+          state.status = FetchDataStatus.Failed;
+          state.currentRequestId = undefined;
+        }
       })
       .addDefaultCase((state) => state);
   },

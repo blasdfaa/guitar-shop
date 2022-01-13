@@ -16,7 +16,7 @@ describe('Reducer: guitarReducer', () => {
     });
   });
   test('should set fetch status while pending action', () => {
-    const action = { type: fetchGuitarsWithParams.pending.type };
+    const action = { type: fetchGuitarsWithParams.pending.type, meta: { requestId: 'fakeId' } };
     const initialState: GuitarSliceState = {
       items: [],
       status: FetchDataStatus.Idle,
@@ -25,32 +25,54 @@ describe('Reducer: guitarReducer', () => {
 
     const state = guitarReducer(initialState, action);
 
-    expect(state).toEqual({ ...initialState, status: FetchDataStatus.Idle, guitarsTotalCount: 0, items: [] });
+    expect(state).toEqual({
+      ...initialState,
+      status: FetchDataStatus.Idle,
+      guitarsTotalCount: 0,
+      items: [],
+      currentRequestId: 'fakeId',
+    });
   });
   test('should set fetch status while fulfilled action', () => {
     const fakeGuitars = [generateGuitarItem(), generateGuitarItem()];
-    const action = { type: fetchGuitarsWithParams.fulfilled.type, payload: fakeGuitars };
+    const action = {
+      type: fetchGuitarsWithParams.fulfilled.type,
+      payload: fakeGuitars,
+      meta: { requestId: 'fakeId' },
+    };
     const initialState: GuitarSliceState = {
       items: [],
       status: FetchDataStatus.Idle,
       guitarsTotalCount: 0,
+      currentRequestId: 'fakeId',
     };
 
     const state = guitarReducer(initialState, action);
 
-    expect(state).toEqual({ ...initialState, status: FetchDataStatus.Success, items: fakeGuitars });
+    expect(state).toEqual({
+      ...initialState,
+      status: FetchDataStatus.Success,
+      items: fakeGuitars,
+      currentRequestId: undefined,
+    });
   });
   test('should set fetch status while rejected action', () => {
-    const action = { type: fetchGuitarsWithParams.rejected.type };
+    const action = { type: fetchGuitarsWithParams.rejected.type, meta: { requestId: 'fakeId' } };
     const initialState: GuitarSliceState = {
       items: [],
       status: FetchDataStatus.Idle,
       guitarsTotalCount: 0,
+      currentRequestId: 'fakeId',
     };
 
     const state = guitarReducer(initialState, action);
 
-    expect(state).toEqual({ ...initialState, status: FetchDataStatus.Failed, items: [] });
+    expect(state).toEqual({
+      ...initialState,
+      status: FetchDataStatus.Failed,
+      items: [],
+      currentRequestId: undefined,
+    });
   });
   test('should set guitar count when get setGuitarsCount action', () => {
     const initialState = undefined;
