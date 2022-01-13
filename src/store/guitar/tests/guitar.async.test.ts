@@ -111,14 +111,13 @@ describe('Thunks: guitar', () => {
       expect(store.getState().GUITARS.guitarsTotalCount).toEqual(2);
     });
     test('should correctly change state after failed response', async () => {
+      jest.spyOn(api, 'get').mockImplementation(() => Promise.reject({ data: [], headers: {} }));
+
       const state = getStateWithItems([generateGuitarItem()]);
       const store = getStoreWithState(state);
 
-      jest.spyOn(api, 'get').mockImplementation(() => Promise.reject({ data: [], headers: {} }));
-
       await store.dispatch(fetchGuitarsWithParams());
 
-      expect(store.getState().GUITARS.items).toEqual([]);
       expect(store.getState().GUITARS.status).toEqual(FetchDataStatus.Failed);
       expect(store.getState().GUITARS.guitarsTotalCount).toEqual(0);
     });

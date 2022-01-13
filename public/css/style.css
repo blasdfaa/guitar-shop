@@ -1235,6 +1235,27 @@ button,
   justify-content: flex-start;
 }
 
+.cards--empty {
+  gap: 0;
+}
+
+.cards--loaded {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.cards__loader {
+  width: 200px;
+  height: 200px;
+}
+
+.cards__empty-text {
+  grid-column: 2 / 3;
+}
+
 .link {
   color: inherit;
 
@@ -2299,6 +2320,12 @@ button,
   color: #545454;
 }
 
+.form-search__loader {
+  width: 30px;
+  height: 30px;
+  fill: #ffffff;
+}
+
 .logo {
   align-items: start;
   display: flex;
@@ -3260,6 +3287,13 @@ button,
   border: 0;
   padding: 0;
   cursor: pointer;
+}
+
+.loader {
+  margin: auto;
+  background: none;
+  display: block;
+  shape-rendering: auto;
 }
 
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {

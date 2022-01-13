@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { renderWithContext } from '../../utils/test-utils';
 import SearchField from './search-field';
-import { generateGuitarItem, getStateWithItems } from '../../utils/mocks';
+import { generateGuitarItem, generateSearchedGuitars, getStateWithItems } from '../../utils/mocks';
 import api from '../../store/api';
 import { fetchGuitarsByName } from '../../store/search/search.async';
 
@@ -45,6 +45,18 @@ describe('Component: SearchField', () => {
 
     expect(screen.getByText('Ничего не найдено')).toBeInTheDocument();
   });
+  test('dropdown should display loader if items is loading', async () => {
+    const { store } = renderWithContext(<SearchField />);
+
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+
+    jest.spyOn(api, 'get').mockImplementation(() => Promise.resolve({ data: expectedGuitars, headers: {} }));
+    userEvent.type(input, 'fake');
+
+    store.dispatch(fetchGuitarsByName('fake'));
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+  });
   test('dropdown should be opened if items found', async () => {
     const { store } = renderWithContext(<SearchField />);
 
@@ -75,5 +87,29 @@ describe('Component: SearchField', () => {
 
     userEvent.type(input, 'fake1');
     await waitFor(() => expect(api.get).toHaveBeenCalledTimes(input.value.length));
+  });
+  test('searching result should be sorted by first letter of search value', async () => {
+    const mockSearchedGuitars = [
+      generateSearchedGuitars('BCA'),
+      generateSearchedGuitars('BAC'),
+      generateSearchedGuitars('ABC'),
+    ];
+    const correctSortedExpectedResult = ['ABC', 'BAC', 'BCA'];
+    const { store, debug } = renderWithContext(<SearchField />);
+
+    jest
+      .spyOn(api, 'get')
+      .mockImplementation(() => Promise.resolve({ data: mockSearchedGuitars, headers: {} }));
+
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+
+    // await store.dispatch(fetchGuitarsByName('A'));
+
+    userEvent.type(input, 'A');
+
+    await waitFor(() => {
+      const searchResult = screen.getAllByRole('listitem').map((item) => item.textContent);
+      expect(searchResult).toEqual(correctSortedExpectedResult);
+    });
   });
 });

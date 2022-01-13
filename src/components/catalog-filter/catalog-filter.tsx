@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import CatalogPriceFilter from '../catalog-price-filter/catalog-price-filter';
 import { ApiSearchParamKey, FilterGuitarType } from '../../constants';
 
+type SearchParam = [string, string][];
+
 const stringsCountItems = [
   { id: 1, value: 4 },
   { id: 2, value: 6 },
@@ -11,101 +13,94 @@ const stringsCountItems = [
   { id: 4, value: 12 },
 ];
 
-const guitarTypesItems = {
-  items: [
-    {
-      id: 1,
-      value: FilterGuitarType.Acoustic,
-      label: 'Акустические гитары',
-      matchingStrings: [6, 7, 12],
-    },
-    {
-      id: 2,
-      value: FilterGuitarType.Electric,
-      label: 'Электрогитары',
-      matchingStrings: [4, 6, 7],
-    },
-    {
-      id: 3,
-      value: FilterGuitarType.Ukulele,
-      label: 'Укулеле',
-      matchingStrings: [4],
-    },
-  ],
-  selected: [] as FilterGuitarType[],
-  availableStrings: [] as number[],
-};
+const guitarTypesItems = [
+  {
+    id: 1,
+    value: FilterGuitarType.Acoustic,
+    label: 'Акустические гитары',
+    matchingStrings: [6, 7, 12],
+  },
+  {
+    id: 2,
+    value: FilterGuitarType.Electric,
+    label: 'Электрогитары',
+    matchingStrings: [4, 6, 7],
+  },
+  {
+    id: 3,
+    value: FilterGuitarType.Ukulele,
+    label: 'Укулеле',
+    matchingStrings: [4],
+  },
+];
 
 function CatalogFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const prevSelectedTypes = searchParams.getAll(ApiSearchParamKey.Type);
-  const prevSelectedStringsCount = searchParams.getAll(ApiSearchParamKey.StringsCount);
+  const guitarTypeParams = searchParams.getAll(ApiSearchParamKey.Type);
+  const stringsCountParams = searchParams.getAll(ApiSearchParamKey.StringsCount);
 
-  const [typeValues, setTypeValues] = React.useState(guitarTypesItems);
-  const [stringsCount, setStringsCount] = React.useState<number[]>([]);
+  const [availableStrings, setAvailableStrings] = React.useState<number[][]>([]);
 
   React.useEffect(() => {
-    const strings = prevSelectedTypes
-      .map((currentType) => guitarTypesItems.items.filter(({ value }) => value === currentType))
-      .flat()
-      .map(({ matchingStrings }) => matchingStrings)
-      .flat();
+    [...guitarTypeParams].forEach((type) => {
+      const strings = guitarTypesItems.find((item) => item.value === type)?.matchingStrings;
 
-    setStringsCount(prevSelectedStringsCount.map((string) => +string));
-
-    setTypeValues((prevState) => ({
-      ...prevState,
-      selected: [...(prevSelectedTypes as FilterGuitarType[])],
-      availableStrings: [...strings],
-    }));
+      if (strings) {
+        updateAvailableStringsCount(strings);
+      }
+    });
   }, []);
 
-  const updateFiltersSearchParams = (paramKey: ApiSearchParamKey, newValue: string): void => {
-    const isParamExist = searchParams.getAll(paramKey).includes(newValue);
+  React.useEffect(() => {
+    [...stringsCountParams].forEach((selectedString) => {
+      const isStringNotAvailable =
+        serializedAvailableStrings.length !== 0 && !serializedAvailableStrings.includes(+selectedString);
 
-    if (!isParamExist) {
-      searchParams.append(paramKey, newValue);
-      setSearchParams(searchParams);
-    } else {
-      const newParams = new URLSearchParams([...searchParams].filter(([_key, value]) => value !== newValue));
-      setSearchParams(newParams);
+      if (isStringNotAvailable) {
+        toggleSearchParams(stringsCountParams.map((param) => [ApiSearchParamKey.StringsCount, param]));
+      }
+    });
+  }, [availableStrings]);
+
+  const toggleSearchParams = (params: SearchParam) => {
+    const newSearchParams = [...searchParams];
+
+    for (const prevParam of params) {
+      const index = newSearchParams.findIndex(
+        (newParam) => prevParam[0] === newParam[0] && prevParam[1] === newParam[1],
+      );
+
+      if (index === -1) {
+        newSearchParams.push(prevParam);
+      } else {
+        newSearchParams.splice(index, 1);
+      }
     }
+
+    setSearchParams(new URLSearchParams(newSearchParams));
   };
 
-  const handleChangeGuitarType = (selectedType: FilterGuitarType, availableStrings: number[]) => {
-    setTypeValues((prevTypes) => {
-      if (prevTypes.selected.includes(selectedType)) {
-        return {
-          ...prevTypes,
-          selected: [...prevTypes.selected.filter((type) => type !== selectedType)],
-          availableStrings: [
-            ...prevTypes.availableStrings.filter((strings) => !availableStrings.includes(strings)),
-          ],
-        };
+  const updateAvailableStringsCount = (newStrings: number[]): void => {
+    setAvailableStrings((prevState) => {
+      if (prevState.includes(newStrings)) {
+        return [...prevState.filter((currentStrings) => newStrings !== currentStrings)];
       }
 
-      return {
-        ...prevTypes,
-        selected: [...prevTypes.selected, selectedType],
-        availableStrings: [...prevTypes.availableStrings, ...availableStrings],
-      };
+      return [...prevState, newStrings];
     });
+  };
 
-    updateFiltersSearchParams(ApiSearchParamKey.Type, selectedType);
+  const handleChangeGuitarType = (selectedType: FilterGuitarType, matchingStrings: number[]): void => {
+    updateAvailableStringsCount(matchingStrings);
+    toggleSearchParams([[ApiSearchParamKey.Type, selectedType]]);
   };
 
   const handleChangeStringCount = (selectedString: number): void => {
-    setStringsCount((strings) => {
-      if (strings.includes(selectedString)) {
-        return strings.filter((currentType) => currentType !== selectedString);
-      }
-
-      return [...strings, selectedString];
-    });
-
-    updateFiltersSearchParams(ApiSearchParamKey.StringsCount, selectedString.toString());
+    toggleSearchParams([[ApiSearchParamKey.StringsCount, selectedString.toString()]]);
   };
+
+  const serializedAvailableStrings = availableStrings.flat();
 
   return (
     <form className="catalog-filter">
@@ -113,14 +108,14 @@ function CatalogFilter() {
       <CatalogPriceFilter />
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
-        {guitarTypesItems.items.map(({ id, label, value, matchingStrings }) => (
+        {guitarTypesItems.map(({ id, label, value, matchingStrings }) => (
           <div className="form-checkbox catalog-filter__block-item" key={id}>
             <input
               className="visually-hidden"
               id={value}
               name={value}
               type="checkbox"
-              checked={typeValues.selected.includes(value)}
+              checked={guitarTypeParams.includes(value)}
               onChange={() => handleChangeGuitarType(value, matchingStrings)}
             />
             <label htmlFor={value}>{label}</label>
@@ -132,12 +127,12 @@ function CatalogFilter() {
         {stringsCountItems.map(({ id, value }) => (
           <div className="form-checkbox catalog-filter__block-item" key={id}>
             <input
-              disabled={!!typeValues.availableStrings.length && !typeValues.availableStrings.includes(value)}
+              disabled={serializedAvailableStrings.length > 0 && !serializedAvailableStrings.includes(value)}
               className="visually-hidden"
               id={`${value}-strings`}
               name={`${value}-strings`}
               type="checkbox"
-              checked={stringsCount.includes(value)}
+              checked={stringsCountParams.includes(value.toString())}
               onChange={() => handleChangeStringCount(value)}
             />
             <label htmlFor={`${value}-strings`}>{value}</label>

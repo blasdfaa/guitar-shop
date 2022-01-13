@@ -1,3 +1,4 @@
+import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 
 import { generateGuitarItem, getStateWithItems } from '../../utils/mocks';
@@ -5,7 +6,6 @@ import { renderWithContext } from '../../utils/test-utils';
 import GuitarList from './guitar-list';
 import { fetchGuitarsWithParams } from '../../store/guitar/guitar.async';
 import api from '../../store/api';
-import React from 'react';
 
 describe('Component: GuitarList', () => {
   const expectedGuitars = [generateGuitarItem(), generateGuitarItem(), generateGuitarItem()];
@@ -31,5 +31,14 @@ describe('Component: GuitarList', () => {
     await store.dispatch(fetchGuitarsWithParams());
 
     expect(screen.getByText('Товары не найдены')).toBeInTheDocument();
+  });
+  test('should be render loader if data is loading', async () => {
+    const { store } = renderWithContext(<GuitarList />);
+
+    jest.spyOn(api, 'get').mockImplementation(() => Promise.resolve({ data: expectedGuitars, headers: {} }));
+
+    store.dispatch(fetchGuitarsWithParams());
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 });

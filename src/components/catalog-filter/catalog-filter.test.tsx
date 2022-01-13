@@ -30,7 +30,6 @@ describe('Component: CatalogFilter', () => {
     selected: [],
     availableStrings: [],
   };
-
   const mockCheckboxStringsCountItems = [
     { id: 1, value: 4 },
     { id: 2, value: 6 },
@@ -47,45 +46,73 @@ describe('Component: CatalogFilter', () => {
       mockCheckboxTypeItems.items.length + mockCheckboxStringsCountItems.length,
     );
   });
-  test('toggle element by selecting checkbox', () => {
+  test('checked input by click on guitars type', async () => {
+    jest.spyOn(URLSearchParams.prototype, 'getAll').mockReturnValue(['acoustic']);
+
     renderWithContext(<CatalogFilter />);
 
     const typeCheckbox = screen.getByRole('checkbox', { name: 'Акустические гитары' });
-    const stringsCountCheckbox = screen.getByRole('checkbox', { name: '4' });
 
     userEvent.click(typeCheckbox);
     expect(typeCheckbox).toBeChecked();
     expect(screen.getByRole('checkbox', { name: 'Акустические гитары' })).toBeInTheDocument();
+  });
+  test('checked input by click on strings count', async () => {
+    jest.spyOn(URLSearchParams.prototype, 'getAll').mockReturnValue(['4']);
 
-    userEvent.click(typeCheckbox);
-    expect(typeCheckbox).not.toBeChecked();
-    expect(screen.getByRole('checkbox', { name: 'Акустические гитары' })).toBeInTheDocument();
+    const { history } = renderWithContext(<CatalogFilter />);
+
+    const stringsCountCheckbox = screen.getByRole('checkbox', { name: '4' });
 
     userEvent.click(stringsCountCheckbox);
     expect(stringsCountCheckbox).toBeChecked();
     expect(screen.getByRole('checkbox', { name: '4' })).toBeInTheDocument();
 
-    userEvent.click(stringsCountCheckbox);
-    expect(stringsCountCheckbox).not.toBeChecked();
-    expect(screen.getByRole('checkbox', { name: '4' })).toBeInTheDocument();
+    history.location.search = '';
   });
   test('unavailable strings count should be disabled', () => {
-    renderWithContext(<CatalogFilter />);
+    jest.spyOn(URLSearchParams.prototype, 'getAll').mockReturnValue([]);
 
-    const checkbox = screen.getByRole('checkbox', { name: 'Акустические гитары' });
+    const { history } = renderWithContext(<CatalogFilter />);
 
-    userEvent.click(checkbox);
+    const typeCheckbox = screen.getByRole('checkbox', { name: 'Акустические гитары' });
+
+    userEvent.click(typeCheckbox);
     expect(screen.getByRole('checkbox', { name: '4' })).toBeDisabled();
 
-    userEvent.click(checkbox);
+    userEvent.click(typeCheckbox);
     expect(screen.getByRole('checkbox', { name: '4' })).not.toBeDisabled();
+
+    history.location.search = '';
   });
   test('should set correctly url params by selected value', () => {
+    jest.spyOn(URLSearchParams.prototype, 'getAll').mockReturnValue(['acoustic']);
     const { history } = renderWithContext(<CatalogFilter />);
 
     const typeCheckbox = screen.getByRole('checkbox', { name: mockCheckboxTypeItems.items[0].label });
 
     userEvent.click(typeCheckbox);
     expect(history.location.search).toEqual(`?type=${mockCheckboxTypeItems.items[0].value}`);
+
+    history.location.search = '';
+  });
+  test('should delete disabled params from url string', () => {
+    jest
+      .spyOn(URLSearchParams.prototype, 'getAll')
+      .mockReturnValueOnce(['acoustic'])
+      .mockReturnValueOnce(['12'])
+      .mockReturnValue([]);
+
+    const { history } = renderWithContext(<CatalogFilter />);
+
+    const stringsCountCheckbox = screen.getByRole('checkbox', { name: '12' });
+    userEvent.click(stringsCountCheckbox);
+
+    const typeCheckbox = screen.getByRole('checkbox', { name: 'Акустические гитары' });
+    userEvent.click(typeCheckbox);
+
+    expect(history.location.search).toEqual('?type=acoustic');
+
+    history.location.search = '';
   });
 });

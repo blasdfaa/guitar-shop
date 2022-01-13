@@ -28,7 +28,6 @@ const guitarSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchGuitarsWithParams.pending, (state) => {
-        state.items = [];
         state.status = FetchDataStatus.Idle;
       })
       .addCase(fetchGuitarsWithParams.fulfilled, (state, action) => {

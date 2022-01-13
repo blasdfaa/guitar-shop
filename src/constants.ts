@@ -24,7 +24,7 @@ export enum ApiSearchParamKey {
   MaxPrice = 'price_lte',
   Sorting = '_sort',
   Order = '_order',
-  Page = 'page',
+  Page = '_page',
 }
 
 export enum FilterGuitarType {

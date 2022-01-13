@@ -11,7 +11,6 @@ const DEFAULT_SELECTED_PAGE = 1;
 const DEFAULT_SELECTED_PAGE_GROUP = 1;
 const GUITARS_LIMIT = 9;
 const PAGES_LIMIT = 3;
-const PAGES_GROUP_STEP = 3;
 
 function Pagination({ totalGuitars = 0 }: PaginationProps) {
   const { searchParams, updateSearchParams, deleteSearchParam } = useUpdateSearchParams();
@@ -25,6 +24,10 @@ function Pagination({ totalGuitars = 0 }: PaginationProps) {
   const [pageGroup, setPageGroup] = React.useState<number>(DEFAULT_SELECTED_PAGE_GROUP);
 
   React.useEffect(() => {
+    updateSearchParams(ApiSearchParamKey.Page, currentPage);
+  }, [currentPage]);
+
+  React.useEffect(() => {
     if (totalGuitars) {
       setPages(Math.ceil(totalGuitars / GUITARS_LIMIT));
     }
@@ -33,14 +36,13 @@ function Pagination({ totalGuitars = 0 }: PaginationProps) {
   React.useEffect(() => {
     if (totalGuitars && pages < currentPage) {
       setCurrentPage(pages);
-      deleteSearchParam(ApiSearchParamKey.Page);
     }
   }, [pages, searchParams]);
 
-  const handleClickPage = (event: React.MouseEvent<HTMLAnchorElement>): void => {
-    event.preventDefault();
+  const handleClickPage = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    e.preventDefault();
 
-    const { textContent } = event.currentTarget;
+    const { textContent } = e.currentTarget;
 
     if (textContent) {
       const selectedPage = +textContent;
@@ -50,16 +52,24 @@ function Pagination({ totalGuitars = 0 }: PaginationProps) {
     }
   };
 
-  const handleClickNextBtn = (event: React.MouseEvent<HTMLAnchorElement>): void => {
-    event.preventDefault();
+  const handleClickPrevBtn = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    e.preventDefault();
 
-    setPageGroup((group) => group + 1);
+    setCurrentPage((page) => page - 1);
+
+    if (isFirstPageInGroup) {
+      setPageGroup((group) => group - 1);
+    }
   };
 
-  const handleClickPrevBtn = (event: React.MouseEvent<HTMLAnchorElement>): void => {
-    event.preventDefault();
+  const handleClickNextBtn = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    e.preventDefault();
 
-    setPageGroup((group) => group - 1);
+    setCurrentPage((page) => page + 1);
+
+    if (isLastPageInGroup) {
+      setPageGroup((group) => group + 1);
+    }
   };
 
   const paginationGroup = React.useMemo(() => {
@@ -74,8 +84,10 @@ function Pagination({ totalGuitars = 0 }: PaginationProps) {
       .slice(startIndex, endIndex);
   }, [pageGroup, pages]);
 
-  const isShowPrevPageBtn = pageGroup > DEFAULT_SELECTED_PAGE_GROUP;
-  const isShowNextPageBtn = pageGroup + PAGES_GROUP_STEP - 1 < pages;
+  const isShowPrevPageBtn = currentPage > DEFAULT_SELECTED_PAGE;
+  const isShowNextPageBtn = currentPage < pages;
+  const isLastPageInGroup = paginationGroup[PAGES_LIMIT - 1] === currentPage;
+  const isFirstPageInGroup = paginationGroup[0] === currentPage;
 
   return (
     <div className="pagination page-content__pagination">

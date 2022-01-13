@@ -3,13 +3,17 @@ import React from 'react';
 import useTypedDispatch from '../../hooks/use-typed-dispatch';
 import { fetchGuitarsByName } from '../../store/search/search.async';
 import useTypedSelector from '../../hooks/use-typed-selector';
-import { searchedGuitarsByNameSelector } from '../../store/search/search.selector';
+import { searchedGuitarsByNameSelector, selectSearchLoadingStatus } from '../../store/search/search.selector';
+import { FetchDataStatus } from '../../constants';
+import Loader from '../loader/loader';
 
 function SearchField() {
   const [searchValue, setSearchValue] = React.useState<string>('');
 
   const dispatch = useTypedDispatch();
+
   const searchingGuitars = useTypedSelector((state) => searchedGuitarsByNameSelector(state, searchValue));
+  const searchLoadingStatus = useTypedSelector(selectSearchLoadingStatus);
 
   React.useEffect(() => {
     if (searchValue) {
@@ -21,8 +25,12 @@ function SearchField() {
     setSearchValue(e.target.value);
   };
 
-  const isGuitarsFound = searchingGuitars && searchingGuitars.length > 0;
-  const isGuitarsNotFound = searchingGuitars?.length === 0;
+  const isGuitarsFound = searchingGuitars?.length > 0 && searchLoadingStatus === FetchDataStatus.Success;
+  const isGuitarsNotFound =
+    searchingGuitars?.length === 0 &&
+    (searchLoadingStatus === FetchDataStatus.Success || searchLoadingStatus === FetchDataStatus.Failed);
+  const isSearchResultsLoading =
+    searchLoadingStatus === FetchDataStatus.Idle && searchingGuitars?.length === 0;
 
   return (
     <div className="form-search">
@@ -60,6 +68,11 @@ function SearchField() {
             </li>
           ))}
         {isGuitarsNotFound && <li className="form-search__select-item">Ничего не найдено</li>}
+        {isSearchResultsLoading && (
+          <li className="form-search__select-item">
+            <Loader className="form-search__loader" />
+          </li>
+        )}
       </ul>
     </div>
   );
