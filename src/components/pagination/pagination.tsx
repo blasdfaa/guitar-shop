@@ -13,7 +13,7 @@ const GUITARS_LIMIT = 9;
 const PAGES_LIMIT = 3;
 
 function Pagination({ totalGuitars = 0 }: PaginationProps) {
-  const { searchParams, updateSearchParams, deleteSearchParam } = useUpdateSearchParams();
+  const { searchParams, updateSearchParams } = useUpdateSearchParams();
 
   const prevSelectedPage = searchParams.get(ApiSearchParamKey.Page);
 
