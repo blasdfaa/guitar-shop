@@ -2,17 +2,17 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import Pagination from '../pagination/pagination';
-import { fetchGuitarsWithParams } from '../../store/guitar/guitar.async';
-import useTypedDispatch from '../../hooks/use-typed-dispatch';
-import useTypedSelector from '../../hooks/use-typed-selector';
+import { fetchGuitarsWithParams } from '../../../../../store/guitar/guitar.async';
+import useTypedDispatch from '../../../../../hooks/use-typed-dispatch';
+import useTypedSelector from '../../../../../hooks/use-typed-selector';
 import {
   selectGuitarsItems,
   selectGuitarsLoadingStatus,
   selectGuitarsTotalCount,
-} from '../../store/guitar/guitar.selector';
-import Alert from '../alert/alert';
-import { FetchDataStatus } from '../../constants';
-import Loader from '../loader/loader';
+} from '../../../../../store/guitar/guitar.selector';
+import Alert from '../../../../alert/alert';
+import { FetchDataStatus } from '../../../../../constants';
+import Loader from '../../../../loader/loader';
 import GuitarCard from '../guitar-card/guitar-card';
 
 function GuitarList() {

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import useUpdateSearchParams from '../../hooks/use-update-search-params';
-import { ApiSearchParamKey, OrderOption, SortOption } from '../../constants';
+import useUpdateSearchParams from '../../../../../hooks/use-update-search-params';
+import { ApiSearchParamKey, OrderOption, SortOption } from '../../../../../constants';
 
 const sortingButtons = [
   { id: 1, value: SortOption.ByPrice, label: 'по цене' },

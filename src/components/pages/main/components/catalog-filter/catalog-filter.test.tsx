@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithContext } from '../../utils/test-utils';
+import { renderWithContext } from '../../../../../utils/test-utils';
 import CatalogFilter from './catalog-filter';
-import { FilterGuitarType } from '../../constants';
+import { FilterGuitarType } from '../../../../../constants';
 
 describe('Component: CatalogFilter', () => {
   const mockCheckboxTypeItems = {

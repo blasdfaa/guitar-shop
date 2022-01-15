@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import type { Guitar } from '../../types/guitar';
+import type { Guitar } from '../../../../../types/guitar';
 
 const starsItems = [
   { id: 1, value: 1 },
@@ -12,6 +12,7 @@ const starsItems = [
 ];
 
 function GuitarCard({ name, previewImg, rating, price }: Guitar) {
+  console.log(previewImg);
   return (
     <div className="product-card">
       <img alt={name} height="190" src={previewImg} width="75" />

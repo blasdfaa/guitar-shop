@@ -1,11 +1,11 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 
-import { generateGuitarItem, getStateWithItems } from '../../utils/mocks';
-import { renderWithContext } from '../../utils/test-utils';
+import { generateGuitarItem, getStateWithItems } from '../../../../../utils/mocks';
+import { renderWithContext } from '../../../../../utils/test-utils';
 import GuitarList from './guitar-list';
-import { fetchGuitarsWithParams } from '../../store/guitar/guitar.async';
-import api from '../../store/api';
+import { fetchGuitarsWithParams } from '../../../../../store/guitar/guitar.async';
+import api from '../../../../../store/api';
 
 describe('Component: GuitarList', () => {
   const expectedGuitars = [generateGuitarItem(), generateGuitarItem(), generateGuitarItem()];

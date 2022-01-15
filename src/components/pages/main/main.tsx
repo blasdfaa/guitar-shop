@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Breadcrumbs from '../../breadcrumbs/breadcrumbs';
-import CatalogFilter from '../../catalog-filter/catalog-filter';
-import CatalogSort from '../../catalog-sort/catalog-sort';
+import CatalogFilter from './components/catalog-filter/catalog-filter';
+import GuitarList from './components/guitar-list/guitar-list';
+import CatalogSort from './components/catalog-sort/catalog-sort';
 import MainLayout from '../../main-layout/main-layout';
-import GuitarList from '../../guitar-list/guitar-list';
 
 function Main() {
   return (

@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 
-import { generateGuitarItem } from '../../utils/mocks';
-import { renderWithContext } from '../../utils/test-utils';
+import { generateGuitarItem } from '../../../../../utils/mocks';
+import { renderWithContext } from '../../../../../utils/test-utils';
 import GuitarCard from './guitar-card';
 
 describe('Component: GuitarCard', () => {

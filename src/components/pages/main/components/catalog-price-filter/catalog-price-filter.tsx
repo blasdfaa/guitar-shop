@@ -1,9 +1,9 @@
 import React from 'react';
 
-import useUpdateSearchParams from '../../hooks/use-update-search-params';
-import useTypedSelector from '../../hooks/use-typed-selector';
-import { calculatedGuitarPriceSelector } from '../../store/guitar/guitar.selector';
-import { ApiSearchParamKey } from '../../constants';
+import useUpdateSearchParams from '../../../../../hooks/use-update-search-params';
+import useTypedSelector from '../../../../../hooks/use-typed-selector';
+import { calculatedGuitarPriceSelector } from '../../../../../store/guitar/guitar.selector';
+import { ApiSearchParamKey } from '../../../../../constants';
 
 function CatalogPriceFilter() {
   const { searchParams, updateSearchParams, deleteSearchParam } = useUpdateSearchParams();

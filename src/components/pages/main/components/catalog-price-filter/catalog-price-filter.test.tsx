@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithContext } from '../../utils/test-utils';
+import { renderWithContext } from '../../../../../utils/test-utils';
 import CatalogPriceFilter from './catalog-price-filter';
-import { generateGuitarItem, getStateWithItems } from '../../utils/mocks';
+import { generateGuitarItem, getStateWithItems } from '../../../../../utils/mocks';
 
 describe('Component: CatalogPriceFilter', () => {
   test('should render correctly', () => {

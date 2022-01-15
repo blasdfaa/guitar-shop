@@ -2,7 +2,7 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import CatalogPriceFilter from '../catalog-price-filter/catalog-price-filter';
-import { ApiSearchParamKey, FilterGuitarType } from '../../constants';
+import { ApiSearchParamKey, FilterGuitarType } from '../../../../../constants';
 
 type SearchParam = [string, string][];
 

@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithContext } from '../../utils/test-utils';
+import { renderWithContext } from '../../../../../utils/test-utils';
 import CatalogSort from './catalog-sort';
-import { OrderOption, SortOption } from '../../constants';
+import { OrderOption, SortOption } from '../../../../../constants';
 
 describe('Component: CatalogSort', () => {
   const mockSortingButtons = [

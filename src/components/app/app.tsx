@@ -1,8 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 
-import Main from '../pages/main/main';
-import NotFoundScreen from '../pages/not-found-screen/not-found-screen';
 import SvgSprite from '../svg-sprite/svg-sprite';
+import Main from '../pages/main/main';
+import ProductScreen from '../pages/product-screen/product-screen';
+import NotFoundScreen from '../pages/not-found-screen/not-found-screen';
 
 function App(): JSX.Element {
   return (
@@ -11,6 +12,7 @@ function App(): JSX.Element {
       <div className="wrapper">
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path=":productId" element={<ProductScreen />} />
           <Route path="*" element={<NotFoundScreen />} />
         </Routes>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import useUpdateSearchParams from '../../hooks/use-update-search-params';
-import { ApiSearchParamKey } from '../../constants';
+import useUpdateSearchParams from '../../../../../hooks/use-update-search-params';
+import { ApiSearchParamKey } from '../../../../../constants';
 
 type PaginationProps = {
   totalGuitars?: number;

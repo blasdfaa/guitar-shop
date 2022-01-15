@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithContext } from '../../utils/test-utils';
+import { renderWithContext } from '../../../../../utils/test-utils';
 import Pagination from './pagination';
 
 describe('Component: Pagination', () => {
