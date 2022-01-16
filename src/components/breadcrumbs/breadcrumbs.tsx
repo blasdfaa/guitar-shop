@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import useTypedSelector from '../../hooks/use-typed-selector';
+import { selectGuitarProductName } from '../../store/product/product.selector';
+
 function Breadcrumbs() {
   const { pathname } = useLocation();
+
+  const productName = useTypedSelector(selectGuitarProductName);
 
   const pathnames = pathname.split('/').filter((route) => route);
 
@@ -24,7 +29,7 @@ function Breadcrumbs() {
 
         return (
           <li className="breadcrumbs__item" key={path}>
-            {isLastPath && <a className="link">{path}</a>}
+            {isLastPath && <a className="link">{productName && productName}</a>}
             {!isLastPath && (
               <Link className="link" to={routeTo}>
                 {path}

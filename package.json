@@ -5,6 +5,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.1",
     "axios": "0.21.1",
+    "dayjs": "^1.10.7",
     "history": "4.10.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -43,7 +44,7 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx,js,jsx}",
-      "!src/constans.ts",
+      "!src/constants.ts",
       "!src/utils/mocks.ts",
       "!src/utils/test-utils.tsx",
       "!src/**/*.d.ts"

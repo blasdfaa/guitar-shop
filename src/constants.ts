@@ -1,23 +1,27 @@
-export enum APIEndpoint {
+export const enum APIEndpoint {
   Guitars = 'guitars',
+  Reviews = 'comments',
 }
 
-export enum AppRoute {
+export const enum AppRoute {
   Home = '/',
+  GuitarPage = ':guitarId',
+  NotFound = '*',
 }
 
-export enum ActionCreator {
+export const enum ActionCreator {
   FetchGuitarsWithParams = 'guitar/fetchGuitarsWithParams',
   FetchGuitarsByName = 'guitar/fetchGuitarsByName',
+  FetchProductById = 'product/fetchProductById',
 }
 
-export enum FetchDataStatus {
+export const enum FetchDataStatus {
   Idle = 'idle',
   Success = 'success',
   Failed = 'failed',
 }
 
-export enum ApiSearchParamKey {
+export const enum ApiSearchParamKey {
   Type = 'type',
   StringsCount = 'stringCount',
   MinPrice = 'price_gte',
@@ -27,18 +31,18 @@ export enum ApiSearchParamKey {
   Page = '_page',
 }
 
-export enum FilterGuitarType {
+export const enum FilterGuitarType {
   Acoustic = 'acoustic',
   Electric = 'electric',
   Ukulele = 'ukulele',
 }
 
-export enum SortOption {
+export const enum SortOption {
   ByPrice = 'price',
   ByRating = 'rating',
 }
 
-export enum OrderOption {
+export const enum OrderOption {
   Up = 'asc',
   Down = 'desc',
 }

@@ -2,10 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import guitarReducer from './guitar/guitar.slice';
 import searchReducer from './search/search.slice';
+import productReducer from './product/product.slice';
 
 const reducer = {
   GUITARS: guitarReducer,
   SEARCH: searchReducer,
+  PRODUCT: productReducer,
 };
 
 const store = configureStore({

@@ -3,14 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchGuitarsWithParams } from './guitar.async';
 import { FetchDataStatus } from '../../constants';
 
-import type { Guitar } from '../../types/guitar';
-
-export type GuitarSliceState = {
-  items: Guitar[] | [];
-  status: FetchDataStatus;
-  guitarsTotalCount: number;
-  currentRequestId?: string;
-};
+import type { GuitarSliceState } from '../../types/state';
 
 const initialState: GuitarSliceState = {
   items: [],

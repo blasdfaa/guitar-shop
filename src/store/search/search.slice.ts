@@ -3,14 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { FetchDataStatus } from '../../constants';
 import { fetchGuitarsByName } from './search.async';
 
-import type { Guitar } from '../../types/guitar';
-
-export type SearchSliceState = {
-  guitars: {
-    data: Guitar[] | [];
-    status: FetchDataStatus;
-  };
-};
+import type { SearchSliceState } from '../../types/state';
 
 const initialState: SearchSliceState = {
   guitars: {

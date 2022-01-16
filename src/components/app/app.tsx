@@ -4,6 +4,7 @@ import SvgSprite from '../svg-sprite/svg-sprite';
 import Main from '../pages/main/main';
 import ProductScreen from '../pages/product-screen/product-screen';
 import NotFoundScreen from '../pages/not-found-screen/not-found-screen';
+import { AppRoute } from '../../constants';
 
 function App(): JSX.Element {
   return (
@@ -11,9 +12,9 @@ function App(): JSX.Element {
       <SvgSprite />
       <div className="wrapper">
         <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path=":productId" element={<ProductScreen />} />
-          <Route path="*" element={<NotFoundScreen />} />
+          <Route path={AppRoute.Home} element={<Main />} />
+          <Route path={AppRoute.GuitarPage} element={<ProductScreen />} />
+          <Route path={AppRoute.NotFound} element={<NotFoundScreen />} />
         </Routes>
       </div>
     </>
