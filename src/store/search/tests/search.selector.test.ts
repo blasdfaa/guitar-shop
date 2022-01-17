@@ -1,9 +1,9 @@
-import type { SearchSliceState } from '../search.slice';
 import { FetchDataStatus } from '../../../constants';
 import { searchedGuitarsByNameSelector, selectSearchedGuitars } from '../search.selector';
 import { generateGuitarItem, generateSearchedGuitars } from '../../../utils/mocks';
 
 import type { RootState } from '../../store';
+import type { SearchSliceState } from '../../../types/state';
 
 describe('Search selectors', () => {
   describe('selectSearchedGuitars', () => {

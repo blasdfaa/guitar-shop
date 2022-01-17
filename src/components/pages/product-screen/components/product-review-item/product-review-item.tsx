@@ -1,9 +1,9 @@
 import { formatReviewDate } from '../../../../../utils/date';
-import RatingStars from '../../../../rating-stars/rating-stars';
+import RatingStarsView from '../../../../rating-stars-view/rating-stars-view';
 
 import type { GuitarReview } from '../../../../../types/review';
 
-function ProductReview({ userName, createAt, advantage, disadvantage, comment, rating }: GuitarReview) {
+function ProductReviewItem({ userName, createAt, advantage, disadvantage, comment, rating }: GuitarReview) {
   return (
     <div className="review">
       <div className="review__wrapper">
@@ -12,7 +12,7 @@ function ProductReview({ userName, createAt, advantage, disadvantage, comment, r
       </div>
       <div className="rate review__rating-panel" aria-hidden="true">
         <span className="visually-hidden">Рейтинг:</span>
-        <RatingStars rating={rating} />
+        <RatingStarsView rating={rating} />
       </div>
       <h4 className="review__title title title--lesser">Достоинства:</h4>
       <p className="review__value">{advantage}</p>
@@ -24,4 +24,4 @@ function ProductReview({ userName, createAt, advantage, disadvantage, comment, r
   );
 }
 
-export default ProductReview;
+export default ProductReviewItem;

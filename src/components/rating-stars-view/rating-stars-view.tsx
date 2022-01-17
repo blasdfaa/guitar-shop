@@ -1,5 +1,5 @@
-type RatingStarsProps = {
-  rating: number;
+type RatingStarsViewProps = {
+  rating?: number;
 };
 
 const starsItems = [
@@ -10,16 +10,16 @@ const starsItems = [
   { id: 5, value: 5 },
 ];
 
-function RatingStars({ rating }: RatingStarsProps) {
+function RatingStarsView({ rating }: RatingStarsViewProps) {
   return (
     <>
       {starsItems.map(({ id, value }) => (
         <svg aria-hidden="true" height="11" width="12" key={id}>
-          <use xlinkHref={`${rating >= value ? '#icon-full-star' : '#icon-star'}`} />
+          <use xlinkHref={`${rating && rating >= value ? '#icon-full-star' : '#icon-star'}`} />
         </svg>
       ))}
     </>
   );
 }
 
-export default RatingStars;
+export default RatingStarsView;

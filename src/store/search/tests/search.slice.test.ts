@@ -1,7 +1,9 @@
-import searchReducer, { SearchSliceState } from '../search.slice';
+import searchReducer from '../search.slice';
 import { FetchDataStatus } from '../../../constants';
 import { fetchGuitarsByName } from '../search.async';
 import { generateGuitarItem } from '../../../utils/mocks';
+
+import type { SearchSliceState } from '../../../types/state';
 
 describe('Reducer: searchReducer', () => {
   test('should return initial state when get empty action', () => {

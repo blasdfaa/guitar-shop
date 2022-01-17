@@ -8,3 +8,7 @@ export type GuitarReview = {
   createAt: string;
   guitarId: number;
 };
+
+export type ReviewPost = Omit<GuitarReview, 'createAt' | 'id'>;
+
+export type ReviewFormInputs = Omit<GuitarReview, 'createAt' | 'id' | 'guitarId'>;

@@ -1,7 +1,9 @@
-import guitarReducer, { GuitarSliceState, setGuitarsCount } from '../guitar.slice';
+import guitarReducer, { setGuitarsCount } from '../guitar.slice';
 import { FetchDataStatus } from '../../../constants';
 import { generateGuitarItem } from '../../../utils/mocks';
 import { fetchGuitarsWithParams } from '../guitar.async';
+
+import type { GuitarSliceState } from '../../../types/state';
 
 describe('Reducer: guitarReducer', () => {
   test('should return initial state when get empty action', () => {

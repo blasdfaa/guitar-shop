@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { FetchDataStatus } from '../../constants';
-import { fetchProductById } from './product.async';
+import { fetchProductById, postReview } from './product.async';
 
 import type { ProductSliceState } from '../../types/state';
 
 const initialState: ProductSliceState = {
   data: null,
   status: FetchDataStatus.Idle,
-  reviews: [],
+  reviews: {
+    data: [],
+    status: FetchDataStatus.Idle,
+  },
 };
 
 const ProductSlice = createSlice({
@@ -25,12 +28,22 @@ const ProductSlice = createSlice({
 
         state.status = FetchDataStatus.Success;
         state.data = product;
-        state.reviews = comments;
+        state.reviews.data = comments;
       })
       .addCase(fetchProductById.rejected, (state) => {
         state.status = FetchDataStatus.Failed;
         state.data = null;
-        state.reviews = [];
+        state.reviews.data = [];
+      })
+      .addCase(postReview.pending, (state) => {
+        state.reviews.status = FetchDataStatus.Idle;
+      })
+      .addCase(postReview.fulfilled, (state, action) => {
+        state.reviews.status = FetchDataStatus.Success;
+        state.reviews.data.push(action.payload);
+      })
+      .addCase(postReview.rejected, (state) => {
+        state.reviews.status = FetchDataStatus.Failed;
       })
       .addDefaultCase((state) => state);
   },

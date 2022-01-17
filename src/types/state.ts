@@ -19,5 +19,8 @@ export type SearchSliceState = {
 export type ProductSliceState = {
   data: Guitar | null;
   status: FetchDataStatus;
-  reviews: GuitarReview[];
+  reviews: {
+    data: GuitarReview[];
+    status: FetchDataStatus;
+  };
 };

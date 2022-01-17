@@ -9,8 +9,8 @@ import {
 } from '../guitar.selector';
 import { generateGuitarItem } from '../../../utils/mocks';
 
-import type { GuitarSliceState } from '../guitar.slice';
 import type { RootState } from '../../store';
+import type { GuitarSliceState } from '../../../types/state';
 
 describe('Selectors: guitar', () => {
   describe('selectGuitarsLoadingStatus', () => {

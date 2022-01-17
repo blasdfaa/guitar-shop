@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import RatingStars from '../../../../rating-stars/rating-stars';
+import RatingStarsView from '../../../../rating-stars-view/rating-stars-view';
 
 import type { Guitar } from '../../../../../types/guitar';
 
@@ -11,7 +11,7 @@ function GuitarCard({ name, previewImg, rating, price, id }: Guitar) {
       <div className="product-card__info">
         <div aria-hidden="true" className="rate product-card__rate">
           <span className="visually-hidden">Рейтинг:</span>
-          <RatingStars rating={rating} />
+          <RatingStarsView rating={rating} />
           <span className="rate__count" data-testid="card-comments">
             0
           </span>

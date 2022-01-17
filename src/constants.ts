@@ -13,6 +13,7 @@ export const enum ActionCreator {
   FetchGuitarsWithParams = 'guitar/fetchGuitarsWithParams',
   FetchGuitarsByName = 'guitar/fetchGuitarsByName',
   FetchProductById = 'product/fetchProductById',
+  PostReview = 'product/postReview',
 }
 
 export const enum FetchDataStatus {

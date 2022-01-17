@@ -6,6 +6,7 @@ import useTypedSelector from '../../hooks/use-typed-selector';
 import { searchedGuitarsByNameSelector, selectSearchLoadingStatus } from '../../store/search/search.selector';
 import { FetchDataStatus } from '../../constants';
 import Loader from '../loader/loader';
+import { Link } from 'react-router-dom';
 
 function SearchField() {
   const [searchValue, setSearchValue] = React.useState<string>('');
@@ -62,9 +63,9 @@ function SearchField() {
         data-testid="search-dropdown"
       >
         {isGuitarsFound &&
-          searchingGuitars.map((guitar) => (
-            <li className="form-search__select-item" tabIndex={0} key={guitar.id}>
-              {guitar.name}
+          searchingGuitars.map(({ name, id }) => (
+            <li className="form-search__select-item" tabIndex={0} key={id}>
+              <Link to={`/${id}`}>{name}</Link>
             </li>
           ))}
         {isGuitarsNotFound && <li className="form-search__select-item">Ничего не найдено</li>}
