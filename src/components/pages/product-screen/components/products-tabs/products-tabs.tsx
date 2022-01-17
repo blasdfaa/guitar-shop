@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Guitar } from '../../../../../types/guitar';
+import { formatGuitarType } from '../../../../../utils/product';
+
+import type { Guitar } from '../../../../../types/guitar';
 
 type ProductsTabsProps = Partial<Pick<Guitar, 'vendorCode' | 'type' | 'stringCount' | 'description'>>;
 
@@ -52,7 +54,7 @@ function ProductsTabs({ vendorCode, type, stringCount, description }: ProductsTa
               </tr>
               <tr className="tabs__table-row">
                 <td className="tabs__title">Тип:</td>
-                <td className="tabs__value">{type}</td>
+                <td className="tabs__value">{formatGuitarType(type)}</td>
               </tr>
               <tr className="tabs__table-row">
                 <td className="tabs__title">Количество струн:</td>

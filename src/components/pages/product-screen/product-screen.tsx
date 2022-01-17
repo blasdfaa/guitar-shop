@@ -11,12 +11,14 @@ import { fetchProductById } from '../../../store/product/product.async';
 import { guitarsReviewsSelector, selectGuitarProduct } from '../../../store/product/product.selector';
 import FormReview from '../../modals/form-review/form-review';
 import RatingStarsView from '../../rating-stars-view/rating-stars-view';
+import ReviewSuccess from '../../modals/review-success/review-success';
 
 function ProductScreen() {
   const dispatch = useTypedDispatch();
   const { guitarId } = useParams();
 
   const [isReviewSendModalOpen, setReviewSendModalOpen] = React.useState(false);
+  const [isReviewSuccessModalOpen, setReviewSuccessModalOpen] = React.useState(false);
 
   const guitarProduct = useTypedSelector(selectGuitarProduct);
   const guitarReviews = useTypedSelector(guitarsReviewsSelector);
@@ -27,21 +29,29 @@ function ProductScreen() {
     }
   }, [guitarId]);
 
-  const handleCloseReviewSendModal = () => {
-    setReviewSendModalOpen(false);
-  };
-
   const handleShowReviewSendModal = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
     setReviewSendModalOpen(true);
   };
 
+  const handleCloseReviewSendModal = () => {
+    setReviewSendModalOpen(false);
+  };
+
+  const handleShowSuccessModal = () => {
+    setReviewSuccessModalOpen(true);
+  };
+
+  const handleCloseSuccessModal = () => {
+    setReviewSuccessModalOpen(false);
+  };
+
   return (
     <MainLayout>
       <main className="page-content">
         <div className="container">
-          <h1 className="page-content__title title title--bigger">Товар {guitarProduct?.name} </h1>
+          <h1 className="page-content__title title title--bigger">Товар {guitarProduct?.name}</h1>
           <Breadcrumbs />
           <div className="product-container">
             <img
@@ -72,7 +82,7 @@ function ProductScreen() {
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
               <p className="product-container__price-info product-container__price-info--value">
-                {guitarProduct?.price}
+                {guitarProduct?.price} ₽
               </p>
               <a className="button button--red button--big product-container__button" href="#!">
                 Добавить в корзину
@@ -86,9 +96,11 @@ function ProductScreen() {
         <FormReview
           productName={guitarProduct?.name}
           productId={guitarProduct?.id}
-          onClose={handleCloseReviewSendModal}
+          onReviewSuccess={handleShowSuccessModal}
+          onCloseForm={handleCloseReviewSendModal}
         />
       )}
+      {isReviewSuccessModalOpen && <ReviewSuccess onCloseModal={handleCloseSuccessModal} />}
     </MainLayout>
   );
 }

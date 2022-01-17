@@ -1,21 +1,20 @@
-import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import RatingStarsControl from '../../rating-stars-control/rating-stars-control';
 import ModalLayout from '../modal-layout/modal-layout';
 import useTypedDispatch from '../../../hooks/use-typed-dispatch';
 import { postReview } from '../../../store/product/product.async';
-import ReviewSuccess from '../review-success/review-success';
 
 import type { ReviewFormInputs } from '../../../types/review';
 
 type FormReviewProps = {
   productId?: number;
   productName?: string;
-  onClose: () => void;
+  onReviewSuccess: () => void;
+  onCloseForm: () => void;
 };
 
-function FormReview({ productName, productId, onClose }: FormReviewProps) {
+function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: FormReviewProps) {
   const dispatch = useTypedDispatch();
 
   const {
@@ -25,7 +24,6 @@ function FormReview({ productName, productId, onClose }: FormReviewProps) {
     setValue,
     formState: { errors },
   } = useForm<ReviewFormInputs>({ mode: 'onChange' });
-  const [isReviewSendSuccess, setReviewSendSuccess] = React.useState(false);
 
   const onSubmitReview = (data: ReviewFormInputs) => {
     if (productId) {
@@ -34,18 +32,14 @@ function FormReview({ productName, productId, onClose }: FormReviewProps) {
       dispatch(postReview(reviewData))
         .unwrap()
         .then(() => {
-          setReviewSendSuccess(true);
+          onCloseForm();
+          onReviewSuccess();
         });
     }
   };
 
-  const handleCloseSuccessModal = () => {
-    setReviewSendSuccess(false);
-    onClose();
-  };
-
   return (
-    <ModalLayout onClose={onClose}>
+    <ModalLayout onClose={onCloseForm}>
       <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв </h2>
       <h3 className="modal__product-name title title--medium-20 title--uppercase">{productName}</h3>
       <form className="form-review" onSubmit={handleSubmit(onSubmitReview)}>
@@ -118,7 +112,6 @@ function FormReview({ productName, productId, onClose }: FormReviewProps) {
           Отправить отзыв
         </button>
       </form>
-      {isReviewSendSuccess && <ReviewSuccess onCloseModal={handleCloseSuccessModal} />}
     </ModalLayout>
   );
 }
