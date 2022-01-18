@@ -10,8 +10,7 @@ export type Guitar = {
   stringCount: number;
   rating: number;
   price: number;
-};
-
-export type GuitarWithReviews = Guitar & {
   comments: GuitarReview[];
 };
+
+export type GuitarWithoutReviews = Omit<Guitar, 'comments'>;

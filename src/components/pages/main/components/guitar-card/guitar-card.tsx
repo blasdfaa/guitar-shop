@@ -4,7 +4,7 @@ import RatingStarsView from '../../../../rating-stars-view/rating-stars-view';
 
 import type { Guitar } from '../../../../../types/guitar';
 
-function GuitarCard({ name, previewImg, rating, price, id }: Guitar) {
+function GuitarCard({ name, previewImg, rating, price, id, comments }: Guitar) {
   return (
     <div className="product-card">
       <img alt={name} height="190" src={previewImg} width="75" />
@@ -13,7 +13,7 @@ function GuitarCard({ name, previewImg, rating, price, id }: Guitar) {
           <span className="visually-hidden">Рейтинг:</span>
           <RatingStarsView rating={rating} />
           <span className="rate__count" data-testid="card-comments">
-            0
+            {comments.length}
           </span>
           <span className="rate__message" />
         </div>

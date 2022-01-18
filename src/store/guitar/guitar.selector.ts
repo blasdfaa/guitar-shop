@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import { RootState } from '../store';
 
 import type { FetchDataStatus } from '../../constants';
-import type { Guitar } from '../../types/guitar';
+import type { GuitarWithoutReviews } from '../../types/guitar';
 
 export type calculatedPrice = {
   calculatedMinPrice: number;
@@ -11,7 +11,7 @@ export type calculatedPrice = {
 };
 
 export const selectGuitarsLoadingStatus = (state: RootState): FetchDataStatus => state.GUITARS.status;
-export const selectGuitarsItems = (state: RootState): Guitar[] | [] => state.GUITARS.items;
+export const selectGuitarsItems = (state: RootState): GuitarWithoutReviews[] => state.GUITARS.items;
 export const selectGuitarsTotalCount = (state: RootState): number => state.GUITARS.guitarsTotalCount;
 
 export const calculatedGuitarPriceSelector = createSelector(

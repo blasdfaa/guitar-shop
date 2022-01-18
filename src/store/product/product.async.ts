@@ -3,13 +3,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ActionCreator, APIEndpoint } from '../../constants';
 import api from '../api';
 
-import type { GuitarWithReviews } from '../../types/guitar';
+import type { GuitarWithoutReviews } from '../../types/guitar';
 import type { GuitarReview, ReviewPost } from '../../types/review';
 
-export const fetchProductById = createAsyncThunk<GuitarWithReviews, number>(
+export const fetchProductById = createAsyncThunk<GuitarWithoutReviews, number>(
   ActionCreator.FetchProductById,
   async (productId) => {
-    const { data } = await api.get<GuitarWithReviews>(
+    const { data } = await api.get<GuitarWithoutReviews>(
       `${APIEndpoint.Guitars}/${productId}?_embed=${APIEndpoint.Reviews}`,
     );
 

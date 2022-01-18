@@ -9,7 +9,7 @@ import { AppRoute } from '../../constants';
 function App(): JSX.Element {
   return (
     <>
-      <SvgSprite />
+      {/*<SvgSprite />*/}
       <div className="wrapper">
         <Routes>
           <Route path={AppRoute.Home} element={<Main />} />

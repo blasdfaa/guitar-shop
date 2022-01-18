@@ -1,9 +1,9 @@
 import type { FetchDataStatus } from '../constants';
-import type { Guitar } from './guitar';
+import type { Guitar, GuitarWithoutReviews } from './guitar';
 import type { GuitarReview } from './review';
 
 export type GuitarSliceState = {
-  items: Guitar[] | [];
+  items: GuitarWithoutReviews[];
   status: FetchDataStatus;
   guitarsTotalCount: number;
   currentRequestId?: string;
@@ -11,7 +11,7 @@ export type GuitarSliceState = {
 
 export type SearchSliceState = {
   guitars: {
-    data: Guitar[] | [];
+    data: GuitarWithoutReviews[];
     status: FetchDataStatus;
   };
 };

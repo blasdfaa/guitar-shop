@@ -8,10 +8,16 @@ import ProductsTabs from './components/products-tabs/products-tabs';
 import useTypedDispatch from '../../../hooks/use-typed-dispatch';
 import useTypedSelector from '../../../hooks/use-typed-selector';
 import { fetchProductById } from '../../../store/product/product.async';
-import { guitarsReviewsSelector, selectGuitarProduct } from '../../../store/product/product.selector';
+import {
+  guitarsReviewsSelector,
+  selectGuitarLoadingStatus,
+  selectGuitarProduct,
+} from '../../../store/product/product.selector';
 import FormReview from '../../modals/form-review/form-review';
 import RatingStarsView from '../../rating-stars-view/rating-stars-view';
 import ReviewSuccess from '../../modals/review-success/review-success';
+import { FetchDataStatus } from '../../../constants';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 function ProductScreen() {
   const dispatch = useTypedDispatch();
@@ -22,6 +28,7 @@ function ProductScreen() {
 
   const guitarProduct = useTypedSelector(selectGuitarProduct);
   const guitarReviews = useTypedSelector(guitarsReviewsSelector);
+  const guitarLoadingStatus = useTypedSelector(selectGuitarLoadingStatus);
 
   React.useEffect(() => {
     if (guitarId) {
@@ -29,23 +36,30 @@ function ProductScreen() {
     }
   }, [guitarId]);
 
-  const handleShowReviewSendModal = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleShowReviewSendModal = (e: React.MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
 
     setReviewSendModalOpen(true);
   };
 
-  const handleCloseReviewSendModal = () => {
+  const handleCloseReviewSendModal = (): void => {
     setReviewSendModalOpen(false);
   };
 
-  const handleShowSuccessModal = () => {
+  const handleShowSuccessModal = (): void => {
     setReviewSuccessModalOpen(true);
   };
 
-  const handleCloseSuccessModal = () => {
+  const handleCloseSuccessModal = (): void => {
     setReviewSuccessModalOpen(false);
   };
+
+  const isPageLoaded =
+    guitarLoadingStatus === FetchDataStatus.Success || guitarLoadingStatus === FetchDataStatus.Failed;
+
+  if (isPageLoaded && guitarProduct === null) {
+    return <NotFoundScreen />;
+  }
 
   return (
     <MainLayout>

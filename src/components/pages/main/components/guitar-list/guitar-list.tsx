@@ -16,11 +16,10 @@ import Loader from '../../../../loader/loader';
 import GuitarCard from '../guitar-card/guitar-card';
 
 function GuitarList() {
-  const [isModalOpen, setModalOpen] = React.useState(false);
-
   const { search } = useLocation();
-
   const dispatch = useTypedDispatch();
+
+  const [isModalOpen, setModalOpen] = React.useState(false);
 
   const guitars = useTypedSelector(selectGuitarsItems);
   const totalGuitars = useTypedSelector(selectGuitarsTotalCount);
