@@ -14,8 +14,11 @@ function RatingStarsView({ rating }: RatingStarsViewProps) {
   return (
     <>
       {starsItems.map(({ id, value }) => (
-        <svg aria-hidden="true" height="11" width="12" key={id}>
-          <use xlinkHref={`${rating && rating >= value ? '#icon-full-star' : '#icon-star'}`} />
+        <svg aria-hidden="true" height="11" width="12" key={id} data-testid="rating-stars">
+          <use
+            href={`${rating && rating >= value ? '#icon-full-star' : '#icon-star'}`}
+            data-testid="star-icon"
+          />
         </svg>
       ))}
     </>

@@ -10,7 +10,7 @@ import useTypedSelector from '../../../hooks/use-typed-selector';
 import { fetchProductById } from '../../../store/product/product.async';
 import {
   guitarsReviewsSelector,
-  selectGuitarLoadingStatus,
+  selectProductLoadingStatus,
   selectGuitarProduct,
 } from '../../../store/product/product.selector';
 import FormReview from '../../modals/form-review/form-review';
@@ -28,13 +28,13 @@ function ProductScreen() {
 
   const guitarProduct = useTypedSelector(selectGuitarProduct);
   const guitarReviews = useTypedSelector(guitarsReviewsSelector);
-  const guitarLoadingStatus = useTypedSelector(selectGuitarLoadingStatus);
+  const guitarLoadingStatus = useTypedSelector(selectProductLoadingStatus);
 
   React.useEffect(() => {
-    if (guitarId) {
-      dispatch(fetchProductById(+guitarId));
-    }
-  }, [guitarId]);
+    if (!guitarId) return;
+
+    dispatch(fetchProductById(+guitarId));
+  }, [guitarId, dispatch]);
 
   const handleShowReviewSendModal = (e: React.MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
@@ -83,8 +83,9 @@ function ProductScreen() {
               <div className="rate product-container__rating" aria-hidden="true">
                 <span className="visually-hidden">Рейтинг:</span>
                 <RatingStarsView rating={guitarProduct?.rating} />
-                <span className="rate__count">{guitarReviews.length}</span>
-                <span className="rate__message"></span>
+                <span className="rate__count" data-testid="product-rate-count">
+                  {guitarReviews.length}
+                </span>
               </div>
               <ProductsTabs
                 description={guitarProduct?.description}

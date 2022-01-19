@@ -27,7 +27,7 @@ function RatingStarsControl({ fieldState, onChangeFormState }: RatingStarsContro
   };
 
   return (
-    <div>
+    <div data-testid="rating-stars-control">
       <span className="form-review__label form-review__label--required">
         <span>Ваша Оценка</span>
       </span>

@@ -25,9 +25,7 @@ describe('Thunks: guitar', () => {
       ];
       const store = mockStore({});
 
-      jest
-        .spyOn(api, 'get')
-        .mockImplementation(() => Promise.resolve({ data: expectedGuitars, headers: {} }));
+      jest.spyOn(api, 'get').mockResolvedValue({ data: expectedGuitars, headers: {} });
 
       await store.dispatch(fetchGuitarsWithParams() as never);
 

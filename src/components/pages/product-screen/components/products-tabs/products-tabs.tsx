@@ -2,9 +2,7 @@ import React from 'react';
 
 import { formatGuitarType } from '../../../../../utils/product';
 
-import type { Guitar } from '../../../../../types/guitar';
-
-type ProductsTabsProps = Partial<Pick<Guitar, 'vendorCode' | 'type' | 'stringCount' | 'description'>>;
+import type { ProductInfoTab } from '../../../../../types/guitar';
 
 const enum TabName {
   Characteristics = 'characteristics',
@@ -18,7 +16,7 @@ const tabItems = [
 
 const DEFAULT_SELECTED_TAB = TabName.Characteristics;
 
-function ProductsTabs({ vendorCode, type, stringCount, description }: ProductsTabsProps) {
+function ProductsTabs({ vendorCode, type, stringCount, description }: ProductInfoTab) {
   const [activeTab, setActiveTab] = React.useState<string>(DEFAULT_SELECTED_TAB);
 
   const handleChangeTab = (e: React.MouseEvent<HTMLAnchorElement>): void => {
@@ -32,7 +30,7 @@ function ProductsTabs({ vendorCode, type, stringCount, description }: ProductsTa
   };
 
   return (
-    <div className="tabs">
+    <div className="tabs" data-testid="product-tabs">
       {tabItems.map(({ id, label }) => (
         <a
           className={`button button--medium tabs__button ${activeTab !== id ? 'button--black-border' : ''}`}

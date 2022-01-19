@@ -3,7 +3,7 @@ import type { Guitar, GuitarWithoutReviews } from './guitar';
 import type { GuitarReview } from './review';
 
 export type GuitarSliceState = {
-  items: GuitarWithoutReviews[];
+  items: Guitar[];
   status: FetchDataStatus;
   guitarsTotalCount: number;
   currentRequestId?: string;
@@ -17,7 +17,7 @@ export type SearchSliceState = {
 };
 
 export type ProductSliceState = {
-  data: Guitar | null;
+  data: GuitarWithoutReviews | null;
   status: FetchDataStatus;
   reviews: {
     data: GuitarReview[];

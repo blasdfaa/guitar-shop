@@ -1,7 +1,6 @@
 import React from 'react';
 
 import ProductReviewItem from '../product-review-item/product-review-item';
-import UpButton from '../up-button/up-button';
 
 import type { GuitarReview } from '../../../../../types/review';
 
@@ -51,9 +50,10 @@ function ReviewsList({ reviews = [], onClickSendReview }: ReviewsListProps) {
 
   const isAllReviewsShown = reviewsToShow >= reviews.length;
   const isReviewsEmpty = !reviews.length;
+  const isShowUpButton = !isReviewsEmpty && reviews.length >= DEFAULT_DISPLAYED_REVIEWS_COUNT;
 
   return (
-    <section className="reviews">
+    <section className="reviews" data-testid="reviews-list">
       <h3 className="reviews__title title title--bigger">Отзывы</h3>
       <a
         className="button button--red-border button--big reviews__sumbit-button"
@@ -76,7 +76,11 @@ function ReviewsList({ reviews = [], onClickSendReview }: ReviewsListProps) {
         </button>
       )}
       {isReviewsEmpty && <p>Отзывов пока нет.</p>}
-      {!isReviewsEmpty && <UpButton />}
+      {isShowUpButton && (
+        <a className="button button--up button--red-border button--big reviews__up-button" href="#header">
+          Наверх
+        </a>
+      )}
     </section>
   );
 }

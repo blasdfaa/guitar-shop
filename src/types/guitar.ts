@@ -14,3 +14,4 @@ export type Guitar = {
 };
 
 export type GuitarWithoutReviews = Omit<Guitar, 'comments'>;
+export type ProductInfoTab = Partial<Pick<Guitar, 'vendorCode' | 'type' | 'stringCount' | 'description'>>;

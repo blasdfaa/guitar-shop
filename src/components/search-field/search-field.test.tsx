@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -95,15 +94,13 @@ describe('Component: SearchField', () => {
       generateSearchedGuitars('ABC'),
     ];
     const correctSortedExpectedResult = ['ABC', 'BAC', 'BCA'];
-    const { store, debug } = renderWithContext(<SearchField />);
+    renderWithContext(<SearchField />);
 
     jest
       .spyOn(api, 'get')
       .mockImplementation(() => Promise.resolve({ data: mockSearchedGuitars, headers: {} }));
 
     const input = screen.getByRole('textbox') as HTMLInputElement;
-
-    // await store.dispatch(fetchGuitarsByName('A'));
 
     userEvent.type(input, 'A');
 

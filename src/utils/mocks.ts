@@ -1,14 +1,18 @@
 import faker from 'faker';
 
 import { RootState } from '../store/store';
-import { FetchDataStatus } from '../constants';
+import { FetchDataStatus, FilterGuitarType } from '../constants';
 
 import type { Guitar, GuitarWithoutReviews } from '../types/guitar';
 import type { GuitarReview } from '../types/review';
+import { ProductInfoTab } from '../types/guitar';
+import { ReviewPost } from '../types/review';
+
+const guitarTypes = [FilterGuitarType.Ukulele, FilterGuitarType.Electric, FilterGuitarType.Acoustic];
 
 export const generateGuitarReview = (): GuitarReview => ({
   id: faker.datatype.string(),
-  guitarId: faker.datatype.number(10000),
+  guitarId: faker.datatype.number(25),
   userName: faker.internet.userName(),
   advantage: faker.datatype.string(),
   disadvantage: faker.datatype.string(),
@@ -42,7 +46,27 @@ export const generateSearchedGuitars = (name: string): GuitarWithoutReviews => (
   vendorCode: faker.datatype.string(),
 });
 
-export const getStateWithItems = (guitars: Guitar[] = [], reviews: GuitarReview[] = []): RootState => ({
+export const generateProductTabInfo = (): ProductInfoTab => ({
+  type: guitarTypes[Math.floor(Math.random() * guitarTypes.length)],
+  description: faker.commerce.productDescription(),
+  stringCount: faker.datatype.number(7),
+  vendorCode: faker.datatype.string(7),
+});
+
+export const generatePostReview = (): ReviewPost => ({
+  userName: faker.internet.userName(),
+  rating: faker.datatype.number(5),
+  comment: faker.lorem.paragraph(5),
+  advantage: faker.lorem.paragraph(1),
+  disadvantage: faker.lorem.paragraph(1),
+  guitarId: faker.datatype.number(25),
+});
+
+export const getStateWithItems = (
+  guitars: Guitar[] = [],
+  reviews: GuitarReview[] = [],
+  product: GuitarWithoutReviews | null = null,
+): RootState => ({
   GUITARS: {
     items: guitars,
     guitarsTotalCount: 0,
@@ -55,7 +79,7 @@ export const getStateWithItems = (guitars: Guitar[] = [], reviews: GuitarReview[
     },
   },
   PRODUCT: {
-    data: guitars[0],
+    data: product,
     status: FetchDataStatus.Idle,
     reviews: {
       data: reviews,

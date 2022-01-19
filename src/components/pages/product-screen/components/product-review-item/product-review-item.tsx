@@ -5,7 +5,7 @@ import type { GuitarReview } from '../../../../../types/review';
 
 function ProductReviewItem({ userName, createAt, advantage, disadvantage, comment, rating }: GuitarReview) {
   return (
-    <div className="review">
+    <div className="review" data-testid="review-item">
       <div className="review__wrapper">
         <h4 className="review__title review__title--author title title--lesser">{userName}</h4>
         <span className="review__date">{formatReviewDate(createAt)}</span>

@@ -22,6 +22,7 @@ const ProductSlice = createSlice({
     builder
       .addCase(fetchProductById.pending, (state) => {
         state.status = FetchDataStatus.Idle;
+        state.reviews.status = FetchDataStatus.Idle;
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
         const { comments, ...product } = action.payload;
@@ -29,11 +30,13 @@ const ProductSlice = createSlice({
         state.status = FetchDataStatus.Success;
         state.data = product;
         state.reviews.data = comments;
+        state.reviews.status = FetchDataStatus.Success;
       })
       .addCase(fetchProductById.rejected, (state) => {
         state.status = FetchDataStatus.Failed;
         state.data = null;
         state.reviews.data = [];
+        state.reviews.status = FetchDataStatus.Failed;
       })
       .addCase(postReview.pending, (state) => {
         state.reviews.status = FetchDataStatus.Idle;

@@ -6,6 +6,7 @@ import useTypedDispatch from '../../../hooks/use-typed-dispatch';
 import { postReview } from '../../../store/product/product.async';
 
 import type { ReviewFormInputs } from '../../../types/review';
+import WarningMessage from '../warning-message/warning-message';
 
 type FormReviewProps = {
   productId?: number;
@@ -40,7 +41,7 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
 
   return (
     <ModalLayout onClose={onCloseForm}>
-      <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв </h2>
+      <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
       <h3 className="modal__product-name title title--medium-20 title--uppercase">{productName}</h3>
       <form className="form-review" onSubmit={handleSubmit(onSubmitReview)}>
         <div className="form-review__wrapper">
@@ -58,7 +59,7 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
                 minLength: 1,
               })}
             />
-            {errors.userName && <span className="form-review__warning">Заполните поле</span>}
+            {errors.userName && <WarningMessage />}
           </div>
           <Controller
             control={control}
@@ -81,7 +82,7 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
             required: true,
           })}
         />
-        {errors.advantage && <span className="form-review__warning">Заполните поле</span>}
+        {errors.advantage && <WarningMessage />}
         <label className="form-review__label form-review__label--required" htmlFor="disadvantages">
           <span>Недостатки</span>
         </label>
@@ -94,7 +95,7 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
             required: true,
           })}
         />
-        {errors.disadvantage && <span className="form-review__warning">Заполните поле</span>}
+        {errors.disadvantage && <WarningMessage />}
         <label className="form-review__label form-review__label--required" htmlFor="comments">
           <span>Комментарий</span>
         </label>
@@ -107,7 +108,7 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
             required: true,
           })}
         />
-        {errors.comment && <span className="form-review__warning">Заполните поле</span>}
+        {errors.comment && <WarningMessage />}
         <button className="button button--medium-20 form-review__button" type="submit">
           Отправить отзыв
         </button>
