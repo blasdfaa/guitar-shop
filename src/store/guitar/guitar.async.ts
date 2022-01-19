@@ -4,7 +4,7 @@ import api from '../api';
 import { ActionCreator, APIEndpoint } from '../../constants';
 import { setGuitarsCount } from './guitar.slice';
 
-import type { Guitar, GuitarWithoutReviews } from '../../types/guitar';
+import type { Guitar } from '../../types/guitar';
 
 const GUITAR_DATA_LIMIT = 9;
 const TOTAL_COUNT_HEADER = 'x-total-count';
