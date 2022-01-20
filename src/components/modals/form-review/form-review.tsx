@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import RatingStarsControl from '../../rating-stars-control/rating-stars-control';
@@ -7,6 +8,7 @@ import { postReview } from '../../../store/product/product.async';
 
 import type { ReviewFormInputs } from '../../../types/review';
 import WarningMessage from '../warning-message/warning-message';
+import Alert from '../../alert/alert';
 
 type FormReviewProps = {
   productId?: number;
@@ -18,6 +20,7 @@ type FormReviewProps = {
 function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: FormReviewProps) {
   const dispatch = useTypedDispatch();
 
+  const [isAlertModalOpen, setAlertModalOpen] = React.useState(false);
   const {
     register,
     handleSubmit,
@@ -35,8 +38,13 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
         .then(() => {
           onCloseForm();
           onReviewSuccess();
-        });
+        })
+        .catch(handleShowAlertModal);
     }
+  };
+
+  const handleShowAlertModal = () => {
+    setAlertModalOpen(true);
   };
 
   return (
@@ -113,6 +121,9 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
           Отправить отзыв
         </button>
       </form>
+      <Alert isOpen={isAlertModalOpen} onClose={() => setAlertModalOpen(false)}>
+        Ошибка! Нет доступа к серверу
+      </Alert>
     </ModalLayout>
   );
 }

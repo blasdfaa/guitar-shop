@@ -18,6 +18,7 @@ import RatingStarsView from '../../rating-stars-view/rating-stars-view';
 import ReviewSuccess from '../../modals/review-success/review-success';
 import { FetchDataStatus } from '../../../constants';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import Alert from '../../alert/alert';
 
 function ProductScreen() {
   const dispatch = useTypedDispatch();
@@ -25,6 +26,7 @@ function ProductScreen() {
 
   const [isReviewSendModalOpen, setReviewSendModalOpen] = React.useState(false);
   const [isReviewSuccessModalOpen, setReviewSuccessModalOpen] = React.useState(false);
+  const [isAlertModalOpen, setAlertModalOpen] = React.useState(false);
 
   const guitarProduct = useTypedSelector(selectGuitarProduct);
   const guitarReviews = useTypedSelector(guitarsReviewsSelector);
@@ -33,7 +35,9 @@ function ProductScreen() {
   React.useEffect(() => {
     if (!guitarId) return;
 
-    dispatch(fetchProductById(+guitarId));
+    dispatch(fetchProductById(+guitarId))
+      .unwrap()
+      .catch(handleShowAlertModal);
   }, [guitarId, dispatch]);
 
   const handleShowReviewSendModal = (e: React.MouseEvent<HTMLAnchorElement>): void => {
@@ -52,6 +56,10 @@ function ProductScreen() {
 
   const handleCloseSuccessModal = (): void => {
     setReviewSuccessModalOpen(false);
+  };
+
+  const handleShowAlertModal = (): void => {
+    setAlertModalOpen(true);
   };
 
   const isPageLoaded =
@@ -116,6 +124,9 @@ function ProductScreen() {
         />
       )}
       {isReviewSuccessModalOpen && <ReviewSuccess onCloseModal={handleCloseSuccessModal} />}
+      <Alert isOpen={isAlertModalOpen} onClose={() => setAlertModalOpen(false)}>
+        Ошибка! Нет доступа к серверу
+      </Alert>
     </MainLayout>
   );
 }
