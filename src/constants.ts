@@ -6,6 +6,7 @@ export const enum APIEndpoint {
 export const enum AppRoute {
   Home = '/',
   GuitarPage = ':guitarId',
+  Cart = 'cart',
   NotFound = '*',
 }
 

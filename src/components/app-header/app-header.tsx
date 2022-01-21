@@ -16,7 +16,13 @@ function AppHeader() {
     <header className="header" id="header">
       <div className="container header__wrapper">
         <Link className="header__logo logo" to={AppRoute.Home} data-testid="header-logo">
-          <img alt="Логотип" className="logo__img" height="70" src="./img/svg/logo.svg" width="70" />
+          <img
+            alt="Логотип"
+            className="logo__img"
+            height="70"
+            src="./img/svg/logo.svg"
+            width="70"
+          />
         </Link>
         <nav className="main-nav">
           <ul className="main-nav__list" data-testid="navigation-list">
@@ -26,7 +32,9 @@ function AppHeader() {
               return (
                 <li key={item.id}>
                   <Link
-                    className={`link main-nav__link ${isRouteMatched ? 'link--current' : ''}`}
+                    className={`link main-nav__link ${
+                      isRouteMatched ? 'link--current' : ''
+                    }`}
                     to={item.route}
                   >
                     {item.name}
@@ -37,7 +45,7 @@ function AppHeader() {
           </ul>
         </nav>
         <SearchField />
-        <Link aria-label="Корзина" className="header__cart-link" to="/">
+        <Link aria-label="Корзина" className="header__cart-link" to={AppRoute.Cart}>
           <svg
             aria-hidden="true"
             className="header__cart-icon"
