@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FetchDataStatus } from '../../constants';
 
 import type { CartSliceState } from '../../types/state';
-import type { CartProduct } from '../../types/guitar';
+import type { CartProduct } from '../../types/cart';
 
 const initialState: CartSliceState = {
   data: {
@@ -26,13 +26,10 @@ const cartSlice = createSlice({
       };
 
       state.data.guitars[product.id] = newProducts;
-      state.totalCartPrice += newProducts.totalPrice;
     },
     removeProductFromCart: (state, action: PayloadAction<number>) => {
       const productId = action.payload;
-      const productPrice = state.data.guitars[productId].totalPrice;
 
-      state.totalCartPrice -= productPrice;
       delete state.data.guitars[productId];
     },
   },

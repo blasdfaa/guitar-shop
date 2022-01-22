@@ -18,7 +18,3 @@ export type GuitarWithoutReviews = Omit<Guitar, 'comments'>;
 export type ProductInfoTab = Partial<
   Pick<Guitar, 'vendorCode' | 'type' | 'stringCount' | 'description'>
 >;
-
-export type CartProduct = Omit<Guitar, 'rating' | 'comments' | 'description'> & {
-  totalPrice?: number;
-};

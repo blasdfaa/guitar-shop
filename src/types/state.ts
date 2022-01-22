@@ -1,7 +1,7 @@
 import type { FetchDataStatus } from '../constants';
 import type { Guitar, GuitarWithoutReviews } from './guitar';
 import type { GuitarReview } from './review';
-import { CartProduct } from './guitar';
+import type { CartCategory } from './cart';
 
 export type GuitarSliceState = {
   items: Guitar[];
@@ -27,14 +27,7 @@ export type ProductSliceState = {
 };
 
 export type CartSliceState = {
-  data: {
-    guitars: {
-      [key: number]: {
-        items: CartProduct[];
-        totalPrice: number;
-      };
-    };
-  };
+  data: Record<string, CartCategory>;
   status: FetchDataStatus;
   totalCartPrice: number;
   itemsQuantity: number;

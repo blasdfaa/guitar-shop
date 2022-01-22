@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import SearchField from '../search-field/search-field';
 import { AppRoute } from '../../constants';
+import HeaderCartLink from '../header-cart-link/header-cart-link';
 
 const navigationItems = [
   { id: 1, name: 'Каталог', route: '/' },
@@ -32,9 +33,7 @@ function AppHeader() {
               return (
                 <li key={item.id}>
                   <Link
-                    className={`link main-nav__link ${
-                      isRouteMatched ? 'link--current' : ''
-                    }`}
+                    className={`link main-nav__link ${isRouteMatched ? 'link--current' : ''}`}
                     to={item.route}
                   >
                     {item.name}
@@ -45,18 +44,7 @@ function AppHeader() {
           </ul>
         </nav>
         <SearchField />
-        <Link aria-label="Корзина" className="header__cart-link" to={AppRoute.Cart}>
-          <svg
-            aria-hidden="true"
-            className="header__cart-icon"
-            height="14"
-            width="14"
-            data-testid="cart-icon"
-          >
-            <use xlinkHref="#icon-basket" />
-          </svg>
-          <span className="visually-hidden">Перейти в корзину</span>
-        </Link>
+        <HeaderCartLink />
       </div>
     </header>
   );
