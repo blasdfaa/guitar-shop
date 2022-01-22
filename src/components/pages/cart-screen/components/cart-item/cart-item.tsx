@@ -1,10 +1,13 @@
 import React from 'react';
 
 import { formatGuitarType } from '../../../../../utils/product';
+import useTypedDispatch from '../../../../../hooks/use-typed-dispatch';
+import { removeProductFromCart } from '../../../../../store/cart/cart.slice';
 
 import type { CartProduct } from '../../../../../types/guitar';
 
 function CartItem({
+  id,
   type,
   stringCount,
   vendorCode,
@@ -12,12 +15,17 @@ function CartItem({
   price,
   previewImg,
 }: CartProduct) {
+  const dispatch = useTypedDispatch();
+  const handleRemoveProduct = () => {
+    dispatch(removeProductFromCart(id));
+  };
   return (
     <div className="cart-item">
       <button
         className="cart-item__close-button button-cross"
         type="button"
         aria-label="Удалить"
+        onClick={handleRemoveProduct}
       >
         <span className="button-cross__icon" />
         <span className="cart-item__close-button-interactive-area" />

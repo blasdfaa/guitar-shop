@@ -1,10 +1,45 @@
 import { Link } from 'react-router-dom';
 
 import RatingStarsView from '../../../../rating-stars-view/rating-stars-view';
+import useTypedDispatch from '../../../../../hooks/use-typed-dispatch';
+import { addProductToCart } from '../../../../../store/cart/cart.slice';
+import { AppRoute } from '../../../../../constants';
+import useTypedSelector from '../../../../../hooks/use-typed-selector';
+import { guitarFromCartByIdSelector } from '../../../../../store/cart/cart.selector';
 
-import type { Guitar } from '../../../../../types/guitar';
+import type { CartProduct, Guitar } from '../../../../../types/guitar';
 
-function GuitarCard({ name, previewImg, rating, price, id, comments }: Guitar) {
+function GuitarCard({
+  name,
+  previewImg,
+  rating,
+  price,
+  id,
+  comments,
+  type,
+  stringCount,
+  vendorCode,
+}: Guitar) {
+  const dispatch = useTypedDispatch();
+
+  const isProductInCart = useTypedSelector((state) =>
+    guitarFromCartByIdSelector(state, id),
+  );
+
+  const handleAddToCart = () => {
+    const product: CartProduct = {
+      id,
+      type,
+      stringCount,
+      vendorCode,
+      name,
+      price,
+      previewImg,
+    };
+
+    dispatch(addProductToCart(product));
+  };
+
   return (
     <div className="product-card">
       <img alt={name} height="190" src={previewImg} width="75" />
@@ -27,9 +62,23 @@ function GuitarCard({ name, previewImg, rating, price, id, comments }: Guitar) {
         <Link className="button button--mini" to={`/${id}`}>
           Подробнее
         </Link>
-        <Link className="button button--red button--mini button--add-to-cart" to="/">
-          Купить
-        </Link>
+        {isProductInCart && (
+          <Link
+            to={AppRoute.Cart}
+            className="button button--red-border button--mini button--in-cart"
+          >
+            В корзине
+          </Link>
+        )}
+        {!isProductInCart && (
+          <button
+            className="button button--red button--mini button--add-to-cart"
+            type="button"
+            onClick={handleAddToCart}
+          >
+            Купить
+          </button>
+        )}
       </div>
     </div>
   );

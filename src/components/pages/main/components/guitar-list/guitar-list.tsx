@@ -34,7 +34,8 @@ function GuitarList() {
   };
 
   const isGuitarsDataLoading = guitarsLoadingStatus === FetchDataStatus.Idle;
-  const hasGuitarsData = guitarsLoadingStatus === FetchDataStatus.Success && guitars.length > 0;
+  const hasGuitarsData =
+    guitarsLoadingStatus === FetchDataStatus.Success && guitars.length > 0;
   const isGuitarsEmpty =
     (guitarsLoadingStatus === FetchDataStatus.Success && guitars.length === 0) ||
     (guitarsLoadingStatus === FetchDataStatus.Failed && guitars.length === 0);
@@ -53,7 +54,9 @@ function GuitarList() {
             </React.Fragment>
           ))}
         {isGuitarsDataLoading && <Loader className="cards__loader" />}
-        {isGuitarsEmpty && <p className="title title--bigger cards__empty-text">Товары не найдены</p>}
+        {isGuitarsEmpty && (
+          <p className="title title--bigger cards__empty-text">Товары не найдены</p>
+        )}
       </div>
       <Pagination totalGuitars={totalGuitars} />
       <Alert isOpen={isModalOpen} onClose={() => setModalOpen(false)}>

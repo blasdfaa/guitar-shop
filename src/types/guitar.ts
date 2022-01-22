@@ -20,5 +20,5 @@ export type ProductInfoTab = Partial<
 >;
 
 export type CartProduct = Omit<Guitar, 'rating' | 'comments' | 'description'> & {
-  totalPrice: number;
+  totalPrice?: number;
 };

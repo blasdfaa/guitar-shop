@@ -6,15 +6,16 @@ import { selectGuitarProductName } from '../../store/product/product.selector';
 import { getPageNameByRoute } from '../../utils/breadcrumbs';
 
 type BreadcrumbsProps = {
-  className: string;
+  className?: string;
 };
 
-function Breadcrumbs({ className }: BreadcrumbsProps) {
+function Breadcrumbs({ className = '' }: BreadcrumbsProps) {
   const { pathname } = useLocation();
 
   const productName = useTypedSelector(selectGuitarProductName);
 
   const pathnames = pathname.split('/').filter((route) => route);
+  const routeName = getPageNameByRoute(pathname);
 
   return (
     <ul
@@ -34,7 +35,6 @@ function Breadcrumbs({ className }: BreadcrumbsProps) {
       {pathnames.map((path, index) => {
         const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
         const isLastPath = index === pathnames.length - 1;
-        const routeName = getPageNameByRoute(path);
         const isProductPage = productName && routeName === 'Неизвестно';
 
         return (
