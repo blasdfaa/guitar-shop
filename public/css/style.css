@@ -1537,6 +1537,25 @@ button,
   width: 100%;
 }
 
+.cart__empty {
+  text-align: center;
+}
+
+.cart__empty-title {
+  font-size: 25px;
+  margin: 0 0 25px;
+}
+
+.cart__empty-message {
+  font-size: 18px;
+  margin: 0;
+}
+
+.cart__empty-link {
+  margin: 35px auto 0;
+  width: 165px;
+}
+
 .button-cross {
   background-color: transparent;
   border: none;

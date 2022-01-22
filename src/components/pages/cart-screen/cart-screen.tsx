@@ -9,43 +9,54 @@ import {
   selectTotalCartPrice,
   serializedCartProductsSelector,
 } from '../../../store/cart/cart.selector';
+import CartEmpty from './components/cart-empty/cart-empty';
 
 function CartScreen() {
   const cartProducts = useTypedSelector(serializedCartProductsSelector);
   const totalCartPrice = useTypedSelector(selectTotalCartPrice).toLocaleString();
 
+  const isCartEmpty = cartProducts.length === 0;
+
   return (
     <MainLayout>
       <main className="page-content">
         <div className="container">
-          <h1 className="title title--bigger page-content__title">Корзина</h1>
-          <Breadcrumbs className="page-content__breadcrumbs--on-cart-page" />
-          <div className="cart">
-            {cartProducts &&
-              cartProducts.map((product) => <CartItem {...product} key={product.id} />)}
-            <div className="cart__footer">
-              <CouponForm />
-              <div className="cart__total-info">
-                <p className="cart__total-item">
-                  <span className="cart__total-value-name">Всего:</span>
-                  <span className="cart__total-value">{totalCartPrice} ₽</span>
-                </p>
-                <p className="cart__total-item">
-                  <span className="cart__total-value-name">Скидка:</span>
-                  <span className="cart__total-value cart__total-value--bonus">- 3000 ₽</span>
-                </p>
-                <p className="cart__total-item">
-                  <span className="cart__total-value-name">К оплате:</span>
-                  <span className="cart__total-value cart__total-value--payment">
-                    49 000 ₽
-                  </span>
-                </p>
-                <button className="button button--red button--big cart__order-button">
-                  Оформить заказ
-                </button>
+          {!isCartEmpty && (
+            <>
+              <h1 className="title title--bigger page-content__title">Корзина</h1>
+              <Breadcrumbs className="page-content__breadcrumbs--on-cart-page" />
+              <div className="cart">
+                {cartProducts.map((product) => (
+                  <CartItem {...product} key={product.id} />
+                ))}
+                <div className="cart__footer">
+                  <CouponForm />
+                  <div className="cart__total-info">
+                    <p className="cart__total-item">
+                      <span className="cart__total-value-name">Всего:</span>
+                      <span className="cart__total-value">{totalCartPrice} ₽</span>
+                    </p>
+                    <p className="cart__total-item">
+                      <span className="cart__total-value-name">Скидка:</span>
+                      <span className="cart__total-value cart__total-value--bonus">
+                        - 3000 ₽
+                      </span>
+                    </p>
+                    <p className="cart__total-item">
+                      <span className="cart__total-value-name">К оплате:</span>
+                      <span className="cart__total-value cart__total-value--payment">
+                        49 000 ₽
+                      </span>
+                    </p>
+                    <button className="button button--red button--big cart__order-button">
+                      Оформить заказ
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
+          {isCartEmpty && <CartEmpty />}
         </div>
       </main>
     </MainLayout>
