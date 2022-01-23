@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 import { AppRoute } from '../../constants';
 import useTypedSelector from '../../hooks/use-typed-selector';
-import { selectTotalCartProducts } from '../../store/cart/cart.selector';
+import { totalCartProductsSelector } from '../../store/cart/cart.selector';
 
 function HeaderCartLink() {
-  const productsCount = useTypedSelector(selectTotalCartProducts);
+  const productsCount = useTypedSelector(totalCartProductsSelector);
 
   return (
     <Link aria-label="Корзина" className="header__cart-link" to={AppRoute.Cart}>

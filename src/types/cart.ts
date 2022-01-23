@@ -1,7 +1,7 @@
 import { Guitar } from './guitar';
 
 export type CartCategory = {
-  [key: number]: {
+  [key: number | string]: {
     items: CartProduct[];
     totalPrice: number;
   };

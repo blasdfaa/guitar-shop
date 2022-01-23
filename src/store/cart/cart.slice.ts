@@ -19,24 +19,23 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addProductToCart: (state, action: PayloadAction<CartProduct>) => {
-      const product = action.payload;
-      const newProducts = {
-        items: [product],
-        totalPrice: product.price,
-      };
+      const newProduct = action.payload;
 
-      state.data.guitars[product.id] = newProducts;
+      state.data.guitars[newProduct.id] = {
+        items: [newProduct],
+        totalPrice: newProduct.price,
+      };
     },
     removeProductFromCart: (state, action: PayloadAction<number>) => {
-      const productId = action.payload;
+      const newProductId = action.payload;
 
-      delete state.data.guitars[productId];
+      delete state.data.guitars[newProductId];
     },
+    increaseProductQuantity: (state) => state,
+    decreaseProductQuantity: (state) => state,
   },
   extraReducers: {},
 });
 
-const { reducer, actions } = cartSlice;
-
-export const { addProductToCart, removeProductFromCart } = actions;
-export default reducer;
+export const { addProductToCart, removeProductFromCart } = cartSlice.actions;
+export default cartSlice.reducer;

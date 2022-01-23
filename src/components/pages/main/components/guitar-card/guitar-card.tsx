@@ -1,13 +1,14 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import RatingStarsView from '../../../../rating-stars-view/rating-stars-view';
-import useTypedDispatch from '../../../../../hooks/use-typed-dispatch';
-import { addProductToCart } from '../../../../../store/cart/cart.slice';
 import { AppRoute } from '../../../../../constants';
 import useTypedSelector from '../../../../../hooks/use-typed-selector';
 import { guitarFromCartByIdSelector } from '../../../../../store/cart/cart.selector';
+import AddCartSuccess from '../../../../modals/add-cart-success/add-cart-success';
+import AddCartConfirm from '../../../../modals/add-cart-confirm/add-cart-confirm';
 
-import type { CartProduct, Guitar } from '../../../../../types/guitar';
+import type { Guitar } from '../../../../../types/guitar';
 
 function GuitarCard({
   name,
@@ -20,24 +21,35 @@ function GuitarCard({
   stringCount,
   vendorCode,
 }: Guitar) {
-  const dispatch = useTypedDispatch();
+  const [isConfirmModalOpen, setConfirmModalOpen] = React.useState<boolean>(false);
+  const [isSuccessModalOpen, setSuccessModalOpen] = React.useState<boolean>(false);
 
-  const isProductInCart = useTypedSelector((state) =>
-    guitarFromCartByIdSelector(state, id),
-  );
+  const isProductInCart = useTypedSelector((state) => guitarFromCartByIdSelector(state, id));
 
-  const handleAddToCart = () => {
-    const product: CartProduct = {
-      id,
-      type,
-      stringCount,
-      vendorCode,
-      name,
-      price,
-      previewImg,
-    };
+  const handleOpenConfirmModal = () => {
+    setConfirmModalOpen(true);
+  };
 
-    dispatch(addProductToCart(product));
+  const handleCloseConfirmModal = () => {
+    setConfirmModalOpen(false);
+  };
+
+  const handleOpenSuccessModal = () => {
+    setSuccessModalOpen(true);
+  };
+
+  const handleCloseSuccessModal = () => {
+    setSuccessModalOpen(false);
+  };
+
+  const cartProduct = {
+    name,
+    previewImg,
+    price,
+    id,
+    type,
+    stringCount,
+    vendorCode,
   };
 
   return (
@@ -74,10 +86,20 @@ function GuitarCard({
           <button
             className="button button--red button--mini button--add-to-cart"
             type="button"
-            onClick={handleAddToCart}
+            onClick={handleOpenConfirmModal}
           >
             Купить
           </button>
+        )}
+        {isConfirmModalOpen && (
+          <AddCartConfirm
+            {...cartProduct}
+            onCloseConfirmModal={handleCloseConfirmModal}
+            onOpenSuccessModal={handleOpenSuccessModal}
+          />
+        )}
+        {isSuccessModalOpen && (
+          <AddCartSuccess onCloseSuccessModal={handleCloseSuccessModal} />
         )}
       </div>
     </div>
