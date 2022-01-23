@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { formatGuitarType } from '../../../../../utils/product';
-import useTypedDispatch from '../../../../../hooks/use-typed-dispatch';
-import { removeProductFromCart } from '../../../../../store/cart/cart.slice';
+import RemoveCartConfirm from '../../../../modals/remove-cart-confirm/remove-cart-confirm';
 
-import type { CartProduct } from '../../../../../types/guitar';
+import type { CartProduct } from '../../../../../types/cart';
 
 function CartItem({
   id,
@@ -15,29 +14,39 @@ function CartItem({
   price,
   previewImg,
 }: CartProduct) {
-  const dispatch = useTypedDispatch();
-  const handleRemoveProduct = () => {
-    dispatch(removeProductFromCart(id));
+  const [isRemoveConfirmModalOpen, setRemoveConfirmModalOpen] = React.useState<boolean>(false);
+
+  const handleOpenConfirmModal = () => {
+    setRemoveConfirmModalOpen(true);
   };
+
+  const handleCloseConfirmModal = () => {
+    setRemoveConfirmModalOpen(false);
+  };
+
+  const cartProduct: CartProduct = {
+    name,
+    previewImg,
+    price,
+    id,
+    type,
+    stringCount,
+    vendorCode,
+  };
+
   return (
     <div className="cart-item">
       <button
         className="cart-item__close-button button-cross"
         type="button"
         aria-label="Удалить"
-        onClick={handleRemoveProduct}
+        onClick={handleOpenConfirmModal}
       >
         <span className="button-cross__icon" />
         <span className="cart-item__close-button-interactive-area" />
       </button>
       <div className="cart-item__image">
-        <img
-          src={previewImg}
-          srcSet={`${previewImg} 2x`}
-          width="55"
-          height="130"
-          alt={name}
-        />
+        <img src={previewImg} srcSet={`${previewImg} 2x`} width="55" height="130" alt={name} />
       </div>
       <div className="product-info cart-item__info">
         <p className="product-info__title">{name}</p>
@@ -68,6 +77,12 @@ function CartItem({
         </button>
       </div>
       <div className="cart-item__price-total">17 500 ₽</div>
+      {isRemoveConfirmModalOpen && (
+        <RemoveCartConfirm
+          {...cartProduct}
+          onCloseConfirmRemoveModal={handleCloseConfirmModal}
+        />
+      )}
     </div>
   );
 }

@@ -1,17 +1,15 @@
 import React from 'react';
 
 import ModalLayout from '../modal-layout/modal-layout';
-import { addProductToCart } from '../../../store/cart/cart.slice';
+import type { CartProduct } from '../../../types/cart';
+import { removeProductFromCart } from '../../../store/cart/cart.slice';
 import useTypedDispatch from '../../../hooks/use-typed-dispatch';
 
-import type { CartProduct } from '../../../types/cart';
-
-type AddCartConfirmProps = CartProduct & {
-  onCloseConfirmModal: () => void;
-  onOpenSuccessModal: () => void;
+type RemoveCartConfirmProps = CartProduct & {
+  onCloseConfirmRemoveModal: () => void;
 };
 
-function AddCartConfirm({
+function RemoveCartConfirm({
   name,
   price,
   previewImg,
@@ -19,30 +17,17 @@ function AddCartConfirm({
   type,
   stringCount,
   id,
-  onCloseConfirmModal,
-  onOpenSuccessModal,
-}: AddCartConfirmProps) {
+  onCloseConfirmRemoveModal,
+}: RemoveCartConfirmProps) {
   const dispatch = useTypedDispatch();
 
-  const handleAddToCart = () => {
-    const product: CartProduct = {
-      id,
-      type,
-      stringCount,
-      vendorCode,
-      name,
-      price,
-      previewImg,
-    };
-
-    dispatch(addProductToCart(product));
-
-    onCloseConfirmModal();
-    onOpenSuccessModal();
+  const handleRemoveProduct = () => {
+    dispatch(removeProductFromCart(id));
   };
+
   return (
-    <ModalLayout onClose={onCloseConfirmModal}>
-      <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
+    <ModalLayout onClose={onCloseConfirmRemoveModal}>
+      <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
       <div className="modal__info">
         <img
           className="modal__img"
@@ -67,19 +52,17 @@ function AddCartConfirm({
         </div>
       </div>
       <div className="modal__button-container">
+        <button className="button button--small modal__button" onClick={handleRemoveProduct}>
+          Удалить товар
+        </button>
         <button
-          className="button button--red button--big modal__button modal__button--add"
-          onClick={handleAddToCart}
+          className="button button--black-border button--small modal__button modal__button--right"
+          onClick={onCloseConfirmRemoveModal}
         >
-          Добавить в корзину
+          Продолжить покупки
         </button>
       </div>
-      <button
-        className="modal__close-btn button-cross"
-        type="button"
-        aria-label="Закрыть"
-        onClick={onCloseConfirmModal}
-      >
+      <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть">
         <span className="button-cross__icon" />
         <span className="modal__close-btn-interactive-area" />
       </button>
@@ -87,4 +70,4 @@ function AddCartConfirm({
   );
 }
 
-export default AddCartConfirm;
+export default RemoveCartConfirm;

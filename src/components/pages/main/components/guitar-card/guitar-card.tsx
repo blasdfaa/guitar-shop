@@ -9,6 +9,7 @@ import AddCartSuccess from '../../../../modals/add-cart-success/add-cart-success
 import AddCartConfirm from '../../../../modals/add-cart-confirm/add-cart-confirm';
 
 import type { Guitar } from '../../../../../types/guitar';
+import { CartProduct } from '../../../../../types/cart';
 
 function GuitarCard({
   name,
@@ -42,7 +43,7 @@ function GuitarCard({
     setSuccessModalOpen(false);
   };
 
-  const cartProduct = {
+  const cartProduct: CartProduct = {
     name,
     previewImg,
     price,
