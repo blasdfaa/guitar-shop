@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ModalLayout from '../modal-layout/modal-layout';
@@ -6,16 +5,25 @@ import { AppRoute } from '../../../constants';
 
 type AddCartSuccessProps = {
   onCloseSuccessModal: () => void;
+  isAddCartSuccessOpen: boolean;
 };
 
-function AddCartSuccess({ onCloseSuccessModal }: AddCartSuccessProps) {
+function AddCartSuccess({ onCloseSuccessModal, isAddCartSuccessOpen }: AddCartSuccessProps) {
   const navigate = useNavigate();
 
-  const handleRouteToCart = () => {
+  const handleRouteToCart = async () => {
+    // Нужно дождаться конца анимации, иначе обработчики и класс с удалением скролла не удалятся
+    await onCloseSuccessModal();
+
     navigate(AppRoute.Cart);
   };
+
   return (
-    <ModalLayout onClose={onCloseSuccessModal} className="modal--success">
+    <ModalLayout
+      onClose={onCloseSuccessModal}
+      className="modal--success"
+      isShow={isAddCartSuccessOpen}
+    >
       <svg className="modal__icon" width="26" height="20" aria-hidden="true">
         <use xlinkHref="#icon-success" />
       </svg>

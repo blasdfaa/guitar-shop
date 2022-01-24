@@ -1,5 +1,6 @@
-import type { AxiosInstance } from 'axios';
 import axios from 'axios';
+
+import type { AxiosInstance } from 'axios';
 
 const API_BASE_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me';
 const REQUEST_TIMEOUT = 5000;

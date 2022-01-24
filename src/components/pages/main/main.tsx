@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Breadcrumbs from '../../breadcrumbs/breadcrumbs';
 import CatalogFilter from './components/catalog-filter/catalog-filter';
 import GuitarList from './components/guitar-list/guitar-list';

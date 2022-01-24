@@ -2,12 +2,23 @@ import ModalLayout from '../modal-layout/modal-layout';
 
 type ReviewSuccessProps = {
   onCloseModal: () => void;
+  isFormReviewSuccessOpen: boolean;
 };
 
-function ReviewSuccess({ onCloseModal }: ReviewSuccessProps) {
+function ReviewSuccess({ onCloseModal, isFormReviewSuccessOpen }: ReviewSuccessProps) {
   return (
-    <ModalLayout className="modal--success" onClose={onCloseModal}>
-      <svg className="modal__icon" width="26" height="20" aria-hidden="true" data-testid="modal-success-icon">
+    <ModalLayout
+      className="modal--success"
+      onClose={onCloseModal}
+      isShow={isFormReviewSuccessOpen}
+    >
+      <svg
+        className="modal__icon"
+        width="26"
+        height="20"
+        aria-hidden="true"
+        data-testid="modal-success-icon"
+      >
         <use xlinkHref="#icon-success" />
       </svg>
       <p className="modal__message">Спасибо за ваш отзыв!</p>

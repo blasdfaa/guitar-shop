@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 import RatingStarsView from '../../../../rating-stars-view/rating-stars-view';
 import { AppRoute } from '../../../../../constants';
 import useTypedSelector from '../../../../../hooks/use-typed-selector';
-import { guitarFromCartByIdSelector } from '../../../../../store/cart/cart.selector';
+import { guitarIsCartByIdSelector } from '../../../../../store/cart/cart.selector';
 import AddCartSuccess from '../../../../modals/add-cart-success/add-cart-success';
 import AddCartConfirm from '../../../../modals/add-cart-confirm/add-cart-confirm';
 
-import type { Guitar } from '../../../../../types/guitar';
-import { CartProduct } from '../../../../../types/cart';
+import type { CartGuitar, Guitar } from '../../../../../types/guitar';
 
 function GuitarCard({
   name,
@@ -23,9 +22,10 @@ function GuitarCard({
   vendorCode,
 }: Guitar) {
   const [isConfirmModalOpen, setConfirmModalOpen] = React.useState<boolean>(false);
-  const [isSuccessModalOpen, setSuccessModalOpen] = React.useState<boolean>(false);
+  const [isAddCartSuccessModalOpen, setAddCartSuccessModalOpen] =
+    React.useState<boolean>(false);
 
-  const isProductInCart = useTypedSelector((state) => guitarFromCartByIdSelector(state, id));
+  const isProductInCart = useTypedSelector((state) => guitarIsCartByIdSelector(state, id));
 
   const handleOpenConfirmModal = () => {
     setConfirmModalOpen(true);
@@ -36,14 +36,14 @@ function GuitarCard({
   };
 
   const handleOpenSuccessModal = () => {
-    setSuccessModalOpen(true);
+    setAddCartSuccessModalOpen(true);
   };
 
   const handleCloseSuccessModal = () => {
-    setSuccessModalOpen(false);
+    setAddCartSuccessModalOpen(false);
   };
 
-  const cartProduct: CartProduct = {
+  const cartProduct: CartGuitar = {
     name,
     previewImg,
     price,
@@ -92,16 +92,16 @@ function GuitarCard({
             Купить
           </button>
         )}
-        {isConfirmModalOpen && (
-          <AddCartConfirm
-            {...cartProduct}
-            onCloseConfirmModal={handleCloseConfirmModal}
-            onOpenSuccessModal={handleOpenSuccessModal}
-          />
-        )}
-        {isSuccessModalOpen && (
-          <AddCartSuccess onCloseSuccessModal={handleCloseSuccessModal} />
-        )}
+        <AddCartConfirm
+          {...cartProduct}
+          onCloseConfirmModal={handleCloseConfirmModal}
+          onOpenSuccessModal={handleOpenSuccessModal}
+          isAddCartConfirmOpen={isConfirmModalOpen}
+        />
+        <AddCartSuccess
+          onCloseSuccessModal={handleCloseSuccessModal}
+          isAddCartSuccessOpen={isAddCartSuccessModalOpen}
+        />
       </div>
     </div>
   );

@@ -1,17 +1,12 @@
-import type { CartCategory, CartProduct } from '../types/cart';
+import type { CartProduct } from '../types/cart';
 
-export const getTotalProductsPrice = (products: CartProduct[]): number =>
-  products.reduce((acc, item) => acc + item.price, 0);
+type CartProductSumKeys = Pick<CartProduct, 'totalPrice' | 'quantity'>;
 
-export const getSumTypePath = (product: Record<string, any>, path: string) => {
-  const [firstKey, ...keys] = path.split('.');
-
-  return keys.reduce((val, key) => val[key], product[firstKey]);
-};
-
-export const getTotalCartSum = (data: CartCategory, path: string) =>
-  Object.values(data).reduce((sum, product) => {
-    const value = getSumTypePath(product, path);
-
-    return sum + value;
-  }, 0);
+export const getTotalSumOfAllProducts = (
+  products: Record<number, CartProduct>,
+  key: string,
+): number =>
+  Object.values(products).reduce(
+    (acc, product) => acc + product[key as keyof CartProductSumKeys],
+    0,
+  );

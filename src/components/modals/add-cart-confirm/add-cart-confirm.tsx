@@ -4,11 +4,12 @@ import ModalLayout from '../modal-layout/modal-layout';
 import { addProductToCart } from '../../../store/cart/cart.slice';
 import useTypedDispatch from '../../../hooks/use-typed-dispatch';
 
-import type { CartProduct } from '../../../types/cart';
+import type { CartGuitar } from '../../../types/guitar';
 
-type AddCartConfirmProps = CartProduct & {
+type AddCartConfirmProps = CartGuitar & {
   onCloseConfirmModal: () => void;
   onOpenSuccessModal: () => void;
+  isAddCartConfirmOpen: boolean;
 };
 
 function AddCartConfirm({
@@ -21,11 +22,12 @@ function AddCartConfirm({
   id,
   onCloseConfirmModal,
   onOpenSuccessModal,
+  isAddCartConfirmOpen,
 }: AddCartConfirmProps) {
   const dispatch = useTypedDispatch();
 
   const handleAddToCart = () => {
-    const product: CartProduct = {
+    const product: CartGuitar = {
       id,
       type,
       stringCount,
@@ -41,7 +43,7 @@ function AddCartConfirm({
     onOpenSuccessModal();
   };
   return (
-    <ModalLayout onClose={onCloseConfirmModal}>
+    <ModalLayout onClose={onCloseConfirmModal} isShow={isAddCartConfirmOpen}>
       <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
       <div className="modal__info">
         <img

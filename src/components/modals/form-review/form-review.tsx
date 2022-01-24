@@ -5,19 +5,26 @@ import RatingStarsControl from '../../rating-stars-control/rating-stars-control'
 import ModalLayout from '../modal-layout/modal-layout';
 import useTypedDispatch from '../../../hooks/use-typed-dispatch';
 import { postReview } from '../../../store/product/product.async';
+import Alert from '../../alert/alert';
+import WarningMessage from '../warning-message/warning-message';
 
 import type { ReviewFormInputs } from '../../../types/review';
-import WarningMessage from '../warning-message/warning-message';
-import Alert from '../../alert/alert';
 
 type FormReviewProps = {
   productId?: number;
   productName?: string;
   onReviewSuccess: () => void;
   onCloseForm: () => void;
+  isFormReviewOpen: boolean;
 };
 
-function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: FormReviewProps) {
+function FormReview({
+  productName,
+  productId,
+  onReviewSuccess,
+  onCloseForm,
+  isFormReviewOpen,
+}: FormReviewProps) {
   const dispatch = useTypedDispatch();
 
   const [isAlertModalOpen, setAlertModalOpen] = React.useState(false);
@@ -48,13 +55,20 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
   };
 
   return (
-    <ModalLayout onClose={onCloseForm}>
-      <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
-      <h3 className="modal__product-name title title--medium-20 title--uppercase">{productName}</h3>
+    <ModalLayout onClose={onCloseForm} isShow={isFormReviewOpen}>
+      <h2 className="modal__header modal__header--review title title--medium">
+        Оставить отзыв
+      </h2>
+      <h3 className="modal__product-name title title--medium-20 title--uppercase">
+        {productName}
+      </h3>
       <form className="form-review" onSubmit={handleSubmit(onSubmitReview)}>
         <div className="form-review__wrapper">
           <div className="form-review__name-wrapper">
-            <label className="form-review__label form-review__label--required" htmlFor="user-name">
+            <label
+              className="form-review__label form-review__label--required"
+              htmlFor="user-name"
+            >
               <span>Ваше Имя</span>
             </label>
             <input
@@ -78,7 +92,10 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
             )}
           />
         </div>
-        <label className="form-review__label form-review__label--required" htmlFor="advantages">
+        <label
+          className="form-review__label form-review__label--required"
+          htmlFor="advantages"
+        >
           <span>Достоинства</span>
         </label>
         <input
@@ -91,7 +108,10 @@ function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: Fo
           })}
         />
         {errors.advantage && <WarningMessage />}
-        <label className="form-review__label form-review__label--required" htmlFor="disadvantages">
+        <label
+          className="form-review__label form-review__label--required"
+          htmlFor="disadvantages"
+        >
           <span>Недостатки</span>
         </label>
         <input

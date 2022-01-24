@@ -19,6 +19,7 @@ import ReviewSuccess from '../../modals/review-success/review-success';
 import { FetchDataStatus } from '../../../constants';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Alert from '../../alert/alert';
+import GuitarCartPrice from '../main/components/guitar-cart-price/guitar-cart-price';
 
 function ProductScreen() {
   const dispatch = useTypedDispatch();
@@ -50,11 +51,11 @@ function ProductScreen() {
     setReviewSendModalOpen(false);
   };
 
-  const handleShowSuccessModal = (): void => {
+  const handleShowReviewSuccessModal = (): void => {
     setReviewSuccessModalOpen(true);
   };
 
-  const handleCloseSuccessModal = (): void => {
+  const handleCloseReviewSuccessModal = (): void => {
     setReviewSuccessModalOpen(false);
   };
 
@@ -63,7 +64,8 @@ function ProductScreen() {
   };
 
   const isPageLoaded =
-    guitarLoadingStatus === FetchDataStatus.Success || guitarLoadingStatus === FetchDataStatus.Failed;
+    guitarLoadingStatus === FetchDataStatus.Success ||
+    guitarLoadingStatus === FetchDataStatus.Failed;
 
   if (isPageLoaded && guitarProduct === null) {
     return <NotFoundScreen />;
@@ -73,7 +75,9 @@ function ProductScreen() {
     <MainLayout>
       <main className="page-content">
         <div className="container">
-          <h1 className="page-content__title title title--bigger">Товар {guitarProduct?.name}</h1>
+          <h1 className="page-content__title title title--bigger">
+            Товар {guitarProduct?.name}
+          </h1>
           <Breadcrumbs />
           <div className="product-container">
             <img
@@ -102,28 +106,22 @@ function ProductScreen() {
                 type={guitarProduct?.type}
               />
             </div>
-            <div className="product-container__price-wrapper">
-              <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">
-                {guitarProduct?.price} ₽
-              </p>
-              <a className="button button--red button--big product-container__button" href="#!">
-                Добавить в корзину
-              </a>
-            </div>
+            <GuitarCartPrice guitar={guitarProduct} />
           </div>
           <ReviewsList reviews={guitarReviews} onClickSendReview={handleShowReviewSendModal} />
         </div>
       </main>
-      {isReviewSendModalOpen && (
-        <FormReview
-          productName={guitarProduct?.name}
-          productId={guitarProduct?.id}
-          onReviewSuccess={handleShowSuccessModal}
-          onCloseForm={handleCloseReviewSendModal}
-        />
-      )}
-      {isReviewSuccessModalOpen && <ReviewSuccess onCloseModal={handleCloseSuccessModal} />}
+      <FormReview
+        productName={guitarProduct?.name}
+        productId={guitarProduct?.id}
+        onReviewSuccess={handleShowReviewSuccessModal}
+        onCloseForm={handleCloseReviewSendModal}
+        isFormReviewOpen={isReviewSendModalOpen}
+      />
+      <ReviewSuccess
+        onCloseModal={handleCloseReviewSuccessModal}
+        isFormReviewSuccessOpen={isReviewSuccessModalOpen}
+      />
       <Alert isOpen={isAlertModalOpen} onClose={() => setAlertModalOpen(false)}>
         Ошибка! Нет доступа к серверу
       </Alert>

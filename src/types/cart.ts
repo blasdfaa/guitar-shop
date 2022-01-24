@@ -1,12 +1,7 @@
-import { Guitar } from './guitar';
+import type { CartGuitar } from './guitar';
 
-export type CartCategory = {
-  [key: number | string]: {
-    items: CartProduct[];
-    totalPrice: number;
-  };
-};
-
-export type CartProduct = Omit<Guitar, 'rating' | 'comments' | 'description'> & {
-  totalPrice?: number;
+export type CartProduct = {
+  product: CartGuitar;
+  totalPrice: number;
+  quantity: number;
 };

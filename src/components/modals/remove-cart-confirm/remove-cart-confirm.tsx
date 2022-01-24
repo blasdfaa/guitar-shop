@@ -1,12 +1,14 @@
 import React from 'react';
 
 import ModalLayout from '../modal-layout/modal-layout';
-import type { CartProduct } from '../../../types/cart';
-import { removeProductFromCart } from '../../../store/cart/cart.slice';
 import useTypedDispatch from '../../../hooks/use-typed-dispatch';
+import { removeProductFromCart } from '../../../store/cart/cart.slice';
 
-type RemoveCartConfirmProps = CartProduct & {
+import type { CartGuitar } from '../../../types/guitar';
+
+type RemoveCartConfirmProps = CartGuitar & {
   onCloseConfirmRemoveModal: () => void;
+  isRemoveConfirmOpen: boolean;
 };
 
 function RemoveCartConfirm({
@@ -18,6 +20,7 @@ function RemoveCartConfirm({
   stringCount,
   id,
   onCloseConfirmRemoveModal,
+  isRemoveConfirmOpen,
 }: RemoveCartConfirmProps) {
   const dispatch = useTypedDispatch();
 
@@ -26,7 +29,7 @@ function RemoveCartConfirm({
   };
 
   return (
-    <ModalLayout onClose={onCloseConfirmRemoveModal}>
+    <ModalLayout onClose={onCloseConfirmRemoveModal} isShow={isRemoveConfirmOpen}>
       <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
       <div className="modal__info">
         <img
