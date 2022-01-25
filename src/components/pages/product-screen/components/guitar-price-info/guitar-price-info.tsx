@@ -73,6 +73,8 @@ function GuitarPriceInfo({ guitar }: GuitarPriceInfoProps) {
         />
       )}
       <AddCartSuccess
+        routeAfterSuccess
+        routeTo={AppRoute.Home}
         onCloseSuccessModal={handleCloseAddCartSuccessModal}
         isAddCartSuccessOpen={isAddCartSuccessModalOpen}
       />

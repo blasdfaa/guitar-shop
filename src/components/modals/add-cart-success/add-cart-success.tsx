@@ -6,9 +6,16 @@ import { AppRoute } from '../../../constants';
 type AddCartSuccessProps = {
   onCloseSuccessModal: () => void;
   isAddCartSuccessOpen: boolean;
+  routeAfterSuccess?: boolean;
+  routeTo?: string;
 };
 
-function AddCartSuccess({ onCloseSuccessModal, isAddCartSuccessOpen }: AddCartSuccessProps) {
+function AddCartSuccess({
+  onCloseSuccessModal,
+  isAddCartSuccessOpen,
+  routeAfterSuccess = false,
+  routeTo,
+}: AddCartSuccessProps) {
   const navigate = useNavigate();
 
   const handleRouteToCart = async () => {
@@ -16,6 +23,15 @@ function AddCartSuccess({ onCloseSuccessModal, isAddCartSuccessOpen }: AddCartSu
     await onCloseSuccessModal();
 
     navigate(AppRoute.Cart);
+  };
+
+  const handleRoute = async () => {
+    // Нужно дождаться конца анимации, иначе обработчики и класс с удалением скролла не удалятся
+    await onCloseSuccessModal();
+
+    if (routeAfterSuccess && routeTo) {
+      navigate(routeTo);
+    }
   };
 
   return (
@@ -38,7 +54,7 @@ function AddCartSuccess({ onCloseSuccessModal, isAddCartSuccessOpen }: AddCartSu
         </button>
         <button
           className="button button--black-border button--small modal__button modal__button--right"
-          onClick={onCloseSuccessModal}
+          onClick={routeAfterSuccess ? handleRoute : onCloseSuccessModal}
         >
           Продолжить покупки
         </button>

@@ -68,7 +68,7 @@ function GuitarCard({
         <p className="product-card__title">{name}</p>
         <p className="product-card__price" data-testid="card-price">
           <span className="visually-hidden">Цена:</span>
-          {price} ₽
+          {price.toLocaleString()} ₽
         </p>
       </div>
       <div className="product-card__buttons">

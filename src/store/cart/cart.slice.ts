@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { FetchDataStatus } from '../../constants';
-import { getTotalSumOfAllProducts } from '../../utils/cart';
+import {
+  getCartFromLocalStorage,
+  getTotalSumOfAllProducts,
+  setCartToLocalStorage,
+} from '../../utils/cart';
 import { postPromocodeDiscount } from './cart.async';
 
 import type { CartSliceState } from '../../types/state';
@@ -14,16 +17,22 @@ type AddQuantityItemPayload = {
 
 const INCREASE_PRODUCT_QUANTITY = 1;
 const DECREASE_PRODUCT_QUANTITY = 1;
+const LOCAL_STORAGE_CART_KEY = 'cart-state-value';
 
-const initialState: CartSliceState = {
+let initialState: CartSliceState = {
   data: {},
-  status: FetchDataStatus.Idle,
   discountPercent: 0,
   discount: 0,
   totalCartPrice: 0,
   totalCartPriceWithDiscount: 0,
   itemsQuantity: 0,
 };
+
+const localStorageCartState = getCartFromLocalStorage(LOCAL_STORAGE_CART_KEY) || null;
+
+if (localStorageCartState) {
+  initialState = localStorageCartState;
+}
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -47,6 +56,8 @@ const cartSlice = createSlice({
       state.totalCartPriceWithDiscount = state.discount
         ? state.totalCartPrice - state.discount
         : state.totalCartPrice;
+
+      setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
     },
     removeProductFromCart: (state, action: PayloadAction<number>) => {
       const currentProductId = action.payload;
@@ -62,6 +73,8 @@ const cartSlice = createSlice({
       state.totalCartPriceWithDiscount = state.discount
         ? state.totalCartPrice - state.discount
         : state.totalCartPrice;
+
+      setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
     },
     increaseProductQuantity: (state, action: PayloadAction<number>) => {
       const currentProductId = action.payload;
@@ -80,6 +93,8 @@ const cartSlice = createSlice({
       state.totalCartPriceWithDiscount = state.discount
         ? state.totalCartPrice - state.discount
         : state.totalCartPrice;
+
+      setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
     },
     decreaseProductQuantity: (state, action: PayloadAction<number>) => {
       const currentProductId = action.payload;
@@ -99,6 +114,8 @@ const cartSlice = createSlice({
         state.totalCartPriceWithDiscount = state.discount
           ? state.totalCartPrice - state.discount
           : state.totalCartPrice;
+
+        setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
       }
     },
     addQuantityItem: (state, action: PayloadAction<AddQuantityItemPayload>) => {
@@ -122,6 +139,8 @@ const cartSlice = createSlice({
       state.totalCartPriceWithDiscount = state.discount
         ? state.totalCartPrice - state.discount
         : state.totalCartPrice;
+
+      setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
     },
   },
   extraReducers: (builder) =>
@@ -131,6 +150,8 @@ const cartSlice = createSlice({
       state.discountPercent = discountPercent;
       state.discount = (state.totalCartPrice * discountPercent) / 100;
       state.totalCartPriceWithDiscount = state.totalCartPrice - state.discount;
+
+      setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
     }),
 });
 

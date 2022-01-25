@@ -28,7 +28,6 @@ export type ProductSliceState = {
 
 export type CartSliceState = {
   data: Record<number, CartProduct>;
-  status: FetchDataStatus;
   discountPercent: number;
   discount: number;
   totalCartPrice: number;
