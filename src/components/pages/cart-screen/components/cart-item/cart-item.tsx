@@ -36,6 +36,7 @@ function CartItem({ id, type, stringCount, vendorCode, name, price, previewImg }
 
   const handleChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = +e.target.value;
+
     if (value > 0 && value <= MAX_PRODUCTS_QUANTITY) {
       setQuantityValue(value);
       dispatch(addQuantityItem({ productId: id, value }));
@@ -129,7 +130,7 @@ function CartItem({ id, type, stringCount, vendorCode, name, price, previewImg }
       <div className="cart-item__price-total">{totalProductPrice} ₽</div>
       <RemoveCartConfirm
         {...cartProduct}
-        onCloseConfirmRemoveModal={handleCloseConfirmModal}
+        onCloseConfirmRemove={handleCloseConfirmModal}
         isRemoveConfirmOpen={isRemoveConfirmModalOpen}
       />
     </div>

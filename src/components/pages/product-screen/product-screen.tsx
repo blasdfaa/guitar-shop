@@ -19,7 +19,7 @@ import ReviewSuccess from '../../modals/review-success/review-success';
 import { FetchDataStatus } from '../../../constants';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Alert from '../../alert/alert';
-import GuitarCartPrice from '../main/components/guitar-cart-price/guitar-cart-price';
+import GuitarPriceInfo from './components/guitar-price-info/guitar-price-info';
 
 function ProductScreen() {
   const dispatch = useTypedDispatch();
@@ -106,7 +106,7 @@ function ProductScreen() {
                 type={guitarProduct?.type}
               />
             </div>
-            <GuitarCartPrice guitar={guitarProduct} />
+            <GuitarPriceInfo guitar={guitarProduct} />
           </div>
           <ReviewsList reviews={guitarReviews} onClickSendReview={handleShowReviewSendModal} />
         </div>

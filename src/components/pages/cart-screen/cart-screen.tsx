@@ -6,7 +6,9 @@ import CartItem from './components/cart-item/cart-item';
 import CouponForm from './components/coupon-form/coupon-form';
 import useTypedSelector from '../../../hooks/use-typed-selector';
 import {
+  selectDiscountValue,
   selectTotalCartPrice,
+  selectTotalCartPriceWithDiscount,
   serializedCartProductsSelector,
 } from '../../../store/cart/cart.selector';
 import CartEmpty from './components/cart-empty/cart-empty';
@@ -14,6 +16,10 @@ import CartEmpty from './components/cart-empty/cart-empty';
 function CartScreen() {
   const cartProducts = useTypedSelector(serializedCartProductsSelector);
   const totalCartPrice = useTypedSelector(selectTotalCartPrice).toLocaleString();
+  const totalCartPriceWithDiscount = useTypedSelector(
+    selectTotalCartPriceWithDiscount,
+  ).toLocaleString();
+  const discount = useTypedSelector(selectDiscountValue);
 
   const isCartEmpty = cartProducts.length === 0;
 
@@ -39,13 +45,13 @@ function CartScreen() {
                     <p className="cart__total-item">
                       <span className="cart__total-value-name">Скидка:</span>
                       <span className="cart__total-value cart__total-value--bonus">
-                        - 3000 ₽
+                        - {discount} ₽
                       </span>
                     </p>
                     <p className="cart__total-item">
                       <span className="cart__total-value-name">К оплате:</span>
                       <span className="cart__total-value cart__total-value--payment">
-                        49 000 ₽
+                        {totalCartPriceWithDiscount} ₽
                       </span>
                     </p>
                     <button className="button button--red button--big cart__order-button">

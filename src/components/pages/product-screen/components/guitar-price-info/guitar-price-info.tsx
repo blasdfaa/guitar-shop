@@ -1,21 +1,30 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import AddCartConfirm from '../../../../modals/add-cart-confirm/add-cart-confirm';
 import AddCartSuccess from '../../../../modals/add-cart-success/add-cart-success';
+import { guitarIsCartByIdSelector } from '../../../../../store/cart/cart.selector';
+import useTypedSelector from '../../../../../hooks/use-typed-selector';
+import { AppRoute } from '../../../../../constants';
 
 import type { CartGuitar } from '../../../../../types/guitar';
 
-type GuitarCartPriceProps = {
+type GuitarPriceInfoProps = {
   guitar: CartGuitar | null;
 };
 
-function GuitarCartPrice({ guitar }: GuitarCartPriceProps) {
+function GuitarPriceInfo({ guitar }: GuitarPriceInfoProps) {
   const [isAddConfirmModalOpen, setAddConfirmModalOpen] = React.useState(false);
   const [isAddCartSuccessModalOpen, setAddCartSuccessModalOpen] =
     React.useState<boolean>(false);
 
-  const handleOpenAddConfirmModal = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+  const isProductInCart = useTypedSelector((state) => {
+    if (!guitar) return;
+
+    return guitarIsCartByIdSelector(state, guitar.id);
+  });
+
+  const handleOpenAddConfirmModal = () => {
     setAddConfirmModalOpen(true);
   };
 
@@ -39,13 +48,22 @@ function GuitarCartPrice({ guitar }: GuitarCartPriceProps) {
       <p className="product-container__price-info product-container__price-info--value">
         {guitar?.price.toLocaleString()} ₽
       </p>
-      <a
-        className="button button--red button--big product-container__button"
-        href="#!"
-        onClick={handleOpenAddConfirmModal}
-      >
-        Добавить в корзину
-      </a>
+      {!isProductInCart && (
+        <button
+          className="button button--red button--big product-container__button"
+          onClick={handleOpenAddConfirmModal}
+        >
+          Добавить в корзину
+        </button>
+      )}
+      {isProductInCart && (
+        <Link
+          className="button button--red-border button--big product-container__button"
+          to={AppRoute.Cart}
+        >
+          В корзине
+        </Link>
+      )}
       {guitar && (
         <AddCartConfirm
           {...guitar}
@@ -62,4 +80,4 @@ function GuitarCartPrice({ guitar }: GuitarCartPriceProps) {
   );
 }
 
-export default GuitarCartPrice;
+export default GuitarPriceInfo;

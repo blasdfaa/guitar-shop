@@ -8,6 +8,9 @@ export const selectGuitarsFromCart = (state: RootState): Record<number, CartProd
   state.CART.data;
 export const selectTotalCartPrice = (state: RootState): number => state.CART.totalCartPrice;
 export const selectCartItemsQuantity = (state: RootState): number => state.CART.itemsQuantity;
+export const selectDiscountValue = (state: RootState): number => state.CART.discount;
+export const selectTotalCartPriceWithDiscount = (state: RootState): number =>
+  state.CART.totalCartPriceWithDiscount;
 
 // selectors
 export const guitarIsCartByIdSelector = createSelector(
@@ -29,13 +32,3 @@ export const quantityProductByIdSelector = createSelector(
   [selectGuitarsFromCart, (_state: RootState, productId: number) => productId],
   (guitars, id) => guitars[id].quantity,
 );
-
-//
-// export const totalCartProductsSelector = createSelector(selectCartData, (cartData): number => {
-//   const cartCategories = Object.entries(cartData).map(([_key, value]) => value);
-//   const productsCount = cartCategories.map((category) =>
-//     getTotalCartSum(category, 'items.length'),
-//   );
-//
-//   return productsCount.reduce((acc, count) => acc + count, 0);
-// });

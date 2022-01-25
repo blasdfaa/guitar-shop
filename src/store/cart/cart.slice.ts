@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { FetchDataStatus } from '../../constants';
 import { getTotalSumOfAllProducts } from '../../utils/cart';
+import { postPromocodeDiscount } from './cart.async';
 
 import type { CartSliceState } from '../../types/state';
 import type { CartGuitar } from '../../types/guitar';
@@ -17,7 +18,10 @@ const DECREASE_PRODUCT_QUANTITY = 1;
 const initialState: CartSliceState = {
   data: {},
   status: FetchDataStatus.Idle,
+  discountPercent: 0,
+  discount: 0,
   totalCartPrice: 0,
+  totalCartPriceWithDiscount: 0,
   itemsQuantity: 0,
 };
 
@@ -36,6 +40,13 @@ const cartSlice = createSlice({
 
       state.totalCartPrice += newProduct.price;
       state.itemsQuantity += INCREASE_PRODUCT_QUANTITY;
+
+      state.discount = state.discountPercent
+        ? (state.totalCartPrice * state.discountPercent) / 100
+        : state.discountPercent;
+      state.totalCartPriceWithDiscount = state.discount
+        ? state.totalCartPrice - state.discount
+        : state.totalCartPrice;
     },
     removeProductFromCart: (state, action: PayloadAction<number>) => {
       const currentProductId = action.payload;
@@ -44,6 +55,13 @@ const cartSlice = createSlice({
       state.itemsQuantity -= state.data[currentProductId].quantity;
 
       delete state.data[currentProductId];
+
+      state.discount = state.discountPercent
+        ? (state.totalCartPrice * state.discountPercent) / 100
+        : state.discountPercent;
+      state.totalCartPriceWithDiscount = state.discount
+        ? state.totalCartPrice - state.discount
+        : state.totalCartPrice;
     },
     increaseProductQuantity: (state, action: PayloadAction<number>) => {
       const currentProductId = action.payload;
@@ -55,6 +73,13 @@ const cartSlice = createSlice({
 
       state.itemsQuantity += INCREASE_PRODUCT_QUANTITY;
       state.totalCartPrice += currentProductPrice;
+
+      state.discount = state.discountPercent
+        ? (state.totalCartPrice * state.discountPercent) / 100
+        : state.discountPercent;
+      state.totalCartPriceWithDiscount = state.discount
+        ? state.totalCartPrice - state.discount
+        : state.totalCartPrice;
     },
     decreaseProductQuantity: (state, action: PayloadAction<number>) => {
       const currentProductId = action.payload;
@@ -67,6 +92,13 @@ const cartSlice = createSlice({
 
         state.itemsQuantity -= DECREASE_PRODUCT_QUANTITY;
         state.totalCartPrice -= currentProductPrice;
+
+        state.discount = state.discountPercent
+          ? (state.totalCartPrice * state.discountPercent) / 100
+          : state.discountPercent;
+        state.totalCartPriceWithDiscount = state.discount
+          ? state.totalCartPrice - state.discount
+          : state.totalCartPrice;
       }
     },
     addQuantityItem: (state, action: PayloadAction<AddQuantityItemPayload>) => {
@@ -83,9 +115,23 @@ const cartSlice = createSlice({
 
       state.itemsQuantity = quantityOfAllProducts;
       state.totalCartPrice = totalPriceOfAllProducts;
+
+      state.discount = state.discountPercent
+        ? (state.totalCartPrice * state.discountPercent) / 100
+        : state.discountPercent;
+      state.totalCartPriceWithDiscount = state.discount
+        ? state.totalCartPrice - state.discount
+        : state.totalCartPrice;
     },
   },
-  extraReducers: {},
+  extraReducers: (builder) =>
+    builder.addCase(postPromocodeDiscount.fulfilled, (state, action) => {
+      const discountPercent = action.payload;
+
+      state.discountPercent = discountPercent;
+      state.discount = (state.totalCartPrice * discountPercent) / 100;
+      state.totalCartPriceWithDiscount = state.totalCartPrice - state.discount;
+    }),
 });
 
 export const {

@@ -7,7 +7,7 @@ import { removeProductFromCart } from '../../../store/cart/cart.slice';
 import type { CartGuitar } from '../../../types/guitar';
 
 type RemoveCartConfirmProps = CartGuitar & {
-  onCloseConfirmRemoveModal: () => void;
+  onCloseConfirmRemove: () => void;
   isRemoveConfirmOpen: boolean;
 };
 
@@ -19,17 +19,20 @@ function RemoveCartConfirm({
   type,
   stringCount,
   id,
-  onCloseConfirmRemoveModal,
+  onCloseConfirmRemove,
   isRemoveConfirmOpen,
 }: RemoveCartConfirmProps) {
   const dispatch = useTypedDispatch();
 
-  const handleRemoveProduct = () => {
+  const handleRemoveProduct = async () => {
+    // Нужно дождаться конца анимации, иначе обработчики и класс с удалением скролла не удалятся
+    await onCloseConfirmRemove();
+
     dispatch(removeProductFromCart(id));
   };
 
   return (
-    <ModalLayout onClose={onCloseConfirmRemoveModal} isShow={isRemoveConfirmOpen}>
+    <ModalLayout onClose={onCloseConfirmRemove} isShow={isRemoveConfirmOpen}>
       <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
       <div className="modal__info">
         <img
@@ -60,7 +63,7 @@ function RemoveCartConfirm({
         </button>
         <button
           className="button button--black-border button--small modal__button modal__button--right"
-          onClick={onCloseConfirmRemoveModal}
+          onClick={onCloseConfirmRemove}
         >
           Продолжить покупки
         </button>
