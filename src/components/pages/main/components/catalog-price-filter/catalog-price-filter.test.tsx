@@ -16,8 +16,12 @@ describe('Component: CatalogPriceFilter', () => {
   test('should not set a value if it is less', () => {
     renderWithContext(<CatalogPriceFilter />);
 
-    const minPriceInput = screen.getByRole('spinbutton', { name: 'Минимальная цена' }) as HTMLInputElement;
-    const maxPriceInput = screen.getByRole('spinbutton', { name: 'Максимальная цена' }) as HTMLInputElement;
+    const minPriceInput = screen.getByRole('spinbutton', {
+      name: 'Минимальная цена',
+    }) as HTMLInputElement;
+    const maxPriceInput = screen.getByRole('spinbutton', {
+      name: 'Максимальная цена',
+    }) as HTMLInputElement;
 
     userEvent.type(minPriceInput, '0');
     expect(minPriceInput.value).toEqual('');
@@ -26,7 +30,7 @@ describe('Component: CatalogPriceFilter', () => {
     expect(maxPriceInput.value).toEqual('');
   });
   test('placeholder should be equal min/max price', () => {
-    const state = getStateWithItems([generateGuitarItem(), generateGuitarItem()]);
+    const state = getStateWithItems({ guitars: [generateGuitarItem(), generateGuitarItem()] });
     renderWithContext(<CatalogPriceFilter />, state);
 
     const prices = {
@@ -34,14 +38,18 @@ describe('Component: CatalogPriceFilter', () => {
       max: Math.max(...state.GUITARS.items.map((guitar) => guitar.price)),
     };
 
-    const minPriceInput = screen.getByRole('spinbutton', { name: 'Минимальная цена' }) as HTMLInputElement;
-    const maxPriceInput = screen.getByRole('spinbutton', { name: 'Максимальная цена' }) as HTMLInputElement;
+    const minPriceInput = screen.getByRole('spinbutton', {
+      name: 'Минимальная цена',
+    }) as HTMLInputElement;
+    const maxPriceInput = screen.getByRole('spinbutton', {
+      name: 'Максимальная цена',
+    }) as HTMLInputElement;
 
     expect(Number(minPriceInput.placeholder)).toBe(prices.min);
     expect(Number(maxPriceInput.placeholder)).toBe(prices.max);
   });
   test('should set min/max price if value is less/greater min/max guitars price', () => {
-    const state = getStateWithItems([generateGuitarItem(), generateGuitarItem()]);
+    const state = getStateWithItems({ guitars: [generateGuitarItem(), generateGuitarItem()] });
     renderWithContext(<CatalogPriceFilter />, state);
 
     const prices = {
@@ -49,8 +57,12 @@ describe('Component: CatalogPriceFilter', () => {
       max: Math.max(...state.GUITARS.items.map((guitar) => guitar.price)),
     };
 
-    const minPriceInput = screen.getByRole('spinbutton', { name: 'Минимальная цена' }) as HTMLInputElement;
-    const maxPriceInput = screen.getByRole('spinbutton', { name: 'Максимальная цена' }) as HTMLInputElement;
+    const minPriceInput = screen.getByRole('spinbutton', {
+      name: 'Минимальная цена',
+    }) as HTMLInputElement;
+    const maxPriceInput = screen.getByRole('spinbutton', {
+      name: 'Максимальная цена',
+    }) as HTMLInputElement;
 
     userEvent.type(minPriceInput, String(prices.min - 10));
     minPriceInput.blur();

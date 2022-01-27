@@ -16,7 +16,7 @@ describe('Thunk: product', () => {
   const mockStore = configureMockStore<RootState>([thunk]);
 
   describe('fetchProductById', () => {
-    test('should fetch success', async () => {
+    test('should call correctly actions if fetch product success', async () => {
       const store = mockStore({});
       const expectedProduct = generateGuitarItem();
       const expectedActions = [
@@ -40,7 +40,7 @@ describe('Thunk: product', () => {
         })),
       ).toEqual(expectedActions);
     });
-    test('should fetch failed', async () => {
+    test('should call correctly actions if fetch product failed', async () => {
       const store = mockStore({});
       const expectedActions = [
         {
@@ -64,7 +64,7 @@ describe('Thunk: product', () => {
       ).toEqual(expectedActions);
     });
     test('should correctly change state after success response', async () => {
-      const state = getStateWithItems([generateGuitarItem()]);
+      const state = getStateWithItems({ guitars: [generateGuitarItem()] });
       const store = getStoreWithState(state);
       const expectedProduct = generateGuitarItem();
       const { comments, ...product } = expectedProduct;
@@ -79,7 +79,7 @@ describe('Thunk: product', () => {
       expect(store.getState().PRODUCT.reviews.status).toEqual(FetchDataStatus.Success);
     });
     test('should correctly change state after failed response', async () => {
-      const state = getStateWithItems([generateGuitarItem()]);
+      const state = getStateWithItems({ guitars: [generateGuitarItem()] });
       const store = getStoreWithState(state);
 
       jest.spyOn(api, 'get').mockRejectedValue({ data: undefined });
@@ -92,11 +92,16 @@ describe('Thunk: product', () => {
       expect(store.getState().PRODUCT.reviews.status).toEqual(FetchDataStatus.Failed);
     });
   });
+
   describe('postReview', () => {
-    test('should fetch success', async () => {
+    test('should call correctly actions if post review success', async () => {
       const store = mockStore({});
       const mockPostReview = generatePostReview();
-      const expectedReviews = [generateGuitarReview(), generateGuitarReview(), generateGuitarReview()];
+      const expectedReviews = [
+        generateGuitarReview(),
+        generateGuitarReview(),
+        generateGuitarReview(),
+      ];
       const expectedActions = [
         {
           type: postReview.pending.type,
@@ -118,7 +123,7 @@ describe('Thunk: product', () => {
         })),
       ).toEqual(expectedActions);
     });
-    test('should fetch failed', async () => {
+    test('should call correctly actions if post review failed', async () => {
       const store = mockStore({});
       const mockPostReview = generatePostReview();
       const expectedActions = [
@@ -143,7 +148,7 @@ describe('Thunk: product', () => {
       ).toEqual(expectedActions);
     });
     test('should correctly change state after success response', async () => {
-      const state = getStateWithItems([], [generateGuitarReview()]);
+      const state = getStateWithItems({ reviews: [generateGuitarReview()] });
       const store = getStoreWithState(state);
       const mockPostReview = generatePostReview();
       const expectedReview = generateGuitarReview();
@@ -152,11 +157,14 @@ describe('Thunk: product', () => {
 
       await store.dispatch(postReview(mockPostReview));
 
-      expect(store.getState().PRODUCT.reviews.data).toEqual([...state.PRODUCT.reviews.data, expectedReview]);
+      expect(store.getState().PRODUCT.reviews.data).toEqual([
+        ...state.PRODUCT.reviews.data,
+        expectedReview,
+      ]);
       expect(store.getState().PRODUCT.reviews.status).toEqual(FetchDataStatus.Success);
     });
     test('should correctly change state after failed response', async () => {
-      const state = getStateWithItems([], [generateGuitarReview()]);
+      const state = getStateWithItems({ reviews: [generateGuitarReview()] });
       const mockPostReview = generatePostReview();
       const store = getStoreWithState(state);
 

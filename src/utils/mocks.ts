@@ -2,13 +2,26 @@ import faker from 'faker';
 
 import { RootState } from '../store/store';
 import { FetchDataStatus, FilterGuitarType } from '../constants';
+import { getTotalSumOfAllProducts } from './cart';
 
-import type { Guitar, GuitarWithoutReviews } from '../types/guitar';
+import type { CartGuitar, Guitar, GuitarWithoutReviews } from '../types/guitar';
 import type { GuitarReview } from '../types/review';
-import { ProductInfoTab } from '../types/guitar';
-import { ReviewPost } from '../types/review';
+import type { ProductInfoTab } from '../types/guitar';
+import type { ReviewPost } from '../types/review';
+import type { CartProduct } from '../types/cart';
 
-const guitarTypes = [FilterGuitarType.Ukulele, FilterGuitarType.Electric, FilterGuitarType.Acoustic];
+type StateWithItems = {
+  guitars?: Guitar[];
+  reviews?: GuitarReview[];
+  product?: GuitarWithoutReviews | null;
+  cartItems?: Record<number, CartProduct>;
+};
+
+const guitarTypes = [
+  FilterGuitarType.Ukulele,
+  FilterGuitarType.Electric,
+  FilterGuitarType.Acoustic,
+];
 
 export const generateGuitarReview = (): GuitarReview => ({
   id: faker.datatype.string(),
@@ -62,11 +75,58 @@ export const generatePostReview = (): ReviewPost => ({
   guitarId: faker.datatype.number(25),
 });
 
-export const getStateWithItems = (
-  guitars: Guitar[] = [],
-  reviews: GuitarReview[] = [],
-  product: GuitarWithoutReviews | null = null,
-): RootState => ({
+export const generateCartProduct = (): CartProduct => {
+  const price = Number(faker.commerce.price());
+  const quantity = faker.datatype.number({ min: 1, max: 99 });
+
+  return {
+    product: {
+      id: faker.datatype.number(10000),
+      type: faker.commerce.product(),
+      price,
+      name: `fake guitar ${faker.commerce.productName()}`,
+      previewImg: faker.image.imageUrl(),
+      stringCount: faker.datatype.number(),
+      vendorCode: faker.datatype.string(),
+    },
+    totalPrice: price * quantity,
+    quantity,
+  };
+};
+
+export const generateCartGuitar = (): CartGuitar => ({
+  id: faker.datatype.number(10000),
+  type: faker.commerce.product(),
+  price: Number(faker.commerce.price()),
+  name: `fake guitar ${faker.commerce.productName()}`,
+  previewImg: faker.image.imageUrl(),
+  stringCount: faker.datatype.number(),
+  vendorCode: faker.datatype.string(),
+});
+
+export const mockLocalStorage = () => {
+  const setItemMock = jest.fn();
+  const getItemMock = jest.fn();
+
+  beforeEach(() => {
+    Storage.prototype.setItem = setItemMock;
+    Storage.prototype.getItem = getItemMock;
+  });
+
+  afterEach(() => {
+    setItemMock.mockRestore();
+    getItemMock.mockRestore();
+  });
+
+  return { setItemMock, getItemMock };
+};
+
+export const getStateWithItems = ({
+  guitars = [],
+  reviews = [],
+  product = null,
+  cartItems = {},
+}: StateWithItems = {}): RootState => ({
   GUITARS: {
     items: guitars,
     guitarsTotalCount: 0,
@@ -85,5 +145,14 @@ export const getStateWithItems = (
       data: reviews,
       status: FetchDataStatus.Idle,
     },
+  },
+  CART: {
+    data: cartItems,
+    coupon: null,
+    discountPercent: 0,
+    discount: 0,
+    totalCartPrice: getTotalSumOfAllProducts(cartItems, 'totalPrice'),
+    totalCartPriceWithDiscount: getTotalSumOfAllProducts(cartItems, 'totalPrice'),
+    itemsQuantity: getTotalSumOfAllProducts(cartItems, 'quantity'),
   },
 });

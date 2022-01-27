@@ -47,10 +47,7 @@ function ModalLayout({ children, className, onClose, isShow }: ModalLayoutProps)
       onEntered={handleEnterModal}
       onExit={handleExitedModal}
     >
-      <div
-        className={`modal is-active ${className ? className : ''}`}
-        data-testid="modal-layout"
-      >
+      <div className={`modal is-active ${className ? className : ''}`} data-testid="modal-layout">
         <div className="modal__wrapper">
           <div className="modal__overlay" data-close-modal data-testid="modal-overlay" />
           <div className="modal__content">

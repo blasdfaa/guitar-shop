@@ -11,6 +11,9 @@ export const selectCartItemsQuantity = (state: RootState): number => state.CART.
 export const selectDiscountValue = (state: RootState): number => state.CART.discount;
 export const selectTotalCartPriceWithDiscount = (state: RootState): number =>
   state.CART.totalCartPriceWithDiscount;
+export const selectOrderedGuitarsIds = (state: RootState): number[] =>
+  Object.keys(state.CART.data).map((id) => +id);
+export const selectCoupon = (state: RootState): string | null => state.CART.coupon;
 
 // selectors
 export const guitarIsCartByIdSelector = createSelector(
@@ -25,10 +28,12 @@ export const serializedCartProductsSelector = createSelector(
 
 export const totalPriceProductByIdSelector = createSelector(
   [selectGuitarsFromCart, (_state: RootState, productId: number) => productId],
-  (guitars, id) => guitars[id].totalPrice,
+  // если продукта с переданным id нет, вернет 0
+  (guitars, id): number => (guitars[id] ? guitars[id].totalPrice : 0),
 );
 
 export const quantityProductByIdSelector = createSelector(
   [selectGuitarsFromCart, (_state: RootState, productId: number) => productId],
-  (guitars, id) => guitars[id].quantity,
+  // если продукта с переданным id нет, вернет 0
+  (guitars, id) => (guitars[id] ? guitars[id].quantity : 0),
 );

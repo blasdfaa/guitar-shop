@@ -76,7 +76,7 @@ function CartItem({ id, type, stringCount, vendorCode, name, price, previewImg }
   const isOnlyProductLeft = quantityValue === MIN_PRODUCTS_QUANTITY;
 
   return (
-    <div className="cart-item">
+    <div className="cart-item" data-testid="cart-item">
       <button
         className="cart-item__close-button button-cross"
         type="button"

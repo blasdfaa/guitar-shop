@@ -1,11 +1,12 @@
-import { renderWithContext } from '../../../utils/test-utils';
-import ReviewSuccess from './review-success';
-import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
+
+import ReviewSuccess from './review-success';
+import { renderWithContext } from '../../../utils/test-utils';
 
 describe('Component: ReviewSuccess', () => {
   test('should be render correctly', () => {
-    renderWithContext(<ReviewSuccess onCloseModal={jest.fn()} />);
+    renderWithContext(<ReviewSuccess onCloseModal={jest.fn()} isFormReviewSuccessOpen />);
 
     expect(screen.getByTestId('modal-success-icon')).toBeInTheDocument();
     expect(screen.getByText(/Спасибо за ваш отзыв/i)).toBeInTheDocument();
@@ -14,7 +15,7 @@ describe('Component: ReviewSuccess', () => {
   test('should be close when click on button', () => {
     const mockOnCloseModal = jest.fn();
 
-    renderWithContext(<ReviewSuccess onCloseModal={mockOnCloseModal} />);
+    renderWithContext(<ReviewSuccess onCloseModal={mockOnCloseModal} isFormReviewSuccessOpen />);
 
     const closeButton = screen.getByRole('button', { name: /К покупкам/i });
 

@@ -20,7 +20,11 @@ function HeaderCartLink() {
         <use xlinkHref="#icon-basket" />
       </svg>
       <span className="visually-hidden">Перейти в корзину</span>
-      {!!productsCount && <span className="header__cart-count">{productsCount}</span>}
+      {!!productsCount && (
+        <span className="header__cart-count" data-testid="product-count">
+          {productsCount}
+        </span>
+      )}
     </Link>
   );
 }

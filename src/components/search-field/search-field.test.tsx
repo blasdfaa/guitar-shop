@@ -3,20 +3,12 @@ import userEvent from '@testing-library/user-event';
 
 import { renderWithContext } from '../../utils/test-utils';
 import SearchField from './search-field';
-import {
-  generateGuitarItem,
-  generateSearchedGuitars,
-  getStateWithItems,
-} from '../../utils/mocks';
+import { generateGuitarItem, generateSearchedGuitars, getStateWithItems } from '../../utils/mocks';
 import api from '../../store/api';
 import { fetchGuitarsByName } from '../../store/search/search.async';
 
 describe('Component: SearchField', () => {
-  const expectedGuitars = [
-    generateGuitarItem(),
-    generateGuitarItem(),
-    generateGuitarItem(),
-  ];
+  const expectedGuitars = [generateGuitarItem(), generateGuitarItem(), generateGuitarItem()];
 
   test('should render entered text correctly', () => {
     renderWithContext(<SearchField />);
@@ -45,9 +37,8 @@ describe('Component: SearchField', () => {
 
     const input = screen.getByRole('textbox') as HTMLInputElement;
 
-    jest
-      .spyOn(api, 'get')
-      .mockImplementation(() => Promise.resolve({ data: [], headers: {} }));
+    jest.spyOn(api, 'get').mockImplementation(() => Promise.resolve({ data: [], headers: {} }));
+
     userEvent.type(input, 'fake');
 
     await store.dispatch(fetchGuitarsByName('fake'));
@@ -89,7 +80,7 @@ describe('Component: SearchField', () => {
     expect(dropdown).toBeInTheDocument();
   });
   test('requests must match the number of letters', async () => {
-    const state = getStateWithItems(expectedGuitars);
+    const state = getStateWithItems({ guitars: expectedGuitars });
     renderWithContext(<SearchField />, state);
 
     jest
@@ -115,18 +106,14 @@ describe('Component: SearchField', () => {
 
     jest
       .spyOn(api, 'get')
-      .mockImplementation(() =>
-        Promise.resolve({ data: mockSearchedGuitars, headers: {} }),
-      );
+      .mockImplementation(() => Promise.resolve({ data: mockSearchedGuitars, headers: {} }));
 
     const input = screen.getByRole('textbox') as HTMLInputElement;
 
     userEvent.type(input, 'A');
 
     await waitFor(() => {
-      const searchResult = screen
-        .getAllByRole('listitem')
-        .map((item) => item.textContent);
+      const searchResult = screen.getAllByRole('listitem').map((item) => item.textContent);
       expect(searchResult).toEqual(correctSortedExpectedResult);
     });
   });

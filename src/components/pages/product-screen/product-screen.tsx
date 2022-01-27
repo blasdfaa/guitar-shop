@@ -75,9 +75,7 @@ function ProductScreen() {
     <MainLayout>
       <main className="page-content">
         <div className="container">
-          <h1 className="page-content__title title title--bigger">
-            Товар {guitarProduct?.name}
-          </h1>
+          <h1 className="page-content__title title title--bigger">Товар {guitarProduct?.name}</h1>
           <Breadcrumbs />
           <div className="product-container">
             <img
@@ -106,7 +104,7 @@ function ProductScreen() {
                 type={guitarProduct?.type}
               />
             </div>
-            <GuitarPriceInfo guitar={guitarProduct} />
+            {guitarProduct && <GuitarPriceInfo guitar={guitarProduct} />}
           </div>
           <ReviewsList reviews={guitarReviews} onClickSendReview={handleShowReviewSendModal} />
         </div>

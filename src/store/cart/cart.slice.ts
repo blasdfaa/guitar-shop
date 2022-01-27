@@ -5,7 +5,7 @@ import {
   getTotalSumOfAllProducts,
   setCartToLocalStorage,
 } from '../../utils/cart';
-import { postPromocodeDiscount } from './cart.async';
+import { postCartOrder, postPromocodeDiscount } from './cart.async';
 
 import type { CartSliceState } from '../../types/state';
 import type { CartGuitar } from '../../types/guitar';
@@ -15,12 +15,13 @@ type AddQuantityItemPayload = {
   value: number;
 };
 
-const INCREASE_PRODUCT_QUANTITY = 1;
-const DECREASE_PRODUCT_QUANTITY = 1;
+const INCREASE_PRODUCT_QUANTITY_STEP = 1;
+const DECREASE_PRODUCT_QUANTITY_STEP = 1;
 const LOCAL_STORAGE_CART_KEY = 'cart-state-value';
 
 let initialState: CartSliceState = {
   data: {},
+  coupon: null,
   discountPercent: 0,
   discount: 0,
   totalCartPrice: 0,
@@ -44,11 +45,11 @@ const cartSlice = createSlice({
       state.data[newProduct.id] = {
         product: newProduct,
         totalPrice: newProduct.price,
-        quantity: INCREASE_PRODUCT_QUANTITY,
+        quantity: INCREASE_PRODUCT_QUANTITY_STEP,
       };
 
       state.totalCartPrice += newProduct.price;
-      state.itemsQuantity += INCREASE_PRODUCT_QUANTITY;
+      state.itemsQuantity += INCREASE_PRODUCT_QUANTITY_STEP;
 
       state.discount = state.discountPercent
         ? (state.totalCartPrice * state.discountPercent) / 100
@@ -81,10 +82,10 @@ const cartSlice = createSlice({
       const currentProduct = state.data[currentProductId];
       const currentProductPrice = currentProduct.product.price;
 
-      currentProduct.quantity += INCREASE_PRODUCT_QUANTITY;
+      currentProduct.quantity += INCREASE_PRODUCT_QUANTITY_STEP;
       currentProduct.totalPrice += currentProductPrice;
 
-      state.itemsQuantity += INCREASE_PRODUCT_QUANTITY;
+      state.itemsQuantity += INCREASE_PRODUCT_QUANTITY_STEP;
       state.totalCartPrice += currentProductPrice;
 
       state.discount = state.discountPercent
@@ -102,10 +103,10 @@ const cartSlice = createSlice({
       const currentProductPrice = currentProduct.product.price;
 
       if (currentProduct.quantity > 1) {
-        currentProduct.quantity -= DECREASE_PRODUCT_QUANTITY;
+        currentProduct.quantity -= DECREASE_PRODUCT_QUANTITY_STEP;
         currentProduct.totalPrice -= currentProductPrice;
 
-        state.itemsQuantity -= DECREASE_PRODUCT_QUANTITY;
+        state.itemsQuantity -= DECREASE_PRODUCT_QUANTITY_STEP;
         state.totalCartPrice -= currentProductPrice;
 
         state.discount = state.discountPercent
@@ -142,17 +143,35 @@ const cartSlice = createSlice({
 
       setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
     },
-  },
-  extraReducers: (builder) =>
-    builder.addCase(postPromocodeDiscount.fulfilled, (state, action) => {
-      const discountPercent = action.payload;
-
-      state.discountPercent = discountPercent;
-      state.discount = (state.totalCartPrice * discountPercent) / 100;
-      state.totalCartPriceWithDiscount = state.totalCartPrice - state.discount;
+    setValidCoupon: (state, action: PayloadAction<string>) => {
+      state.coupon = action.payload;
 
       setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
-    }),
+    },
+  },
+  extraReducers: (builder) =>
+    builder
+      .addCase(postPromocodeDiscount.fulfilled, (state, action) => {
+        const discountPercent = action.payload;
+
+        state.discountPercent = discountPercent;
+        state.discount = (state.totalCartPrice * discountPercent) / 100;
+        state.totalCartPriceWithDiscount = state.totalCartPrice - state.discount;
+
+        setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
+      })
+      .addCase(postCartOrder.fulfilled, (state) => {
+        state.data = {};
+        state.coupon = null;
+        state.discountPercent = 0;
+        state.discount = 0;
+        state.totalCartPrice = 0;
+        state.totalCartPriceWithDiscount = 0;
+        state.itemsQuantity = 0;
+
+        setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
+      })
+      .addDefaultCase((state) => state),
 });
 
 export const {
@@ -161,5 +180,6 @@ export const {
   increaseProductQuantity,
   decreaseProductQuantity,
   addQuantityItem,
+  setValidCoupon,
 } = cartSlice.actions;
 export default cartSlice.reducer;

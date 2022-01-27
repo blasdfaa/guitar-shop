@@ -36,11 +36,17 @@ function AddCartSuccess({
 
   return (
     <ModalLayout
-      onClose={onCloseSuccessModal}
       className="modal--success"
       isShow={isAddCartSuccessOpen}
+      onClose={onCloseSuccessModal}
     >
-      <svg className="modal__icon" width="26" height="20" aria-hidden="true">
+      <svg
+        className="modal__icon"
+        width="26"
+        height="20"
+        aria-hidden="true"
+        data-testid="icon-success-modal"
+      >
         <use xlinkHref="#icon-success" />
       </svg>
       <p className="modal__message">Товар успешно добавлен в корзину</p>
@@ -54,15 +60,12 @@ function AddCartSuccess({
         </button>
         <button
           className="button button--black-border button--small modal__button modal__button--right"
+          type="button"
           onClick={routeAfterSuccess ? handleRoute : onCloseSuccessModal}
         >
           Продолжить покупки
         </button>
       </div>
-      <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть">
-        <span className="button-cross__icon" />
-        <span className="modal__close-btn-interactive-area" />
-      </button>
     </ModalLayout>
   );
 }

@@ -2,7 +2,7 @@ import { generateGuitarItem, generateGuitarReview, getStateWithItems } from '../
 import productReducer from '../product.slice';
 import { FetchDataStatus } from '../../../constants';
 import { fetchProductById, postReview } from '../product.async';
-import { ProductSliceState } from '../../../types/state';
+import type { ProductSliceState } from '../../../types/state';
 
 describe('Reducer: product', () => {
   describe('fetchProductById', () => {
@@ -31,7 +31,10 @@ describe('Reducer: product', () => {
     });
     test('should change state while fulfilled action', () => {
       const { comments, ...mockProduct } = generateGuitarItem();
-      const action = { type: fetchProductById.fulfilled.type, payload: { comments, ...mockProduct } };
+      const action = {
+        type: fetchProductById.fulfilled.type,
+        payload: { comments, ...mockProduct },
+      };
       const expectedState: ProductSliceState = {
         data: mockProduct,
         status: FetchDataStatus.Success,
@@ -61,6 +64,7 @@ describe('Reducer: product', () => {
       expect(state).toEqual(expectedState);
     });
   });
+
   describe('postReview', () => {
     test('should change state while pending action', () => {
       const { comments, ...mockProduct } = generateGuitarItem();
@@ -118,6 +122,7 @@ describe('Reducer: product', () => {
       expect(state).toEqual(expectedState);
     });
   });
+
   test('should return initial state when get empty action', () => {
     const expectedState = getStateWithItems().PRODUCT;
     const initialState = undefined;

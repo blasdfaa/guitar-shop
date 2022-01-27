@@ -9,6 +9,7 @@ import type { CartGuitar } from '../../../types/guitar';
 type AddCartConfirmProps = CartGuitar & {
   onCloseConfirmModal: () => void;
   onOpenSuccessModal: () => void;
+  onConfirmButtonCustomCallback?: () => void;
   isAddCartConfirmOpen: boolean;
 };
 
@@ -23,6 +24,7 @@ function AddCartConfirm({
   onCloseConfirmModal,
   onOpenSuccessModal,
   isAddCartConfirmOpen,
+  onConfirmButtonCustomCallback,
 }: AddCartConfirmProps) {
   const dispatch = useTypedDispatch();
 
@@ -39,9 +41,22 @@ function AddCartConfirm({
 
     dispatch(addProductToCart(product));
 
+    handleCloseModal();
+  };
+
+  const handleCustomCallbackOnClick = () => {
+    if (onConfirmButtonCustomCallback) {
+      onConfirmButtonCustomCallback();
+
+      handleCloseModal();
+    }
+  };
+
+  const handleCloseModal = () => {
     onCloseConfirmModal();
     onOpenSuccessModal();
   };
+
   return (
     <ModalLayout onClose={onCloseConfirmModal} isShow={isAddCartConfirmOpen}>
       <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
@@ -64,27 +79,18 @@ function AddCartConfirm({
           </p>
           <p className="modal__price-wrapper">
             <span className="modal__price">Цена:</span>
-            <span className="modal__price">{price.toLocaleString()} ₽</span>
+            <span className="modal__price">{price && price.toLocaleString()} ₽</span>
           </p>
         </div>
       </div>
       <div className="modal__button-container">
         <button
           className="button button--red button--big modal__button modal__button--add"
-          onClick={handleAddToCart}
+          onClick={onConfirmButtonCustomCallback ? handleCustomCallbackOnClick : handleAddToCart}
         >
           Добавить в корзину
         </button>
       </div>
-      <button
-        className="modal__close-btn button-cross"
-        type="button"
-        aria-label="Закрыть"
-        onClick={onCloseConfirmModal}
-      >
-        <span className="button-cross__icon" />
-        <span className="modal__close-btn-interactive-area" />
-      </button>
     </ModalLayout>
   );
 }

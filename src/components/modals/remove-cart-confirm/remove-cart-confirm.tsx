@@ -58,20 +58,21 @@ function RemoveCartConfirm({
         </div>
       </div>
       <div className="modal__button-container">
-        <button className="button button--small modal__button" onClick={handleRemoveProduct}>
+        <button
+          className="button button--small modal__button"
+          type="button"
+          onClick={handleRemoveProduct}
+        >
           Удалить товар
         </button>
         <button
           className="button button--black-border button--small modal__button modal__button--right"
+          type="button"
           onClick={onCloseConfirmRemove}
         >
           Продолжить покупки
         </button>
       </div>
-      <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть">
-        <span className="button-cross__icon" />
-        <span className="modal__close-btn-interactive-area" />
-      </button>
     </ModalLayout>
   );
 }

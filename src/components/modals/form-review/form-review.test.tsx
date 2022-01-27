@@ -1,10 +1,9 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-
 import userEvent from '@testing-library/user-event';
 
-import { renderWithContext } from '../../../utils/test-utils';
 import FormReview from './form-review';
 import api from '../../../store/api';
+import { renderWithContext } from '../../../utils/test-utils';
 import { postReview } from '../../../store/product/product.async';
 import { getStateWithItems } from '../../../utils/mocks';
 import { APIEndpoint } from '../../../constants';
@@ -20,6 +19,7 @@ describe('Component: FormReview', () => {
 
     renderWithContext(
       <FormReview
+        isFormReviewOpen
         onReviewSuccess={jest.fn()}
         onCloseForm={jest.fn()}
         productName={mockProduct.productName}
@@ -28,7 +28,9 @@ describe('Component: FormReview', () => {
     );
 
     expect(screen.getByRole('heading', { level: 2, name: /Оставить отзыв/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 3, name: mockProduct.productName })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: mockProduct.productName }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: /Ваше Имя/i })).toBeInTheDocument();
     expect(screen.getAllByRole('radio').length).toEqual(RATING_STARS_COUNT);
     expect(screen.getByRole('textbox', { name: /Достоинства/i })).toBeInTheDocument();
@@ -39,7 +41,9 @@ describe('Component: FormReview', () => {
   test('should be render error messages if submit empty form', async () => {
     const mockOnReviewSuccess = jest.fn();
 
-    renderWithContext(<FormReview onReviewSuccess={mockOnReviewSuccess} onCloseForm={jest.fn()} />);
+    renderWithContext(
+      <FormReview isFormReviewOpen onReviewSuccess={mockOnReviewSuccess} onCloseForm={jest.fn()} />,
+    );
 
     fireEvent.submit(screen.getByRole('button', { name: /Отправить отзыв/i }));
 
@@ -63,7 +67,7 @@ describe('Component: FormReview', () => {
     };
 
     const { store } = renderWithContext(
-      <FormReview onReviewSuccess={jest.fn()} onCloseForm={jest.fn()} />,
+      <FormReview isFormReviewOpen onReviewSuccess={jest.fn()} onCloseForm={jest.fn()} />,
       state,
     );
 
@@ -71,8 +75,12 @@ describe('Component: FormReview', () => {
 
     const starsInput = screen.getAllByRole('radio');
     const nameInput = screen.getByRole('textbox', { name: /Ваше Имя/i }) as HTMLInputElement;
-    const advantagesInput = screen.getByRole('textbox', { name: /Достоинства/i }) as HTMLInputElement;
-    const disadvantagesInput = screen.getByRole('textbox', { name: /Недостатки/i }) as HTMLInputElement;
+    const advantagesInput = screen.getByRole('textbox', {
+      name: /Достоинства/i,
+    }) as HTMLInputElement;
+    const disadvantagesInput = screen.getByRole('textbox', {
+      name: /Недостатки/i,
+    }) as HTMLInputElement;
     const commentsInput = screen.getByRole('textbox', { name: /Комментарий/i }) as HTMLInputElement;
 
     fireEvent.click(starsInput[0]);

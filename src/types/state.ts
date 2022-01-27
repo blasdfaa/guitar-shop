@@ -28,6 +28,7 @@ export type ProductSliceState = {
 
 export type CartSliceState = {
   data: Record<number, CartProduct>;
+  coupon: string | null;
   discountPercent: number;
   discount: number;
   totalCartPrice: number;

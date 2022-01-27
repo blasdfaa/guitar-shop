@@ -15,7 +15,7 @@ describe('Selectors: product', () => {
   describe('selectGuitarProduct', () => {
     test('should return product data', () => {
       const { comments, ...expectedProduct } = generateGuitarItem();
-      const PRODUCT: ProductSliceState = getStateWithItems(undefined, undefined, expectedProduct).PRODUCT;
+      const PRODUCT: ProductSliceState = getStateWithItems({ product: expectedProduct }).PRODUCT;
       const result = selectGuitarProduct({ PRODUCT } as RootState);
 
       expect(result).toEqual(expectedProduct);
@@ -25,7 +25,7 @@ describe('Selectors: product', () => {
   describe('selectGuitarReviews', () => {
     test('should return reviews data', () => {
       const expectedReview = [generateGuitarReview(), generateGuitarReview()];
-      const PRODUCT: ProductSliceState = getStateWithItems(undefined, expectedReview).PRODUCT;
+      const PRODUCT: ProductSliceState = getStateWithItems({ reviews: expectedReview }).PRODUCT;
       const result = selectGuitarReviews({ PRODUCT } as RootState);
 
       expect(result).toEqual(expectedReview);
@@ -35,7 +35,7 @@ describe('Selectors: product', () => {
   describe('selectGuitarProductName', () => {
     test('should return product name', () => {
       const { comments, ...expectedProduct } = generateGuitarItem();
-      const PRODUCT: ProductSliceState = getStateWithItems(undefined, undefined, expectedProduct).PRODUCT;
+      const PRODUCT: ProductSliceState = getStateWithItems({ product: expectedProduct }).PRODUCT;
       const result = selectGuitarProductName({ PRODUCT } as RootState);
 
       expect(result).toEqual(expectedProduct.name);
@@ -60,14 +60,14 @@ describe('Selectors: product', () => {
         generateGuitarReview(),
       ];
       const expectedSortedReviews = expectedReview.sort(sortReviewsByDateFromNewToOld);
-      const PRODUCT: ProductSliceState = getStateWithItems(undefined, expectedReview).PRODUCT;
+      const PRODUCT: ProductSliceState = getStateWithItems({ reviews: expectedReview }).PRODUCT;
       const result = guitarsReviewsSelector({ PRODUCT } as RootState);
 
       expect(result).toEqual(expectedSortedReviews);
     });
     test('should not compute again with same state', () => {
       const mockReviews = [generateGuitarReview(), generateGuitarReview(), generateGuitarReview()];
-      const PRODUCT: ProductSliceState = getStateWithItems(undefined, mockReviews).PRODUCT;
+      const PRODUCT: ProductSliceState = getStateWithItems({ reviews: mockReviews }).PRODUCT;
 
       guitarsReviewsSelector.resetRecomputations();
       guitarsReviewsSelector({ PRODUCT } as RootState);
@@ -79,7 +79,7 @@ describe('Selectors: product', () => {
     });
     test('should compute if state has changed', () => {
       const mockReviews = [generateGuitarReview(), generateGuitarReview(), generateGuitarReview()];
-      const PRODUCT: ProductSliceState = getStateWithItems(undefined, mockReviews).PRODUCT;
+      const PRODUCT: ProductSliceState = getStateWithItems({ reviews: mockReviews }).PRODUCT;
 
       guitarsReviewsSelector.resetRecomputations();
       guitarsReviewsSelector({ PRODUCT } as RootState);

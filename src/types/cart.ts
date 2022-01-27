@@ -5,3 +5,8 @@ export type CartProduct = {
   totalPrice: number;
   quantity: number;
 };
+
+export type CartOrder = {
+  guitarsIds: number[];
+  coupon: string | null;
+};

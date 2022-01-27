@@ -2,6 +2,7 @@ export const enum APIEndpoint {
   Guitars = 'guitars',
   Reviews = 'comments',
   Coupons = 'coupons',
+  Orders = 'orders',
 }
 
 export const enum AppRoute {
@@ -17,6 +18,7 @@ export const enum ActionCreator {
   FetchProductById = 'product/fetchProductById',
   PostReview = 'product/postReview',
   PostPromocodeDiscount = 'cart/postPromocodeDiscount',
+  PostCartOrder = 'cart/postCartOrder',
 }
 
 export const enum FetchDataStatus {

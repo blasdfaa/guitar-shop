@@ -22,8 +22,7 @@ function GuitarCard({
   vendorCode,
 }: Guitar) {
   const [isConfirmModalOpen, setConfirmModalOpen] = React.useState<boolean>(false);
-  const [isAddCartSuccessModalOpen, setAddCartSuccessModalOpen] =
-    React.useState<boolean>(false);
+  const [isAddCartSuccessModalOpen, setAddCartSuccessModalOpen] = React.useState<boolean>(false);
 
   const isProductInCart = useTypedSelector((state) => guitarIsCartByIdSelector(state, id));
 
@@ -68,7 +67,7 @@ function GuitarCard({
         <p className="product-card__title">{name}</p>
         <p className="product-card__price" data-testid="card-price">
           <span className="visually-hidden">Цена:</span>
-          {price.toLocaleString()} ₽
+          {price && price.toLocaleString()} ₽
         </p>
       </div>
       <div className="product-card__buttons">

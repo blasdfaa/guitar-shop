@@ -48,7 +48,9 @@ describe('Thunks: guitar', () => {
       ];
       const store = mockStore({});
 
-      jest.spyOn(api, 'get').mockImplementation(() => Promise.reject({ data: [], headers: {} }));
+      jest
+        .spyOn(api, 'get')
+        .mockImplementation(() => Promise.reject({ data: [], headers: {} }));
 
       await store.dispatch(fetchGuitarsWithParams() as never);
 
@@ -92,7 +94,7 @@ describe('Thunks: guitar', () => {
       ).toEqual(expectedActions);
     });
     test('should correctly change state after success response', async () => {
-      const state = getStateWithItems([generateGuitarItem()]);
+      const state = getStateWithItems({ guitars: [generateGuitarItem()] });
       const store = getStoreWithState(state);
       const expectedGuitars = [generateGuitarItem(), generateGuitarItem()];
 
@@ -109,9 +111,11 @@ describe('Thunks: guitar', () => {
       expect(store.getState().GUITARS.guitarsTotalCount).toEqual(2);
     });
     test('should correctly change state after failed response', async () => {
-      jest.spyOn(api, 'get').mockImplementation(() => Promise.reject({ data: [], headers: {} }));
+      jest
+        .spyOn(api, 'get')
+        .mockImplementation(() => Promise.reject({ data: [], headers: {} }));
 
-      const state = getStateWithItems([generateGuitarItem()]);
+      const state = getStateWithItems({ guitars: [generateGuitarItem()] });
       const store = getStoreWithState(state);
 
       await store.dispatch(fetchGuitarsWithParams());

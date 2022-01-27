@@ -51,7 +51,9 @@ function CouponForm() {
         onSubmit={handleSubmit(onSubmitCoupon)}
       >
         <div className="form-input coupon__input">
-          <label className="visually-hidden">Промокод</label>
+          <label className="visually-hidden" htmlFor="coupon">
+            Промокод
+          </label>
           <input
             type="text"
             placeholder="Введите промокод"
@@ -63,17 +65,23 @@ function CouponForm() {
             })}
           />
           {isInvalidCoupon && (
-            <p className="form-input__message form-input__message--error">Неверный промокод</p>
+            <p
+              className="form-input__message form-input__message--error"
+              data-testid="coupon-error-message"
+            >
+              Неверный промокод
+            </p>
           )}
           {isSubmitSuccessful && (
-            <p className="form-input__message form-input__message--success">Промокод принят</p>
+            <p
+              className="form-input__message form-input__message--success"
+              data-testid="coupon-success-message"
+            >
+              Промокод принят
+            </p>
           )}
         </div>
-        <button
-          className="button button--big coupon__button"
-          type="submit"
-          disabled={isSubmitting}
-        >
+        <button className="button button--big coupon__button" type="submit" disabled={isSubmitting}>
           Применить
         </button>
       </form>
