@@ -60,22 +60,22 @@ function GuitarPriceInfo({ guitar }: GuitarPriceInfoProps) {
       >
         Добавить в корзину
       </button>
-      {guitar && (
+      {guitar && isAddConfirmModalOpen && (
         <AddCartConfirm
           {...guitar}
           onCloseConfirmModal={handleCloseAddConfirmModal}
           onOpenSuccessModal={handleOpenAddCartSuccessModal}
           // Передать функцию для увеличения количества только в случае если товар уже есть в коризне
           onConfirmButtonCustomCallback={isGuitarInCart ? handleIncreaseQuantity : undefined}
-          isAddCartConfirmOpen={isAddConfirmModalOpen}
         />
       )}
-      <AddCartSuccess
-        routeAfterSuccess
-        routeTo={AppRoute.Home}
-        onCloseSuccessModal={handleCloseAddCartSuccessModal}
-        isAddCartSuccessOpen={isAddCartSuccessModalOpen}
-      />
+      {isAddCartSuccessModalOpen && (
+        <AddCartSuccess
+          routeAfterSuccess
+          routeTo={AppRoute.Home}
+          onCloseSuccessModal={handleCloseAddCartSuccessModal}
+        />
+      )}
     </div>
   );
 }

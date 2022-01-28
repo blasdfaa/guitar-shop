@@ -2,16 +2,11 @@ import ModalLayout from '../modal-layout/modal-layout';
 
 type ReviewSuccessProps = {
   onCloseModal: () => void;
-  isFormReviewSuccessOpen: boolean;
 };
 
-function ReviewSuccess({ onCloseModal, isFormReviewSuccessOpen }: ReviewSuccessProps) {
+function ReviewSuccess({ onCloseModal }: ReviewSuccessProps) {
   return (
-    <ModalLayout
-      className="modal--success"
-      onClose={onCloseModal}
-      isShow={isFormReviewSuccessOpen}
-    >
+    <ModalLayout className="modal--success" onClose={onCloseModal}>
       <svg
         className="modal__icon"
         width="26"

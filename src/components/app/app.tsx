@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import SvgSprite from '../svg-sprite/svg-sprite';
 import Main from '../pages/main/main';
 import ProductScreen from '../pages/product-screen/product-screen';
-import CartScreen from '../pages/cart-screen/cart-screen';
 import NotFoundScreen from '../pages/not-found-screen/not-found-screen';
 import { AppRoute } from '../../constants';
+import CartScreen from '../pages/cart-screen/cart-screen';
 
 function App(): JSX.Element {
   return (

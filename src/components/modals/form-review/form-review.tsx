@@ -18,13 +18,7 @@ type FormReviewProps = {
   isFormReviewOpen: boolean;
 };
 
-function FormReview({
-  productName,
-  productId,
-  onReviewSuccess,
-  onCloseForm,
-  isFormReviewOpen,
-}: FormReviewProps) {
+function FormReview({ productName, productId, onReviewSuccess, onCloseForm }: FormReviewProps) {
   const dispatch = useTypedDispatch();
 
   const [isAlertModalOpen, setAlertModalOpen] = React.useState(false);
@@ -55,20 +49,13 @@ function FormReview({
   };
 
   return (
-    <ModalLayout onClose={onCloseForm} isShow={isFormReviewOpen}>
-      <h2 className="modal__header modal__header--review title title--medium">
-        Оставить отзыв
-      </h2>
-      <h3 className="modal__product-name title title--medium-20 title--uppercase">
-        {productName}
-      </h3>
+    <ModalLayout onClose={onCloseForm}>
+      <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
+      <h3 className="modal__product-name title title--medium-20 title--uppercase">{productName}</h3>
       <form className="form-review" onSubmit={handleSubmit(onSubmitReview)}>
         <div className="form-review__wrapper">
           <div className="form-review__name-wrapper">
-            <label
-              className="form-review__label form-review__label--required"
-              htmlFor="user-name"
-            >
+            <label className="form-review__label form-review__label--required" htmlFor="user-name">
               <span>Ваше Имя</span>
             </label>
             <input
@@ -92,10 +79,7 @@ function FormReview({
             )}
           />
         </div>
-        <label
-          className="form-review__label form-review__label--required"
-          htmlFor="advantages"
-        >
+        <label className="form-review__label form-review__label--required" htmlFor="advantages">
           <span>Достоинства</span>
         </label>
         <input
@@ -108,10 +92,7 @@ function FormReview({
           })}
         />
         {errors.advantage && <WarningMessage />}
-        <label
-          className="form-review__label form-review__label--required"
-          htmlFor="disadvantages"
-        >
+        <label className="form-review__label form-review__label--required" htmlFor="disadvantages">
           <span>Недостатки</span>
         </label>
         <input

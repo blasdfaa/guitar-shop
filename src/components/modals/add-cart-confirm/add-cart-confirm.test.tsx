@@ -17,14 +17,11 @@ describe('Component AddCartConfirm', () => {
   });
 
   test('should be render product info correctly if modal opened', () => {
-    const mockIsAddCartConfirm = true;
-
     renderWithContext(
       <AddCartConfirm
         {...mockCartGuitar}
         onCloseConfirmModal={mockOnCloseConfirm}
         onOpenSuccessModal={mockOnOpenSuccess}
-        isAddCartConfirmOpen={mockIsAddCartConfirm}
       />,
     );
 
@@ -48,14 +45,11 @@ describe('Component AddCartConfirm', () => {
     expect(screen.getByRole('button', { name: /Добавить в корзину/i })).toBeInTheDocument();
   });
   test('should close modal and open success modal when click on add to cart button', () => {
-    const mockIsAddCartConfirmOpen = true;
-
     renderWithContext(
       <AddCartConfirm
         {...mockCartGuitar}
         onCloseConfirmModal={mockOnCloseConfirm}
         onOpenSuccessModal={mockOnOpenSuccess}
-        isAddCartConfirmOpen={mockIsAddCartConfirmOpen}
       />,
     );
 
@@ -67,15 +61,12 @@ describe('Component AddCartConfirm', () => {
     expect(mockOnOpenSuccess).toBeCalled();
   });
   test('should call custom callback if it exists, close modal and open success modal when click on add to cart button', () => {
-    const mockIsAddCartConfirmOpen = true;
-
     renderWithContext(
       <AddCartConfirm
         {...mockCartGuitar}
         onConfirmButtonCustomCallback={mockOnConfirmButtonCustomCallback}
         onCloseConfirmModal={mockOnCloseConfirm}
         onOpenSuccessModal={mockOnOpenSuccess}
-        isAddCartConfirmOpen={mockIsAddCartConfirmOpen}
       />,
     );
 

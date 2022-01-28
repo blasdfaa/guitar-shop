@@ -4,7 +4,7 @@ export const getPageNameByRoute = (route: string): string => {
   const routes = {
     [AppRoute.Home]: 'Главная',
     [AppRoute.Cart]: 'Корзина',
-  };
+  } as { [key: string]: string };
 
-  return routes[route as AppRoute] || 'Неизвестно';
+  return routes[route] || 'Неизвестно';
 };

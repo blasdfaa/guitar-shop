@@ -8,7 +8,6 @@ import type { CartGuitar } from '../../../types/guitar';
 
 type RemoveCartConfirmProps = CartGuitar & {
   onCloseConfirmRemove: () => void;
-  isRemoveConfirmOpen: boolean;
 };
 
 function RemoveCartConfirm({
@@ -20,19 +19,17 @@ function RemoveCartConfirm({
   stringCount,
   id,
   onCloseConfirmRemove,
-  isRemoveConfirmOpen,
 }: RemoveCartConfirmProps) {
   const dispatch = useTypedDispatch();
 
   const handleRemoveProduct = async () => {
-    // Нужно дождаться конца анимации, иначе обработчики и класс с удалением скролла не удалятся
-    await onCloseConfirmRemove();
+    onCloseConfirmRemove();
 
     dispatch(removeProductFromCart(id));
   };
 
   return (
-    <ModalLayout onClose={onCloseConfirmRemove} isShow={isRemoveConfirmOpen}>
+    <ModalLayout onClose={onCloseConfirmRemove}>
       <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
       <div className="modal__info">
         <img

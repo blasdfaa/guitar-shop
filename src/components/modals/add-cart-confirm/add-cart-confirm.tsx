@@ -10,7 +10,6 @@ type AddCartConfirmProps = CartGuitar & {
   onCloseConfirmModal: () => void;
   onOpenSuccessModal: () => void;
   onConfirmButtonCustomCallback?: () => void;
-  isAddCartConfirmOpen: boolean;
 };
 
 function AddCartConfirm({
@@ -23,7 +22,6 @@ function AddCartConfirm({
   id,
   onCloseConfirmModal,
   onOpenSuccessModal,
-  isAddCartConfirmOpen,
   onConfirmButtonCustomCallback,
 }: AddCartConfirmProps) {
   const dispatch = useTypedDispatch();
@@ -58,7 +56,7 @@ function AddCartConfirm({
   };
 
   return (
-    <ModalLayout onClose={onCloseConfirmModal} isShow={isAddCartConfirmOpen}>
+    <ModalLayout onClose={onCloseConfirmModal}>
       <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
       <div className="modal__info">
         <img

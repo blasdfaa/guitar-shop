@@ -109,17 +109,16 @@ function ProductScreen() {
           <ReviewsList reviews={guitarReviews} onClickSendReview={handleShowReviewSendModal} />
         </div>
       </main>
-      <FormReview
-        productName={guitarProduct?.name}
-        productId={guitarProduct?.id}
-        onReviewSuccess={handleShowReviewSuccessModal}
-        onCloseForm={handleCloseReviewSendModal}
-        isFormReviewOpen={isReviewSendModalOpen}
-      />
-      <ReviewSuccess
-        onCloseModal={handleCloseReviewSuccessModal}
-        isFormReviewSuccessOpen={isReviewSuccessModalOpen}
-      />
+      {isReviewSendModalOpen && (
+        <FormReview
+          productName={guitarProduct?.name}
+          productId={guitarProduct?.id}
+          onReviewSuccess={handleShowReviewSuccessModal}
+          onCloseForm={handleCloseReviewSendModal}
+          isFormReviewOpen={isReviewSendModalOpen}
+        />
+      )}
+      {isReviewSuccessModalOpen && <ReviewSuccess onCloseModal={handleCloseReviewSuccessModal} />}
       <Alert isOpen={isAlertModalOpen} onClose={() => setAlertModalOpen(false)}>
         Ошибка! Нет доступа к серверу
       </Alert>

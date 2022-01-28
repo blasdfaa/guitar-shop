@@ -5,8 +5,8 @@ import RatingStarsView from '../../../../rating-stars-view/rating-stars-view';
 import { AppRoute } from '../../../../../constants';
 import useTypedSelector from '../../../../../hooks/use-typed-selector';
 import { guitarIsCartByIdSelector } from '../../../../../store/cart/cart.selector';
-import AddCartSuccess from '../../../../modals/add-cart-success/add-cart-success';
 import AddCartConfirm from '../../../../modals/add-cart-confirm/add-cart-confirm';
+import AddCartSuccess from '../../../../modals/add-cart-success/add-cart-success';
 
 import type { CartGuitar, Guitar } from '../../../../../types/guitar';
 
@@ -91,16 +91,16 @@ function GuitarCard({
             Купить
           </button>
         )}
-        <AddCartConfirm
-          {...cartProduct}
-          onCloseConfirmModal={handleCloseConfirmModal}
-          onOpenSuccessModal={handleOpenSuccessModal}
-          isAddCartConfirmOpen={isConfirmModalOpen}
-        />
-        <AddCartSuccess
-          onCloseSuccessModal={handleCloseSuccessModal}
-          isAddCartSuccessOpen={isAddCartSuccessModalOpen}
-        />
+        {isConfirmModalOpen && (
+          <AddCartConfirm
+            {...cartProduct}
+            onCloseConfirmModal={handleCloseConfirmModal}
+            onOpenSuccessModal={handleOpenSuccessModal}
+          />
+        )}
+        {isAddCartSuccessModalOpen && (
+          <AddCartSuccess onCloseSuccessModal={handleCloseSuccessModal} />
+        )}
       </div>
     </div>
   );

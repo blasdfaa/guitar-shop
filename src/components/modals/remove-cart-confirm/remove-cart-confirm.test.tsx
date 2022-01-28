@@ -10,11 +10,7 @@ const mockOnCloseConfirmRemove = jest.fn();
 describe('Component: RemoveCartConfirm', () => {
   test('should be render product info correctly if modal opened', () => {
     renderWithContext(
-      <RemoveCartConfirm
-        isRemoveConfirmOpen
-        onCloseConfirmRemove={mockOnCloseConfirmRemove}
-        {...mockCartGuitar}
-      />,
+      <RemoveCartConfirm onCloseConfirmRemove={mockOnCloseConfirmRemove} {...mockCartGuitar} />,
     );
 
     const productImg = screen.getByRole('img', { name: mockCartGuitar.name });
@@ -39,11 +35,7 @@ describe('Component: RemoveCartConfirm', () => {
   });
   test('should be close when click on continue button', () => {
     renderWithContext(
-      <RemoveCartConfirm
-        isRemoveConfirmOpen
-        onCloseConfirmRemove={mockOnCloseConfirmRemove}
-        {...mockCartGuitar}
-      />,
+      <RemoveCartConfirm onCloseConfirmRemove={mockOnCloseConfirmRemove} {...mockCartGuitar} />,
     );
 
     const continueButton = screen.getByRole('button', { name: /Продолжить покупки/i });
@@ -54,11 +46,7 @@ describe('Component: RemoveCartConfirm', () => {
   });
   test('should be close when click on delete product button', () => {
     renderWithContext(
-      <RemoveCartConfirm
-        isRemoveConfirmOpen
-        onCloseConfirmRemove={mockOnCloseConfirmRemove}
-        {...mockCartGuitar}
-      />,
+      <RemoveCartConfirm onCloseConfirmRemove={mockOnCloseConfirmRemove} {...mockCartGuitar} />,
     );
 
     const continueButton = screen.getByRole('button', { name: /Продолжить покупки/i });

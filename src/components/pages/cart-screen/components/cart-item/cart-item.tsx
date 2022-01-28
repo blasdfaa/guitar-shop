@@ -128,11 +128,9 @@ function CartItem({ id, type, stringCount, vendorCode, name, price, previewImg }
         </button>
       </div>
       <div className="cart-item__price-total">{totalProductPrice} ₽</div>
-      <RemoveCartConfirm
-        {...cartProduct}
-        onCloseConfirmRemove={handleCloseConfirmModal}
-        isRemoveConfirmOpen={isRemoveConfirmModalOpen}
-      />
+      {isRemoveConfirmModalOpen && (
+        <RemoveCartConfirm {...cartProduct} onCloseConfirmRemove={handleCloseConfirmModal} />
+      )}
     </div>
   );
 }

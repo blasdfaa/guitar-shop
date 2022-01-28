@@ -5,29 +5,25 @@ import { AppRoute } from '../../../constants';
 
 type AddCartSuccessProps = {
   onCloseSuccessModal: () => void;
-  isAddCartSuccessOpen: boolean;
   routeAfterSuccess?: boolean;
   routeTo?: string;
 };
 
 function AddCartSuccess({
   onCloseSuccessModal,
-  isAddCartSuccessOpen,
   routeAfterSuccess = false,
   routeTo,
 }: AddCartSuccessProps) {
   const navigate = useNavigate();
 
-  const handleRouteToCart = async () => {
-    // Нужно дождаться конца анимации, иначе обработчики и класс с удалением скролла не удалятся
-    await onCloseSuccessModal();
+  const handleRouteToCart = () => {
+    onCloseSuccessModal();
 
     navigate(AppRoute.Cart);
   };
 
-  const handleRoute = async () => {
-    // Нужно дождаться конца анимации, иначе обработчики и класс с удалением скролла не удалятся
-    await onCloseSuccessModal();
+  const handleRoute = () => {
+    onCloseSuccessModal();
 
     if (routeAfterSuccess && routeTo) {
       navigate(routeTo);
@@ -35,11 +31,7 @@ function AddCartSuccess({
   };
 
   return (
-    <ModalLayout
-      className="modal--success"
-      isShow={isAddCartSuccessOpen}
-      onClose={onCloseSuccessModal}
-    >
+    <ModalLayout className="modal--success" onClose={onCloseSuccessModal}>
       <svg
         className="modal__icon"
         width="26"

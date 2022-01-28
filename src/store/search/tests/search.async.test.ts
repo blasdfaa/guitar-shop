@@ -4,7 +4,11 @@ import thunk from 'redux-thunk';
 import api from '../../api';
 import type { RootState } from '../../store';
 import { getStoreWithState } from '../../store';
-import { generateGuitarItem, generateSearchedGuitars, getStateWithItems } from '../../../utils/mocks';
+import {
+  generateGuitarItem,
+  generateSearchedGuitars,
+  getStateWithItems,
+} from '../../../utils/mocks';
 import { fetchGuitarsByName } from '../search.async';
 import { FetchDataStatus } from '../../../constants';
 
@@ -62,7 +66,7 @@ describe('Thunk: search', () => {
       ).toEqual(expectedActions);
     });
     test('should correctly change state after success response', async () => {
-      const state = getStateWithItems([generateGuitarItem()]);
+      const state = getStateWithItems({ guitars: [generateGuitarItem()] });
       const store = getStoreWithState(state);
       const expectedGuitars = [generateGuitarItem(), generateGuitarItem()];
 
@@ -76,7 +80,7 @@ describe('Thunk: search', () => {
       expect(store.getState().SEARCH.guitars.status).toEqual(FetchDataStatus.Success);
     });
     test('should correctly change state after failed response', async () => {
-      const state = getStateWithItems([generateGuitarItem()]);
+      const state = getStateWithItems({ guitars: [generateGuitarItem()] });
       const store = getStoreWithState(state);
 
       jest.spyOn(api, 'get').mockImplementation(() => Promise.reject({ data: [], headers: {} }));
