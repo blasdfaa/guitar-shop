@@ -17,6 +17,7 @@ function CouponForm() {
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ mode: 'onSubmit' });
 
@@ -31,7 +32,8 @@ function CouponForm() {
     }
   };
 
-  const onChangeCouponValue = () => {
+  const onChangeCouponValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue('coupon', e.target.value.replace(/\s/g, ''));
     setSubmitSuccessful(false);
   };
 
