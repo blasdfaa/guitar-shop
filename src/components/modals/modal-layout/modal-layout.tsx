@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import FocusTrap from 'focus-trap-react';
 
 type ModalLayoutProps = {
   children: React.ReactNode;
@@ -36,23 +37,25 @@ function ModalLayout({ children, className, onClose }: ModalLayoutProps) {
   };
 
   return ReactDOM.createPortal(
-    <div className={`modal is-active ${className ? className : ''}`} data-testid="modal-layout">
-      <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal data-testid="modal-overlay" />
-        <div className="modal__content">
-          {children}
-          <button
-            className="modal__close-btn button-cross"
-            type="button"
-            aria-label="Закрыть"
-            onClick={onClose}
-          >
-            <span className="button-cross__icon" />
-            <span className="modal__close-btn-interactive-area" />
-          </button>
+    <FocusTrap>
+      <div className={`modal is-active ${className ? className : ''}`} data-testid="modal-layout">
+        <div className="modal__wrapper">
+          <div className="modal__overlay" data-close-modal data-testid="modal-overlay" />
+          <div className="modal__content">
+            {children}
+            <button
+              className="modal__close-btn button-cross"
+              type="button"
+              aria-label="Закрыть"
+              onClick={onClose}
+            >
+              <span className="button-cross__icon" />
+              <span className="modal__close-btn-interactive-area" />
+            </button>
+          </div>
         </div>
       </div>
-    </div>,
+    </FocusTrap>,
     document.body,
   );
 }

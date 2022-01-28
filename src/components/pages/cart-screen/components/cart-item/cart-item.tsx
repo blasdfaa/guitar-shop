@@ -23,7 +23,7 @@ function CartItem({ id, type, stringCount, vendorCode, name, price, previewImg }
   const dispatch = useTypedDispatch();
 
   const [isRemoveConfirmModalOpen, setRemoveConfirmModalOpen] = React.useState<boolean>(false);
-  const [quantityValue, setQuantityValue] = React.useState<number>(1);
+  const [quantityValue, setQuantityValue] = React.useState<number | ''>(1);
 
   const totalProductPrice = useTypedSelector((state) =>
     totalPriceProductByIdSelector(state, id),
@@ -35,11 +35,17 @@ function CartItem({ id, type, stringCount, vendorCode, name, price, previewImg }
   }, [productQuantity]);
 
   const handleChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = +e.target.value;
+    const value = e.target.value;
+    const quantity = Number(value);
 
-    if (value > 0 && value <= MAX_PRODUCTS_QUANTITY) {
-      setQuantityValue(value);
-      dispatch(addQuantityItem({ productId: id, value }));
+    if (quantity >= MIN_PRODUCTS_QUANTITY && quantity <= MAX_PRODUCTS_QUANTITY) {
+      setQuantityValue(quantity);
+      dispatch(addQuantityItem({ productId: id, value: quantity }));
+    }
+
+    // Установит пустую строчку при удалении минимального значения
+    if (value === '') {
+      setQuantityValue('');
     }
   };
 
@@ -96,7 +102,7 @@ function CartItem({ id, type, stringCount, vendorCode, name, price, previewImg }
           {formatGuitarType(type)}, {stringCount} струнная
         </p>
       </div>
-      <div className="cart-item__price">{price.toLocaleString()} ₽</div>
+      <div className="cart-item__price">{price && price.toLocaleString()} ₽</div>
       <div className="quantity cart-item__quantity">
         <button
           className="quantity__button"
@@ -113,7 +119,8 @@ function CartItem({ id, type, stringCount, vendorCode, name, price, previewImg }
           placeholder="1"
           id="2-count"
           name="2-count"
-          max="99"
+          min={MIN_PRODUCTS_QUANTITY}
+          max={MAX_PRODUCTS_QUANTITY}
           value={quantityValue}
           onChange={handleChangeQuantity}
         />

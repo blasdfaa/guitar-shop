@@ -8,6 +8,7 @@ import {
   getStateWithItems,
 } from '../../../../../utils/mocks';
 import { formatGuitarType } from '../../../../../utils/product';
+import userEvent from '@testing-library/user-event';
 
 const mockCartGuitar = generateCartGuitar();
 const mockCartProduct = generateCartProduct();
@@ -92,5 +93,19 @@ describe('Component: CartIem', () => {
     fireEvent.input(changeQuantityInput, { target: { value: expectedQuantityValue } });
 
     expect(store.getState().CART.itemsQuantity).toEqual(expectedQuantityValue);
+  });
+  test('should set empty string and clear current value if quantity has been erased by Backspace button', () => {
+    const state = getStateWithItems({
+      cartItems: { [mockCartGuitar.id]: mockCartProduct },
+    });
+
+    renderWithContext(<CartItem {...mockCartGuitar} />, state);
+
+    const changeQuantityInput = screen.getByRole('spinbutton') as HTMLInputElement;
+
+    userEvent.type(changeQuantityInput, '{backspace}');
+    userEvent.type(changeQuantityInput, '{backspace}');
+
+    expect(changeQuantityInput.value).toEqual('');
   });
 });
