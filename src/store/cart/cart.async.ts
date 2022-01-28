@@ -6,12 +6,14 @@ import api from '../api';
 
 import type { CartOrder } from '../../types/cart';
 
+const HTTP_SUCCESS_CODE = 200;
+
 export const postPromocodeDiscount = createAsyncThunk<number, { coupon: string }>(
   ActionCreator.PostPromocodeDiscount,
   async (coupon, { dispatch }) => {
     const { data, status } = await api.post<number>(APIEndpoint.Coupons, coupon);
 
-    if (status === 200) {
+    if (status === HTTP_SUCCESS_CODE) {
       dispatch(setValidCoupon(coupon.coupon));
     }
 
