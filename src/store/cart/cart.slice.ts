@@ -145,8 +145,6 @@ const cartSlice = createSlice({
     },
     setValidCoupon: (state, action: PayloadAction<string>) => {
       state.coupon = action.payload;
-
-      setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
     },
   },
   extraReducers: (builder) =>
@@ -157,8 +155,6 @@ const cartSlice = createSlice({
         state.discountPercent = discountPercent;
         state.discount = (state.totalCartPrice * discountPercent) / 100;
         state.totalCartPriceWithDiscount = state.totalCartPrice - state.discount;
-
-        setCartToLocalStorage(LOCAL_STORAGE_CART_KEY, state);
       })
       .addCase(postCartOrder.fulfilled, (state) => {
         state.data = {};
