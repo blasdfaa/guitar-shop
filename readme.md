@@ -1,6 +1,8 @@
 # Guitar Shop
 
-[DEMO](http://guitar-shop-omega.vercel.app/)
+<div align="center"><a href="http://guitar-shop-omega.vercel.app" >DEMO</a></div>
+
+<img src="https://i.imgur.com/3vrbxPm.png" />
 
 ---
 
